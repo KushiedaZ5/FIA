@@ -48,15 +48,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ========== 🎯 PARTE 2: REFERENCIAS HTML ==========
+    // (Sin cambios)
     const selectCarrera = document.getElementById('selectCarrera');
     const selectCiclo = document.getElementById('selectCiclo');
     const selectCurso = document.getElementById('selectCurso');
     const imagenSilabo = document.getElementById('imagenSilabo');
     const textoSilabo = document.getElementById('textoSilabo');
-    
     const calculadoraContenido = document.getElementById('calculadoraContenido');
     const columnaDerechaNotas = document.getElementById('columnaDerechaNotas'); 
-
     const contenedorPesos = document.getElementById('contenedorPesos');
     const camposPractica = [
         document.getElementById('campoP1'), document.getElementById('campoP2'),
@@ -94,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const NOTA_APROBATORIA = 10.5;
 
     // ========== 🔄 PARTE 3: LÓGICA DE LISTAS DEPENDIENTES ==========
-    
+    // (Sin cambios)
     function poblarCarreras() {
         Object.keys(dataCarreras).forEach(carreraKey => {
             const carrera = dataCarreras[carreraKey];
@@ -133,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         resetearCampos();
     }
-    
     function actualizarVistaCurso() {
         const carreraKey = selectCarrera.value;
         const cicloKey = selectCiclo.value;
@@ -154,69 +152,127 @@ document.addEventListener('DOMContentLoaded', () => {
             imagenSilabo.style.display = 'block';
             textoSilabo.style.display = 'none';
             actualizarCamposDeNotas(cursoData.formula);
-            mostrarPesos(cursoData.formula); // <-- ¡Aquí está el cambio!
+            mostrarPesos(cursoData.formula);
         }
         calcularNotas();
     }
-    
     selectCarrera.addEventListener('change', poblarCiclos);
     selectCiclo.addEventListener('change', poblarCursos);
     selectCurso.addEventListener('change', actualizarVistaCurso);
 
-    // ========== 📊 PARTE 4: MOSTRAR PESOS (¡CORREGIDO!) ==========
+    // ========== 📊 PARTE 4: MOSTRAR PESOS (¡ACTUALIZADO CON DESGLOSE!) ==========
     function mostrarPesos(formulaKey) {
         let pesos = [];
         switch(formulaKey) {
             case 'formula_est2': 
-                pesos = [ { nombre: 'Evaluaciones (PE)', porcentaje: 66.7, color: 'bg-primary' }, { nombre: 'Examen Final', porcentaje: 33.3, color: 'bg-warning' }]; 
+                // PF = (2*PE + EF) / 3 -> PE=66.7%, EF=33.3%
+                // PE = (4*PPR + W1) / 5 -> PPR=80% de PE, W1=20% de PE
+                // FINAL: PPR = 53.3% (0.8 * 66.7), W1 = 13.3% (0.2 * 66.7), EF = 33.3%
+                pesos = [ 
+                    { nombre: 'Prom. Prácticas (PPR)', porcentaje: 53.3, color: 'bg-primary' }, 
+                    { nombre: 'Examen Final (EF)', porcentaje: 33.3, color: 'bg-warning' },
+                    { nombre: 'Trabajo (W1)', porcentaje: 13.3, color: 'bg-info' }
+                ]; 
                 break;
             case 'formula_micro': 
-                pesos = [ { nombre: 'Examen Final', porcentaje: 40, color: 'bg-danger' }, { nombre: 'Examen Parcial', porcentaje: 30, color: 'bg-warning' }, { nombre: 'Evaluaciones (PE)', porcentaje: 30, color: 'bg-primary' }]; 
-                break;
-            
-            // ▼▼▼ ¡AQUÍ ESTÁ LA CORRECCIÓN! ▼▼▼
-            case 'formula_ti2': // TI2 usa PE, EP, EF
+                // PF = 0.3*PE + 0.3*EP + 0.4*EF
+                // PE = (P1+P2+P3(Controles)+P4)/4
+                // FINAL: EF=40%, EP=30%, PE=30%
+                // DESGLOSE PE: P1=7.5%, P2=7.5%, P3(Controles)=7.5%, P4=7.5%
                 pesos = [ 
-                    { nombre: 'Evaluaciones (PE)', porcentaje: 50, color: 'bg-primary' }, 
-                    { nombre: 'Examen Parcial (EP)', porcentaje: 25, color: 'bg-info' }, 
+                    { nombre: 'Examen Final (EF)', porcentaje: 40, color: 'bg-danger' }, 
+                    { nombre: 'Examen Parcial (EP)', porcentaje: 30, color: 'bg-warning' }, 
+                    { nombre: 'Práctica 1 (P1)', porcentaje: 7.5, color: 'bg-primary' },
+                    { nombre: 'Práctica 2 (P2)', porcentaje: 7.5, color: 'bg-primary' },
+                    { nombre: 'Controles (P3)', porcentaje: 7.5, color: 'bg-primary' },
+                    { nombre: 'Investigación (P4)', porcentaje: 7.5, color: 'bg-primary' }
+                ]; 
+                break;
+            case 'formula_fis2':
+                // PF = (2*PE + PL + EF) / 4
+                // FINAL: PE=50%, PL=25%, EF=25%
+                // PE = (P1+P2+P3+P4+P4 - MN)/4. Es un promedio, así que el bloque PE es 50%.
+                // PL = (Lb1..Lb7 - MN)/6. Es un promedio, así que el bloque PL es 25%.
+                pesos = [ 
+                    { nombre: 'Prom. Prácticas (PE)', porcentaje: 50, color: 'bg-primary' }, 
+                    { nombre: 'Prom. Laboratorio (PL)', porcentaje: 25, color: 'bg-info' }, 
                     { nombre: 'Examen Final (EF)', porcentaje: 25, color: 'bg-warning' }
                 ]; 
                 break;
-            case 'formula_fis2': // Física 2 usa PE, PL, EF
+            case 'formula_ti2':
+                // PF = (2*PE + EP + EF) / 4
+                // PE = ((P-Block) + W1 + PL) / 3
+                // FINAL: EF=25%, EP=25%, PE=50%
+                // DESGLOSE PE: P-Block=16.7%, W1=16.7%, PL=16.7%
                 pesos = [ 
-                    { nombre: 'Evaluaciones (PE)', porcentaje: 50, color: 'bg-primary' }, 
-                    { nombre: 'Laboratorios (PL)', porcentaje: 25, color: 'bg-info' }, 
-                    { nombre: 'Examen Final (EF)', porcentaje: 25, color: 'bg-warning' }
+                    { nombre: 'Examen Final (EF)', porcentaje: 25, color: 'bg-danger' }, 
+                    { nombre: 'Examen Parcial (EP)', porcentaje: 25, color: 'bg-warning' }, 
+                    { nombre: 'Prom. Prácticas (P)', porcentaje: 16.7, color: 'bg-primary' },
+                    { nombre: 'Trabajo (W1)', porcentaje: 16.7, color: 'bg-info' },
+                    { nombre: 'Prom. Laboratorio (PL)', porcentaje: 16.7, color: 'bg-success' }
                 ]; 
                 break;
-            // ▲▲▲ FIN DE LA CORRECCIÓN ▲▲▲
-
             case 'formula_alg2': // Usada por Proceso de Manufactura
-                pesos = [ { nombre: 'Evaluaciones (PE)', porcentaje: 50, color: 'bg-primary' }, { nombre: 'Examen Parcial (EP)', porcentaje: 25, color: 'bg-info' }, { nombre: 'Examen Final (EF)', porcentaje: 25, color: 'bg-warning' }]; 
+                // PF = (2*PE + EP + EF) / 4
+                // PE = ((P1+P2)/2 + W1 + PL) / 3
+                // FINAL: EF=25%, EP=25%, PE=50%
+                // DESGLOSE PE: P-Block(P1+P2)=16.7%, W1=16.7%, PL=16.7%
+                pesos = [ 
+                    { nombre: 'Examen Final (EF)', porcentaje: 25, color: 'bg-danger' }, 
+                    { nombre: 'Examen Parcial (EP)', porcentaje: 25, color: 'bg-warning' },
+                    { nombre: 'Prom. Prácticas (P1,P2)', porcentaje: 16.7, color: 'bg-primary' },
+                    { nombre: 'Trabajo (W1)', porcentaje: 16.7, color: 'bg-info' },
+                    { nombre: 'Prom. Laboratorio (PL)', porcentaje: 16.7, color: 'bg-success' }
+                ]; 
+                break;
+            case 'promedio_simple':
+                // PF = (P1+P2+P3+P4+EF) / 5
+                pesos = [
+                    { nombre: 'P1, P2, P3, P4, EF', porcentaje: 20, color: 'bg-secondary' }
+                ];
                 break;
             default: 
                 pesos = [ ]; 
                 break;
         }
-        pesos.sort((a, b) => b.porcentaje - a.porcentaje);
+        
+        pesos.sort((a, b) => b.porcentaje - a.porcentaje); // Ordenar de mayor a menor
+        
         contenedorPesos.innerHTML = ''; 
-        pesos.forEach(item => {
-            const html = `
+        
+        // Si hay más de una barra con 20% (promedio_simple), las agrupa
+        if (formulaKey === 'promedio_simple') {
+            contenedorPesos.innerHTML = `
                 <div>
                     <div class="d-flex justify-content-between mb-1 small">
-                        <span class="fw-bold text-light">${item.nombre}</span>
-                        <span class="text-white-50">${item.porcentaje}%</span>
+                        <span class="fw-bold text-light">Todas las notas (P1-P4, EF)</span>
+                        <span class="text-white-50">20% c/u</span>
                     </div>
                     <div class="progress" role="progressbar" style="height: 10px; background-color: #333;">
-                        <div class="progress-bar ${item.color}" style="width: ${item.porcentaje}%"></div>
+                        <div class="progress-bar bg-secondary" style="width: 100%"></div>
                     </div>
-                </div>
-            `;
-            contenedorPesos.innerHTML += html;
-        });
+                </div>`;
+        } else {
+            // Muestra las barras individuales para fórmulas complejas
+            pesos.forEach(item => {
+                const html = `
+                    <div>
+                        <div class="d-flex justify-content-between mb-1 small">
+                            <span class="fw-bold text-light">${item.nombre}</span>
+                            <span class="text-white-50">${item.porcentaje.toFixed(1)}%</span>
+                        </div>
+                        <div class="progress" role="progressbar" style="height: 10px; background-color: #333;">
+                            <div class="progress-bar ${item.color}" style="width: ${item.porcentaje}%"></div>
+                        </div>
+                    </div>
+                `;
+                contenedorPesos.innerHTML += html;
+            });
+        }
     }
 
     // ========== ⚙️ PARTE 5: CÁLCULOS Y CAMPOS ==========
+    // (Sin cambios)
     
     function calcularPromedioConMN(notas = [], divisor) {
         if (notas.length === 0) return 0;
@@ -235,6 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 camposPractica[0].classList.remove('d-none'); camposPractica[1].classList.remove('d-none');
                 camposControlesContainer.classList.remove('d-none'); camposPractica[3].classList.remove('d-none');
                 campoEP.classList.remove('d-none');
+                campoEF.classList.remove('d-none'); // EF también es visible
                 break;
             case 'formula_ti2': 
                 camposPractica[0].classList.remove('d-none'); camposPractica[1].classList.remove('d-none');
@@ -242,23 +299,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 campoW1.classList.remove('d-none'); campoEP.classList.remove('d-none');
                 camposLaboratorioContainer.classList.remove('d-none');
                 for (let i = 0; i < 4; i++) camposLab[i].classList.remove('d-none');
+                campoEF.classList.remove('d-none');
                 break;
             case 'formula_fis2':
                 camposPractica[0].classList.remove('d-none'); camposPractica[1].classList.remove('d-none');
                 camposPractica[2].classList.remove('d-none'); camposPractica[3].classList.remove('d-none');
                 camposLaboratorioContainer.classList.remove('d-none');
                 for (let i = 0; i < 7; i++) camposLab[i].classList.remove('d-none');
+                campoEF.classList.remove('d-none');
                 break;
             case 'formula_alg2':
                 camposPractica[0].classList.remove('d-none'); camposPractica[1].classList.remove('d-none');
                 campoW1.classList.remove('d-none'); campoEP.classList.remove('d-none');
                 camposLaboratorioContainer.classList.remove('d-none');
                 for (let i = 0; i < 5; i++) camposLab[i].classList.remove('d-none');
+                campoEF.classList.remove('d-none');
                 break;
             case 'formula_est2':
                 camposPractica[0].classList.remove('d-none'); camposPractica[1].classList.remove('d-none');
                 camposPractica[2].classList.remove('d-none'); camposPractica[3].classList.remove('d-none');
                 campoW1.classList.remove('d-none');
+                campoEF.classList.remove('d-none');
                 break;
             case 'promedio_simple':
                  camposPractica[0].classList.remove('d-none'); camposPractica[1].classList.remove('d-none');
@@ -396,5 +457,3 @@ document.addEventListener('DOMContentLoaded', () => {
     poblarCarreras();
     resetearCampos();
 });
-});
-
