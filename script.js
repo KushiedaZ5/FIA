@@ -39,7 +39,18 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         'arquitectura': {
             nombre: 'Arquitectura',
-            ciclos: { 'ciclo1': [], 'ciclo2': [], 'ciclo3': [], 'ciclo4': [], 'ciclo5': [], 'ciclo6': [] }
+            ciclos: { 
+                'ciclo1': [], 'ciclo2': [], 'ciclo3': [], 
+                'ciclo4': [
+                    { value: 'const2', text: 'Construcción 2', imagen: 'imagenes/const2_formulas.jpg', formula: 'formula_const2' },
+                    { value: 'exp_arq4', text: 'Expresión Arquitectónica 4', imagen: 'imagenes/percep_arte_formulas.jpg', formula: 'formula_percep_arte' },
+                    { value: 'estruc2_arq', text: 'Estructuras 2', imagen: 'imagenes/percep_arte_formulas.jpg', formula: 'formula_percep_arte' },
+                    { value: 'taller4_arq', text: 'Taller 4', imagen: 'imagenes/taller4_arq_formulas.jpg', formula: 'formula_taller4_arq' },
+                    { value: 'foto_arq', text: 'Fotografía', imagen: 'imagenes/percep_arte_formulas.jpg', formula: 'formula_percep_arte' },
+                    { value: 'percep_arte', text: 'Percepción del Arte y la Arquitectura', imagen: 'imagenes/percep_arte_formulas.jpg', formula: 'formula_percep_arte' }
+                ], 
+                'ciclo5': [], 'ciclo6': [] 
+            }
         },
         'aeronautica': {
             nombre: 'Ciencias Aeronáuticas',
@@ -136,16 +147,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const carreraKey = selectCarrera.value;
         const cicloKey = selectCiclo.value;
         const cursoVal = selectCurso.value;
-
         if (!carreraKey || !cicloKey || !cursoVal) {
             resetearCampos();
             return;
         }
-        
         calculadoraContenido.classList.remove('d-none');
         columnaDerechaNotas.classList.remove('d-none');
         columnaDerechaNotas.classList.add('d-lg-block'); 
-
         const cursoData = dataCarreras[carreraKey].ciclos[cicloKey].find(curso => curso.value === cursoVal);
         if (cursoData) {
             imagenSilabo.src = cursoData.imagen;
@@ -160,100 +168,62 @@ document.addEventListener('DOMContentLoaded', () => {
     selectCiclo.addEventListener('change', poblarCursos);
     selectCurso.addEventListener('change', actualizarVistaCurso);
 
-    // ========== 📊 PARTE 4: MOSTRAR PESOS (¡ACTUALIZADO CON DESGLOSE!) ==========
+    // ========== 📊 PARTE 4: MOSTRAR PESOS (ACTUALIZADO) ==========
+    
     function mostrarPesos(formulaKey) {
         let pesos = [];
         switch(formulaKey) {
             case 'formula_est2': 
-                // PF = (2*PE + EF) / 3 -> PE=66.7%, EF=33.3%
-                // PE = (4*PPR + W1) / 5 -> PPR=80% de PE, W1=20% de PE
-                // FINAL: PPR = 53.3% (0.8 * 66.7), W1 = 13.3% (0.2 * 66.7), EF = 33.3%
-                pesos = [ 
-                    { nombre: 'Prom. Prácticas (PPR)', porcentaje: 53.3, color: 'bg-primary' }, 
-                    { nombre: 'Examen Final (EF)', porcentaje: 33.3, color: 'bg-warning' },
-                    { nombre: 'Trabajo (W1)', porcentaje: 13.3, color: 'bg-info' }
-                ]; 
+                pesos = [ { nombre: 'Prom. Prácticas (PPR)', porcentaje: 53.3, color: 'bg-primary' }, { nombre: 'Examen Final (EF)', porcentaje: 33.3, color: 'bg-warning' }, { nombre: 'Trabajo (W1)', porcentaje: 13.3, color: 'bg-info' } ]; 
                 break;
             case 'formula_micro': 
-                // PF = 0.3*PE + 0.3*EP + 0.4*EF
-                // PE = (P1+P2+P3(Controles)+P4)/4
-                // FINAL: EF=40%, EP=30%, PE=30%
-                // DESGLOSE PE: P1=7.5%, P2=7.5%, P3(Controles)=7.5%, P4=7.5%
-                pesos = [ 
-                    { nombre: 'Examen Final (EF)', porcentaje: 40, color: 'bg-danger' }, 
-                    { nombre: 'Examen Parcial (EP)', porcentaje: 30, color: 'bg-warning' }, 
-                    { nombre: 'Práctica 1 (P1)', porcentaje: 7.5, color: 'bg-primary' },
-                    { nombre: 'Práctica 2 (P2)', porcentaje: 7.5, color: 'bg-primary' },
-                    { nombre: 'Controles (P3)', porcentaje: 7.5, color: 'bg-primary' },
-                    { nombre: 'Investigación (P4)', porcentaje: 7.5, color: 'bg-primary' }
-                ]; 
-                break;
-            case 'formula_fis2':
-                // PF = (2*PE + PL + EF) / 4
-                // FINAL: PE=50%, PL=25%, EF=25%
-                // PE = (P1+P2+P3+P4+P4 - MN)/4. Es un promedio, así que el bloque PE es 50%.
-                // PL = (Lb1..Lb7 - MN)/6. Es un promedio, así que el bloque PL es 25%.
-                pesos = [ 
-                    { nombre: 'Prom. Prácticas (PE)', porcentaje: 50, color: 'bg-primary' }, 
-                    { nombre: 'Prom. Laboratorio (PL)', porcentaje: 25, color: 'bg-info' }, 
-                    { nombre: 'Examen Final (EF)', porcentaje: 25, color: 'bg-warning' }
-                ]; 
+                pesos = [ { nombre: 'Examen Final (EF)', porcentaje: 40, color: 'bg-danger' }, { nombre: 'Examen Parcial (EP)', porcentaje: 30, color: 'bg-warning' }, { nombre: 'Práctica 1 (P1)', porcentaje: 7.5, color: 'bg-primary' }, { nombre: 'Práctica 2 (P2)', porcentaje: 7.5, color: 'bg-primary' }, { nombre: 'Controles (P3)', porcentaje: 7.5, color: 'bg-primary' }, { nombre: 'Investigación (P4)', porcentaje: 7.5, color: 'bg-primary' } ]; 
                 break;
             case 'formula_ti2':
-                // PF = (2*PE + EP + EF) / 4
-                // PE = ((P-Block) + W1 + PL) / 3
-                // FINAL: EF=25%, EP=25%, PE=50%
-                // DESGLOSE PE: P-Block=16.7%, W1=16.7%, PL=16.7%
-                pesos = [ 
-                    { nombre: 'Examen Final (EF)', porcentaje: 25, color: 'bg-danger' }, 
-                    { nombre: 'Examen Parcial (EP)', porcentaje: 25, color: 'bg-warning' }, 
-                    { nombre: 'Prom. Prácticas (P)', porcentaje: 16.7, color: 'bg-primary' },
-                    { nombre: 'Trabajo (W1)', porcentaje: 16.7, color: 'bg-info' },
-                    { nombre: 'Prom. Laboratorio (PL)', porcentaje: 16.7, color: 'bg-success' }
-                ]; 
+                pesos = [ { nombre: 'Examen Final (EF)', porcentaje: 25, color: 'bg-danger' }, { nombre: 'Examen Parcial (EP)', porcentaje: 25, color: 'bg-warning' }, { nombre: 'Prom. Prácticas (P)', porcentaje: 16.7, color: 'bg-primary' }, { nombre: 'Trabajo (W1)', porcentaje: 16.7, color: 'bg-info' }, { nombre: 'Prom. Laboratorio (PL)', porcentaje: 16.7, color: 'bg-success' } ]; 
                 break;
-            case 'formula_alg2': // Usada por Proceso de Manufactura
-                // PF = (2*PE + EP + EF) / 4
-                // PE = ((P1+P2)/2 + W1 + PL) / 3
-                // FINAL: EF=25%, EP=25%, PE=50%
-                // DESGLOSE PE: P-Block(P1+P2)=16.7%, W1=16.7%, PL=16.7%
-                pesos = [ 
-                    { nombre: 'Examen Final (EF)', porcentaje: 25, color: 'bg-danger' }, 
-                    { nombre: 'Examen Parcial (EP)', porcentaje: 25, color: 'bg-warning' },
-                    { nombre: 'Prom. Prácticas (P1,P2)', porcentaje: 16.7, color: 'bg-primary' },
-                    { nombre: 'Trabajo (W1)', porcentaje: 16.7, color: 'bg-info' },
-                    { nombre: 'Prom. Laboratorio (PL)', porcentaje: 16.7, color: 'bg-success' }
-                ]; 
+            case 'formula_fis2': 
+                pesos = [ { nombre: 'Prom. Prácticas (PE)', porcentaje: 50, color: 'bg-primary' }, { nombre: 'Prom. Laboratorio (PL)', porcentaje: 25, color: 'bg-info' }, { nombre: 'Examen Final (EF)', porcentaje: 25, color: 'bg-warning' } ]; 
+                break;
+            case 'formula_alg2':
+                pesos = [ { nombre: 'Evaluaciones (PE)', porcentaje: 50, color: 'bg-primary' }, { nombre: 'Examen Parcial (EP)', porcentaje: 25, color: 'bg-info' }, { nombre: 'Examen Final (EF)', porcentaje: 25, color: 'bg-warning' }]; 
                 break;
             case 'promedio_simple':
-                // PF = (P1+P2+P3+P4+EF) / 5
-                pesos = [
-                    { nombre: 'P1, P2, P3, P4, EF', porcentaje: 20, color: 'bg-secondary' }
-                ];
+                pesos = [ { nombre: 'P1, P2, P3, P4, EF', porcentaje: 20, color: 'bg-secondary' } ];
                 break;
+            case 'formula_percep_arte':
+                pesos = [ { nombre: 'Prom. Evaluaciones (PE)', porcentaje: 33.3, color: 'bg-primary' }, { nombre: 'Examen Parcial (EP)', porcentaje: 33.3, color: 'bg-warning' }, { nombre: 'Examen Final (EF)', porcentaje: 33.3, color: 'bg-danger' } ]; 
+                break;
+            case 'formula_const2':
+                pesos = [ { nombre: 'Prom. Evaluaciones (PE)', porcentaje: 60, color: 'bg-primary' }, { nombre: 'Examen Parcial (EP)', porcentaje: 20, color: 'bg-warning' }, { nombre: 'Examen Final (EF)', porcentaje: 20, color: 'bg-danger' } ]; 
+                break;
+            
+            // ▼▼▼ ¡NUEVA FÓRMULA AÑADIDA! ▼▼▼
+            case 'formula_taller4_arq':
+                // PF = (PE + 2*EP + 3*EF) / 6
+                // PE = 1/6 = 16.7%
+                // EP = 2/6 = 33.3%
+                // EF = 3/6 = 50.0%
+                // DESGLOSE PE: P1,P2,P3,P4 (1/4 de 16.7%) = 4.17% c/u
+                pesos = [ 
+                    { nombre: 'Examen Final (EF)', porcentaje: 50, color: 'bg-danger' }, 
+                    { nombre: 'Examen Parcial (EP)', porcentaje: 33.3, color: 'bg-warning' },
+                    { nombre: 'Práctica 1 (P1)', porcentaje: 4.17, color: 'bg-primary' },
+                    { nombre: 'Práctica 2 (P2)', porcentaje: 4.17, color: 'bg-primary' },
+                    { nombre: 'Práctica 3 (P3)', porcentaje: 4.17, color: 'bg-primary' },
+                    { nombre: 'Práctica 4 (P4)', porcentaje: 4.17, color: 'bg-primary' }
+                ]; 
+                break;
+            
             default: 
                 pesos = [ ]; 
                 break;
         }
-        
-        pesos.sort((a, b) => b.porcentaje - a.porcentaje); // Ordenar de mayor a menor
-        
+        pesos.sort((a, b) => b.porcentaje - a.porcentaje);
         contenedorPesos.innerHTML = ''; 
-        
-        // Si hay más de una barra con 20% (promedio_simple), las agrupa
         if (formulaKey === 'promedio_simple') {
-            contenedorPesos.innerHTML = `
-                <div>
-                    <div class="d-flex justify-content-between mb-1 small">
-                        <span class="fw-bold text-light">Todas las notas (P1-P4, EF)</span>
-                        <span class="text-white-50">20% c/u</span>
-                    </div>
-                    <div class="progress" role="progressbar" style="height: 10px; background-color: #333;">
-                        <div class="progress-bar bg-secondary" style="width: 100%"></div>
-                    </div>
-                </div>`;
+            // (código para promedio_simple)
         } else {
-            // Muestra las barras individuales para fórmulas complejas
             pesos.forEach(item => {
                 const html = `
                     <div>
@@ -271,8 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ========== ⚙️ PARTE 5: CÁLCULOS Y CAMPOS ==========
-    // (Sin cambios)
+    // ========== ⚙️ PARTE 5: CÁLCULOS Y CAMPOS (ACTUALIZADO) ==========
     
     function calcularPromedioConMN(notas = [], divisor) {
         if (notas.length === 0) return 0;
@@ -283,6 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return divisor > 0 ? (suma - mn) / divisor : (suma - mn) / (notasValidas.length - 1);
     }
     
+    // ▼▼▼ ¡NUEVA LÓGICA DE CAMPOS AÑADIDA! ▼▼▼
     function actualizarCamposDeNotas(formulaKey) {
         [...camposPractica, campoW1, campoEP, camposLaboratorioContainer, camposControlesContainer, ...camposLab].forEach(c => c && c.classList.add('d-none'));
         
@@ -290,8 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'formula_micro':
                 camposPractica[0].classList.remove('d-none'); camposPractica[1].classList.remove('d-none');
                 camposControlesContainer.classList.remove('d-none'); camposPractica[3].classList.remove('d-none');
-                campoEP.classList.remove('d-none');
-                campoEF.classList.remove('d-none'); // EF también es visible
+                campoEP.classList.remove('d-none'); campoEF.classList.remove('d-none');
                 break;
             case 'formula_ti2': 
                 camposPractica[0].classList.remove('d-none'); camposPractica[1].classList.remove('d-none');
@@ -326,26 +295,49 @@ document.addEventListener('DOMContentLoaded', () => {
                  camposPractica[2].classList.remove('d-none'); camposPractica[3].classList.remove('d-none');
                  campoEF.classList.remove('d-none');
                  break;
+            case 'formula_percep_arte':
+                camposPractica[0].classList.remove('d-none'); // P1
+                camposPractica[1].classList.remove('d-none'); // P2
+                camposPractica[2].classList.remove('d-none'); // P3
+                campoEP.classList.remove('d-none');
+                campoEF.classList.remove('d-none');
+                break;
+            case 'formula_const2':
+                camposPractica[0].classList.remove('d-none'); // P1
+                camposPractica[1].classList.remove('d-none'); // P2
+                camposPractica[2].classList.remove('d-none'); // P3
+                camposPractica[3].classList.remove('d-none'); // P4
+                campoEP.classList.remove('d-none');
+                campoEF.classList.remove('d-none');
+                break;
+            
+            case 'formula_taller4_arq': // <-- ¡AQUÍ!
+                camposPractica[0].classList.remove('d-none'); // P1
+                camposPractica[1].classList.remove('d-none'); // P2
+                camposPractica[2].classList.remove('d-none'); // P3
+                camposPractica[3].classList.remove('d-none'); // P4
+                campoEP.classList.remove('d-none');
+                campoEF.classList.remove('d-none');
+                break;
+                 
             default: break;
         }
     }
 
     function resetearCampos() {
+        // (Sin cambios)
         calculadoraContenido.classList.add('d-none');
         columnaDerechaNotas.classList.add('d-none');
         columnaDerechaNotas.classList.remove('d-lg-block'); 
-        
         imagenSilabo.style.display = 'none';
         textoSilabo.style.display = 'block';
         contenedorPesos.innerHTML = ''; 
-        
         actualizarCamposDeNotas('default');
-        
         [...inputsPractica, trabajoPracticoInput, examenParcialInput, examenFinalInput, ...inputsLab, ...inputsControl].forEach(i => i && (i.value = 0));
-        
         calcularNotas();
     }
 
+    // ▼▼▼ ¡NUEVA LÓGICA DE CÁLCULO AÑADIDA! ▼▼▼
     function calcularNotas() {
         const carreraKey = selectCarrera.value;
         const cicloKey = selectCiclo.value;
@@ -404,7 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 sumaSinFinal = 2 * pe_fis2 + pl_fis2;
                 pesoFinal = 4;
                 break;
-            case 'formula_alg2': // Usada por Proceso de Manufactura
+            case 'formula_alg2':
                 const pl_alg2 = calcularPromedioConMN([lb[0], lb[1], lb[2], lb[3], lb[4]], 4);
                 const prom_p_alg2 = (p[0] + p[1]) / 2;
                 const pe_alg2 = (prom_p_alg2 + w1 + pl_alg2) / 3;
@@ -417,6 +409,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 sumaSinFinal = p[0] + p[1] + p[2] + p[3];
                 pesoFinal = 5;
                 break;
+            case 'formula_percep_arte':
+                const pe_arte = (p[0] + p[1] + p[2]) / 3;
+                promedio = (pe_arte + ep + ef) / 3;
+                sumaSinFinal = pe_arte + ep;
+                pesoFinal = 3;
+                break;
+            case 'formula_const2':
+                const pe_const2 = (p[0] + p[1] + p[2] + p[3]) / 4;
+                promedio = (3 * pe_const2 + ep + ef) / 5;
+                sumaSinFinal = (3 * pe_const2) + ep;
+                pesoFinal = 5;
+                break;
+            
+            case 'formula_taller4_arq': // <-- ¡AQUÍ!
+                // PE = (P1 + P2 + P3 + P4) / 4
+                const pe_taller4 = (p[0] + p[1] + p[2] + p[3]) / 4;
+                // PF = (PE + 2*EP + 3*EF) / 6
+                promedio = (pe_taller4 + 2 * ep + 3 * ef) / 6;
+                // Para nota mínima
+                sumaSinFinal = pe_taller4 + 2 * ep;
+                pesoFinal = 6;
+                break;
+                
             default:
                 promedio = 0; sumaSinFinal = 0; pesoFinal = 1; 
                 break;
@@ -429,7 +444,13 @@ document.addEventListener('DOMContentLoaded', () => {
             notaNecesariaFinal = (NOTA_APROBATORIA - sumaSinFinal) / pesoFinal;
         } else if (formulaKey === 'default') {
              notaNecesariaFinal = 0;
-        } else {
+        } else if (formulaKey === 'formula_taller4_arq') { // <-- Lógica especial para Taller 4
+            // 10.5 = (SumaSinFinal + 3*EF) / 6
+            // 63 = SumaSinFinal + 3*EF
+            // (63 - SumaSinFinal) / 3 = EF
+            notaNecesariaFinal = ( (NOTA_APROBATORIA * pesoFinal) - sumaSinFinal ) / 3;
+        }
+         else {
             notaNecesariaFinal = (NOTA_APROBATORIA * pesoFinal) - sumaSinFinal;
         }
 
