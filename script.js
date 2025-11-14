@@ -134,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
         resetearCampos();
     }
     
-    // ▼▼▼ FUNCIÓN ACTUALIZAR VISTA (CORREGIDA) ▼▼▼
     function actualizarVistaCurso() {
         const carreraKey = selectCarrera.value;
         const cicloKey = selectCiclo.value;
@@ -145,10 +144,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        // ¡MOSTRAR CONTENIDO!
         calculadoraContenido.classList.remove('d-none');
-        columnaDerechaNotas.classList.remove('d-none'); // Quita el 'd-none' general
-        columnaDerechaNotas.classList.add('d-lg-block'); // Añade la clase para mostrarlo en 'lg'
+        columnaDerechaNotas.classList.remove('d-none');
+        columnaDerechaNotas.classList.add('d-lg-block'); 
 
         const cursoData = dataCarreras[carreraKey].ciclos[cicloKey].find(curso => curso.value === cursoVal);
         if (cursoData) {
@@ -156,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
             imagenSilabo.style.display = 'block';
             textoSilabo.style.display = 'none';
             actualizarCamposDeNotas(cursoData.formula);
-            mostrarPesos(cursoData.formula);
+            mostrarPesos(cursoData.formula); // <-- ¡Aquí está el cambio!
         }
         calcularNotas();
     }
@@ -165,17 +163,40 @@ document.addEventListener('DOMContentLoaded', () => {
     selectCiclo.addEventListener('change', poblarCursos);
     selectCurso.addEventListener('change', actualizarVistaCurso);
 
-    // ========== 📊 PARTE 4: MOSTRAR PESOS ==========
-    // (Sin cambios)
+    // ========== 📊 PARTE 4: MOSTRAR PESOS (¡CORREGIDO!) ==========
     function mostrarPesos(formulaKey) {
         let pesos = [];
         switch(formulaKey) {
-            case 'formula_est2': pesos = [ { nombre: 'Evaluaciones (PE)', porcentaje: 66.7, color: 'bg-primary' }, { nombre: 'Examen Final', porcentaje: 33.3, color: 'bg-warning' }]; break;
-            case 'formula_micro': pesos = [ { nombre: 'Examen Final', porcentaje: 40, color: 'bg-danger' }, { nombre: 'Examen Parcial', porcentaje: 30, color: 'bg-warning' }, { nombre: 'Evaluaciones (PE)', porcentaje: 30, color: 'bg-primary' }]; break;
-            case 'formula_fis2':
-            case 'formula_ti2': pesos = [ { nombre: 'Evaluaciones (PE)', porcentaje: 50, color: 'bg-primary' }, { nombre: 'Laboratorios (PL)', porcentaje: 25, color: 'bg-info' }, { nombre: 'Examen Final', porcentaje: 25, color: 'bg-warning' }]; break;
-            case 'formula_alg2': pesos = [ { nombre: 'Evaluaciones (PE)', porcentaje: 50, color: 'bg-primary' }, { nombre: 'Examen Parcial', porcentaje: 25, color: 'bg-info' }, { nombre: 'Examen Final', porcentaje: 25, color: 'bg-warning' }]; break;
-            default: pesos = [ ]; break;
+            case 'formula_est2': 
+                pesos = [ { nombre: 'Evaluaciones (PE)', porcentaje: 66.7, color: 'bg-primary' }, { nombre: 'Examen Final', porcentaje: 33.3, color: 'bg-warning' }]; 
+                break;
+            case 'formula_micro': 
+                pesos = [ { nombre: 'Examen Final', porcentaje: 40, color: 'bg-danger' }, { nombre: 'Examen Parcial', porcentaje: 30, color: 'bg-warning' }, { nombre: 'Evaluaciones (PE)', porcentaje: 30, color: 'bg-primary' }]; 
+                break;
+            
+            // ▼▼▼ ¡AQUÍ ESTÁ LA CORRECCIÓN! ▼▼▼
+            case 'formula_ti2': // TI2 usa PE, EP, EF
+                pesos = [ 
+                    { nombre: 'Evaluaciones (PE)', porcentaje: 50, color: 'bg-primary' }, 
+                    { nombre: 'Examen Parcial (EP)', porcentaje: 25, color: 'bg-info' }, 
+                    { nombre: 'Examen Final (EF)', porcentaje: 25, color: 'bg-warning' }
+                ]; 
+                break;
+            case 'formula_fis2': // Física 2 usa PE, PL, EF
+                pesos = [ 
+                    { nombre: 'Evaluaciones (PE)', porcentaje: 50, color: 'bg-primary' }, 
+                    { nombre: 'Laboratorios (PL)', porcentaje: 25, color: 'bg-info' }, 
+                    { nombre: 'Examen Final (EF)', porcentaje: 25, color: 'bg-warning' }
+                ]; 
+                break;
+            // ▲▲▲ FIN DE LA CORRECCIÓN ▲▲▲
+
+            case 'formula_alg2': // Usada por Proceso de Manufactura
+                pesos = [ { nombre: 'Evaluaciones (PE)', porcentaje: 50, color: 'bg-primary' }, { nombre: 'Examen Parcial (EP)', porcentaje: 25, color: 'bg-info' }, { nombre: 'Examen Final (EF)', porcentaje: 25, color: 'bg-warning' }]; 
+                break;
+            default: 
+                pesos = [ ]; 
+                break;
         }
         pesos.sort((a, b) => b.porcentaje - a.porcentaje);
         contenedorPesos.innerHTML = ''; 
@@ -242,18 +263,16 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'promedio_simple':
                  camposPractica[0].classList.remove('d-none'); camposPractica[1].classList.remove('d-none');
                  camposPractica[2].classList.remove('d-none'); camposPractica[3].classList.remove('d-none');
-                 campoEF.classList.remove('d-none'); // Asumiendo que promedio simple usa EF
+                 campoEF.classList.remove('d-none');
                  break;
             default: break;
         }
     }
 
-    // ▼▼▼ FUNCIÓN RESETEAR (CORREGIDA) ▼▼▼
     function resetearCampos() {
-        // Oculta los bloques principales
         calculadoraContenido.classList.add('d-none');
-        columnaDerechaNotas.classList.add('d-none'); // Asegura que esté oculto
-        columnaDerechaNotas.classList.remove('d-lg-block'); // Quita la clase de mostrar
+        columnaDerechaNotas.classList.add('d-none');
+        columnaDerechaNotas.classList.remove('d-lg-block'); 
         
         imagenSilabo.style.display = 'none';
         textoSilabo.style.display = 'block';
@@ -377,3 +396,5 @@ document.addEventListener('DOMContentLoaded', () => {
     poblarCarreras();
     resetearCampos();
 });
+});
+
