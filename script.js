@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ========== 🧠 PARTE 1: LA NUEVA BASE DE DATOS DE CURSOS ==========
+    // ========== 🧠 PARTE 1: LA BASE DE DATOS DE CURSOS ==========
     const dataCarreras = {
         'ingSistemas': {
             nombre: 'Ingeniería de Computación y Sistemas',
             ciclos: {
+                'ciclo1': [], 'ciclo2': [], 'ciclo3': [],
                 'ciclo4': [
                     { value: 'est2', text: 'Estadística 2', imagen: 'imagenes/est2_formulas.jpg', formula: 'formula_est2' },
                     { value: 'ti2', text: 'Tecnología de Información 2', imagen: 'imagenes/ti2_formulas.jpg', formula: 'formula_ti2' },
@@ -16,9 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     { value: 'calc3', text: 'Cálculo 3', imagen: 'imagenes/silabo_default.png', formula: 'promedio_simple' },
                     { value: 'estadistica2_otra', text: 'Estadística 2 (otra)', imagen: 'imagenes/silabo_default.png', formula: 'promedio_simple' }
                 ],
-                'ciclo6': [
-                    // Cursos de Ciclo 6 de Sistemas
-                ]
+                'ciclo6': []
             }
         },
         'ingCivil': {
@@ -34,25 +33,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 'ciclo1': [ { value: 'quimica1', text: 'Química 1 (Industrial)', imagen: 'imagenes/silabo_default.png', formula: 'promedio_simple' }],
                 'ciclo2': [], 'ciclo3': [], 'ciclo4': [], 'ciclo5': [],
                 'ciclo6': [
-                    // ▼▼▼ ¡NUEVO CURSO AGREGADO! ▼▼▼
-                    {
-                        value: 'proc_manuf',
-                        text: 'Proceso de Manufactura',
-                        imagen: 'imagenes/procesomanuf_formulas.jpg', // Asegúrate de que este sea el nombre de tu imagen
-                        formula: 'formula_alg2' // Re-usa la fórmula de Algoritmos 2, que es idéntica
-                    }
+                    { value: 'proc_manuf', text: 'Proceso de Manufactura', imagen: 'imagenes/procesomanuf_formulas.jpg', formula: 'formula_alg2' }
                 ]
             }
+        },
+        'arquitectura': {
+            nombre: 'Arquitectura',
+            ciclos: { 'ciclo1': [], 'ciclo2': [], 'ciclo3': [], 'ciclo4': [], 'ciclo5': [], 'ciclo6': [] }
+        },
+        'aeronautica': {
+            nombre: 'Ciencias Aeronáuticas',
+            ciclos: { 'ciclo1': [], 'ciclo2': [], 'ciclo3': [], 'ciclo4': [], 'ciclo5': [], 'ciclo6': [] }
         }
     };
 
     // ========== 🎯 PARTE 2: REFERENCIAS HTML ==========
-    // (Sin cambios)
     const selectCarrera = document.getElementById('selectCarrera');
     const selectCiclo = document.getElementById('selectCiclo');
     const selectCurso = document.getElementById('selectCurso');
     const imagenSilabo = document.getElementById('imagenSilabo');
     const textoSilabo = document.getElementById('textoSilabo');
+    
+    const calculadoraContenido = document.getElementById('calculadoraContenido');
+    const columnaDerechaNotas = document.getElementById('columnaDerechaNotas'); 
+
     const contenedorPesos = document.getElementById('contenedorPesos');
     const camposPractica = [
         document.getElementById('campoP1'), document.getElementById('campoP2'),
@@ -90,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const NOTA_APROBATORIA = 10.5;
 
     // ========== 🔄 PARTE 3: LÓGICA DE LISTAS DEPENDIENTES ==========
-    // (Sin cambios)
+    
     function poblarCarreras() {
         Object.keys(dataCarreras).forEach(carreraKey => {
             const carrera = dataCarreras[carreraKey];
@@ -129,14 +133,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         resetearCampos();
     }
+    
+    // ▼▼▼ FUNCIÓN ACTUALIZAR VISTA (CORREGIDA) ▼▼▼
     function actualizarVistaCurso() {
         const carreraKey = selectCarrera.value;
         const cicloKey = selectCiclo.value;
         const cursoVal = selectCurso.value;
+
         if (!carreraKey || !cicloKey || !cursoVal) {
             resetearCampos();
             return;
         }
+        
+        // ¡MOSTRAR CONTENIDO!
+        calculadoraContenido.classList.remove('d-none');
+        columnaDerechaNotas.classList.remove('d-none'); // Quita el 'd-none' general
+        columnaDerechaNotas.classList.add('d-lg-block'); // Añade la clase para mostrarlo en 'lg'
+
         const cursoData = dataCarreras[carreraKey].ciclos[cicloKey].find(curso => curso.value === cursoVal);
         if (cursoData) {
             imagenSilabo.src = cursoData.imagen;
@@ -147,31 +160,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         calcularNotas();
     }
+    
     selectCarrera.addEventListener('change', poblarCiclos);
     selectCiclo.addEventListener('change', poblarCursos);
     selectCurso.addEventListener('change', actualizarVistaCurso);
 
     // ========== 📊 PARTE 4: MOSTRAR PESOS ==========
-    // (Sin cambios, formula_alg2 ya estaba incluida)
+    // (Sin cambios)
     function mostrarPesos(formulaKey) {
         let pesos = [];
         switch(formulaKey) {
-            case 'formula_est2':
-                pesos = [ { nombre: 'Evaluaciones (PE)', porcentaje: 66.7, color: 'bg-primary' }, { nombre: 'Examen Final', porcentaje: 33.3, color: 'bg-warning' }];
-                break;
-            case 'formula_micro':
-                pesos = [ { nombre: 'Examen Final', porcentaje: 40, color: 'bg-danger' }, { nombre: 'Examen Parcial', porcentaje: 30, color: 'bg-warning' }, { nombre: 'Evaluaciones (PE)', porcentaje: 30, color: 'bg-primary' }];
-                break;
+            case 'formula_est2': pesos = [ { nombre: 'Evaluaciones (PE)', porcentaje: 66.7, color: 'bg-primary' }, { nombre: 'Examen Final', porcentaje: 33.3, color: 'bg-warning' }]; break;
+            case 'formula_micro': pesos = [ { nombre: 'Examen Final', porcentaje: 40, color: 'bg-danger' }, { nombre: 'Examen Parcial', porcentaje: 30, color: 'bg-warning' }, { nombre: 'Evaluaciones (PE)', porcentaje: 30, color: 'bg-primary' }]; break;
             case 'formula_fis2':
-            case 'formula_ti2':
-                pesos = [ { nombre: 'Evaluaciones (PE)', porcentaje: 50, color: 'bg-primary' }, { nombre: 'Laboratorios (PL)', porcentaje: 25, color: 'bg-info' }, { nombre: 'Examen Final', porcentaje: 25, color: 'bg-warning' }];
-                break;
-            case 'formula_alg2': // Esta es la que usa "Proceso de Manufactura"
-                pesos = [ { nombre: 'Evaluaciones (PE)', porcentaje: 50, color: 'bg-primary' }, { nombre: 'Examen Parcial', porcentaje: 25, color: 'bg-info' }, { nombre: 'Examen Final', porcentaje: 25, color: 'bg-warning' }];
-                break;
-            default:
-                pesos = [ { nombre: 'Todas valen igual', porcentaje: 100, color: 'bg-secondary' } ];
-                break;
+            case 'formula_ti2': pesos = [ { nombre: 'Evaluaciones (PE)', porcentaje: 50, color: 'bg-primary' }, { nombre: 'Laboratorios (PL)', porcentaje: 25, color: 'bg-info' }, { nombre: 'Examen Final', porcentaje: 25, color: 'bg-warning' }]; break;
+            case 'formula_alg2': pesos = [ { nombre: 'Evaluaciones (PE)', porcentaje: 50, color: 'bg-primary' }, { nombre: 'Examen Parcial', porcentaje: 25, color: 'bg-info' }, { nombre: 'Examen Final', porcentaje: 25, color: 'bg-warning' }]; break;
+            default: pesos = [ ]; break;
         }
         pesos.sort((a, b) => b.porcentaje - a.porcentaje);
         contenedorPesos.innerHTML = ''; 
@@ -192,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========== ⚙️ PARTE 5: CÁLCULOS Y CAMPOS ==========
-    // (Sin cambios, todo el código de fórmulas es el mismo)
+    
     function calcularPromedioConMN(notas = [], divisor) {
         if (notas.length === 0) return 0;
         const notasValidas = notas.map(n => parseFloat(n) || 0);
@@ -207,57 +211,58 @@ document.addEventListener('DOMContentLoaded', () => {
         
         switch (formulaKey) {
             case 'formula_micro':
-                camposPractica[0].classList.remove('d-none');
-                camposPractica[1].classList.remove('d-none');
-                camposControlesContainer.classList.remove('d-none');
-                camposPractica[3].classList.remove('d-none');
+                camposPractica[0].classList.remove('d-none'); camposPractica[1].classList.remove('d-none');
+                camposControlesContainer.classList.remove('d-none'); camposPractica[3].classList.remove('d-none');
                 campoEP.classList.remove('d-none');
                 break;
             case 'formula_ti2': 
-                camposPractica[0].classList.remove('d-none');
-                camposPractica[1].classList.remove('d-none');
-                camposPractica[2].classList.remove('d-none');
-                camposPractica[3].classList.remove('d-none');
-                campoW1.classList.remove('d-none');
-                campoEP.classList.remove('d-none');
+                camposPractica[0].classList.remove('d-none'); camposPractica[1].classList.remove('d-none');
+                camposPractica[2].classList.remove('d-none'); camposPractica[3].classList.remove('d-none');
+                campoW1.classList.remove('d-none'); campoEP.classList.remove('d-none');
                 camposLaboratorioContainer.classList.remove('d-none');
                 for (let i = 0; i < 4; i++) camposLab[i].classList.remove('d-none');
                 break;
             case 'formula_fis2':
-                camposPractica[0].classList.remove('d-none');
-                camposPractica[1].classList.remove('d-none');
-                camposPractica[2].classList.remove('d-none');
-                camposPractica[3].classList.remove('d-none');
+                camposPractica[0].classList.remove('d-none'); camposPractica[1].classList.remove('d-none');
+                camposPractica[2].classList.remove('d-none'); camposPractica[3].classList.remove('d-none');
                 camposLaboratorioContainer.classList.remove('d-none');
                 for (let i = 0; i < 7; i++) camposLab[i].classList.remove('d-none');
                 break;
-            case 'formula_alg2': // Esta es la que usa "Proceso de Manufactura"
-                camposPractica[0].classList.remove('d-none');
-                camposPractica[1].classList.remove('d-none');
-                campoW1.classList.remove('d-none');
-                campoEP.classList.remove('d-none');
+            case 'formula_alg2':
+                camposPractica[0].classList.remove('d-none'); camposPractica[1].classList.remove('d-none');
+                campoW1.classList.remove('d-none'); campoEP.classList.remove('d-none');
                 camposLaboratorioContainer.classList.remove('d-none');
                 for (let i = 0; i < 5; i++) camposLab[i].classList.remove('d-none');
                 break;
             case 'formula_est2':
-                camposPractica[0].classList.remove('d-none');
-                camposPractica[1].classList.remove('d-none');
-                camposPractica[2].classList.remove('d-none');
-                camposPractica[3].classList.remove('d-none');
+                camposPractica[0].classList.remove('d-none'); camposPractica[1].classList.remove('d-none');
+                camposPractica[2].classList.remove('d-none'); camposPractica[3].classList.remove('d-none');
                 campoW1.classList.remove('d-none');
                 break;
-            default:
-                // No mostrar nada si no hay fórmula (o es 'promedio_simple')
-                break;
+            case 'promedio_simple':
+                 camposPractica[0].classList.remove('d-none'); camposPractica[1].classList.remove('d-none');
+                 camposPractica[2].classList.remove('d-none'); camposPractica[3].classList.remove('d-none');
+                 campoEF.classList.remove('d-none'); // Asumiendo que promedio simple usa EF
+                 break;
+            default: break;
         }
     }
 
+    // ▼▼▼ FUNCIÓN RESETEAR (CORREGIDA) ▼▼▼
     function resetearCampos() {
+        // Oculta los bloques principales
+        calculadoraContenido.classList.add('d-none');
+        columnaDerechaNotas.classList.add('d-none'); // Asegura que esté oculto
+        columnaDerechaNotas.classList.remove('d-lg-block'); // Quita la clase de mostrar
+        
         imagenSilabo.style.display = 'none';
         textoSilabo.style.display = 'block';
         contenedorPesos.innerHTML = ''; 
-        actualizarCamposDeNotas('default'); // Oculta todos los campos
+        
+        actualizarCamposDeNotas('default');
+        
         [...inputsPractica, trabajoPracticoInput, examenParcialInput, examenFinalInput, ...inputsLab, ...inputsControl].forEach(i => i && (i.value = 0));
+        
         calcularNotas();
     }
 
@@ -319,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 sumaSinFinal = 2 * pe_fis2 + pl_fis2;
                 pesoFinal = 4;
                 break;
-            case 'formula_alg2': // Esta es la que usa "Proceso de Manufactura"
+            case 'formula_alg2': // Usada por Proceso de Manufactura
                 const pl_alg2 = calcularPromedioConMN([lb[0], lb[1], lb[2], lb[3], lb[4]], 4);
                 const prom_p_alg2 = (p[0] + p[1]) / 2;
                 const pe_alg2 = (prom_p_alg2 + w1 + pl_alg2) / 3;
@@ -327,10 +332,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 sumaSinFinal = 2 * pe_alg2 + ep;
                 pesoFinal = 4;
                 break;
+            case 'promedio_simple':
+                promedio = (p[0] + p[1] + p[2] + p[3] + ef) / 5;
+                sumaSinFinal = p[0] + p[1] + p[2] + p[3];
+                pesoFinal = 5;
+                break;
             default:
-                promedio = 0;
-                sumaSinFinal = 0;
-                pesoFinal = 1; 
+                promedio = 0; sumaSinFinal = 0; pesoFinal = 1; 
                 break;
         }
 
@@ -340,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (formulaKey === 'formula_micro') {
             notaNecesariaFinal = (NOTA_APROBATORIA - sumaSinFinal) / pesoFinal;
         } else if (formulaKey === 'default') {
-             notaNecesariaFinal = 0; // No mostrar nada si no hay fórmula
+             notaNecesariaFinal = 0;
         } else {
             notaNecesariaFinal = (NOTA_APROBATORIA * pesoFinal) - sumaSinFinal;
         }
