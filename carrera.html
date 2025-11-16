@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selecciona tu Ciclo - FIA USMP Calculadora</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-M5W79TKG');</script>
+    <style>
+        body { background-color: #222; color: #eee; }
+        .sidebar-ad {
+            background-color: #c9a0dc; /* El morado */
+            color: white; padding: 20px; text-align: center;
+            font-size: 2em; font-weight: bold; border-radius: 8px;
+            min-height: 700px; /* Alto para sidebar */
+        }
+        .footer-ad {
+            background-color: #c9a0dc; color: white; padding: 20px;
+            text-align: center; font-size: 1.8em; font-weight: bold;
+            min-height: 80px; border-radius: 8px; margin-top: 20px;
+        }
+        .bg-custom-header {
+            background-color: #f7e07a; color: #333; padding: 40px 20px;
+        }
+        /* Estilo de los bloques de ciclo (reusado de tu index) */
+        .cycle-block {
+            background-color: #6c9d8c; /* El verde */
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            display: block; /* Para que el link ocupe todo */
+        }
+        .cycle-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            color: white;
+        }
+        .cycle-block h4 {
+            font-weight: bold;
+            border-bottom: 2px solid rgba(255,255,255,0.5);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .cycle-block ul {
+            padding-left: 20px;
+            text-align: left;
+            font-size: 0.9em;
+            list-style-type: disc;
+        }
+        .cycle-block-disabled {
+            background-color: #4a6d62;
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .cycle-block-disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5W79TKG"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <div class="container my-4">
+        
+        <header class="mb-4 rounded-3 text-center bg-custom-header">
+            <h1 class="display-4 fw-bold">FIA USMP</h1>
+            <h1 class="display-4 fw-bold">Calculadora de Promedios</h1>
+            <p class="mt-3">Selecciona el Ciclo que deseas Calcular.</p>
+        </header>
+
+        <div class="row">
+            <aside class="col-md-2 d-none d-md-block">
+                <div class="sidebar-ad">AD</div>
+            </aside>
+
+            <main class="col-md-8">
+                <h3 class="text-center mb-4" id="titulo-carrera">Cargando carrera...</h3>
+                
+                <div class="row g-4" id="ciclos-container">
+                    </div>
+
+                <div class="text-center mt-4">
+                    <a href="index.html" class="btn btn-outline-warning"> &lt;&lt; Volver a elegir Carrera</a>
+                </div>
+            </main>
+
+            <aside class="col-md-2 d-none d-md-block">
+                <div class="sidebar-ad">AD</div>
+            </aside>
+        </div>
+
+        <div class="footer-ad">AD</div>
+
+    </div>
+
+    <script src="data/data.js"></script>          <script src="script-carrera.js"></script> </body>
+</html>
