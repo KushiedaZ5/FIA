@@ -27,8 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const linkHref = tieneCursos ? `calculadora.html?carrera=${carreraKey}&ciclo=${cicloKey}` : "#";
 
             const cicloHtml = `
-                <div class="col-md-6 col-lg-4">
-                    <a href="${linkHref}" class="${linkClass}" ${!tieneCursos ? 'onclick="return false;"' : ''}>
+                <div class="col-md-6 col-lg-6"> <a href="${linkHref}" class="${linkClass}" ${!tieneCursos ? 'onclick="return false;"' : ''}>
                         <h4>Ciclo ${i}</h4>
                         <ul>
                             ${cursosHtml}

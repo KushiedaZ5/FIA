@@ -36,6 +36,8 @@
             cursor: pointer;
             text-decoration: none;
             display: block; /* Para que el link ocupe todo */
+            /* Ajuste de altura para que se vea bien cuando hay pocos cursos */
+            min-height: 180px; /* Puedes ajustar este valor si es necesario */
         }
         .cycle-block:hover {
             transform: translateY(-5px);
@@ -63,6 +65,15 @@
             transform: none;
             box-shadow: none;
         }
+        /* ESTILO ADICIONAL PARA EL BOTÓN VOLVER */
+        .btn-volver-custom {
+            font-size: 1.2em; /* Un poco más grande */
+            padding: 15px 30px; /* Más padding para que sea más ancho */
+            border-radius: 8px; /* Borde redondeado como las tarjetas */
+            margin-top: 30px; /* Más espacio arriba */
+            width: fit-content; /* Ajusta el ancho al contenido */
+            display: inline-block; /* Para centrarlo con text-center */
+        }
     </style>
 </head>
 <body>
@@ -85,11 +96,11 @@
             <main class="col-md-8">
                 <h3 class="text-center mb-4" id="titulo-carrera">Cargando carrera...</h3>
                 
-                <div class="row g-4" id="ciclos-container">
+                <div class="row g-4 justify-content-center" id="ciclos-container">
                     </div>
 
                 <div class="text-center mt-4">
-                    <a href="index.html" class="btn btn-outline-warning"> &lt;&lt; Volver a elegir Carrera</a>
+                    <a href="index.html" class="btn btn-outline-warning btn-volver-custom"> &lt;&lt; Volver a elegir Carrera</a>
                 </div>
             </main>
 
@@ -102,5 +113,8 @@
 
     </div>
 
-    <script src="data/data.js"></script>          <script src="script-carrera.js"></script> </body>
+    <script src="data/data.js"></script>
+    <script src="script-carrera.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
 </html>

@@ -6,15 +6,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ========== 🎯 PARTE 2: REFERENCIAS HTML ==========
-    const selectCarrera = document.getElementById('selectCarrera');
-    const selectCiclo = document.getElementById('selectCiclo');
-    const selectCurso = document.getElementById('selectCurso');
+    // --- Referencias a elementos VISIBLES ---
+    const tituloCiclo = document.getElementById('titulo-ciclo');
+    const cursosBotonesContainer = document.getElementById('cursos-botones-container');
+    const syllabusSection = document.getElementById('syllabus-section');
     const imagenSilabo = document.getElementById('imagenSilabo');
     const textoSilabo = document.getElementById('textoSilabo');
     const calculadoraContenido = document.getElementById('calculadoraContenido');
     const columnaDerechaNotas = document.getElementById('columnaDerechaNotas'); 
     const contenedorPesos = document.getElementById('contenedorPesos');
-    // ... (el resto de tus 50+ referencias a inputs) ...
+
+    // --- Referencias a elementos OCULTOS (pero necesarios para la lógica) ---
+    const selectCarrera = document.getElementById('selectCarrera');
+    const selectCiclo = document.getElementById('selectCiclo');
+    const selectCurso = document.getElementById('selectCurso');
+    
+    // --- Referencias a Inputs de Notas ---
     const camposPractica = [
         document.getElementById('campoP1'), document.getElementById('campoP2'),
         document.getElementById('campoP3'), document.getElementById('campoP4')
@@ -57,42 +64,63 @@ document.addEventListener('DOMContentLoaded', () => {
         Object.keys(dataCarreras).forEach(carreraKey => {
             const carrera = dataCarreras[carreraKey];
             const option = new Option(carrera.nombre, carreraKey);
-            selectCarrera.add(option);
+            selectCarrera.add(option); // Puebla el <select> oculto
         });
     }
+    
     function poblarCiclos() {
         const carreraKey = selectCarrera.value;
-        selectCiclo.innerHTML = '<option selected disabled value="">Selecciona un ciclo...</option>';
-        selectCurso.innerHTML = '<option selected disabled value="">Selecciona un ciclo primero...</option>';
-        selectCiclo.disabled = true;
-        selectCurso.disabled = true;
+        selectCiclo.innerHTML = ''; // Limpia el <select> oculto
         if (carreraKey && dataCarreras[carreraKey]) {
             const ciclos = dataCarreras[carreraKey].ciclos;
             Object.keys(ciclos).forEach(cicloKey => {
-                // Solo poblamos del 1 al 6, como en carrera.html
                 if (parseInt(cicloKey.replace('ciclo', '')) <= 6) {
                     const option = new Option(cicloKey.replace('ciclo', 'Ciclo '), cicloKey);
-                    selectCiclo.add(option);
+                    selectCiclo.add(option); // Puebla el <select> oculto
                 }
             });
-            selectCiclo.disabled = false;
         }
-        resetearCampos();
     }
+
+    // --- NUEVA FUNCIÓN ---
+    // Genera los BOTONES VISIBLES a partir de los datos
+    function generarBotonesDeCurso(carreraKey, cicloKey) {
+        cursosBotonesContainer.innerHTML = ''; // Limpia botones anteriores
+        
+        if (carreraKey && cicloKey && dataCarreras[carreraKey].ciclos[cicloKey]) {
+            const cursos = dataCarreras[carreraKey].ciclos[cicloKey];
+
+            if (cursos.length === 0) {
+                cursosBotonesContainer.innerHTML = '<p class="text-body-secondary">No hay cursos registrados para este ciclo. (Próximamente...)</p>';
+                return;
+            }
+
+            cursos.forEach(curso => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'btn btn-curso';
+                button.textContent = curso.text;
+                button.dataset.value = curso.value; // Guarda el valor del curso en el botón
+                cursosBotonesContainer.appendChild(button);
+            });
+        } else {
+             cursosBotonesContainer.innerHTML = '<p class="text-danger">Error al cargar cursos.</p>';
+        }
+    }
+    
+    // Pobla el <select> de curso oculto
     function poblarCursos() {
         const carreraKey = selectCarrera.value;
         const cicloKey = selectCiclo.value;
-        selectCurso.innerHTML = '<option selected disabled value="">Selecciona un curso...</option>';
-        selectCurso.disabled = true;
+        selectCurso.innerHTML = ''; // Limpia el <select> oculto
+        
         if (carreraKey && cicloKey && dataCarreras[carreraKey].ciclos[cicloKey]) {
             const cursos = dataCarreras[carreraKey].ciclos[cicloKey];
             cursos.forEach(curso => {
                 const option = new Option(curso.text, curso.value);
-                selectCurso.add(option);
+                selectCurso.add(option); // Puebla el <select> oculto
             });
-            selectCurso.disabled = false;
         }
-        resetearCampos();
     }
     
     function actualizarVistaCurso() {
@@ -101,31 +129,69 @@ document.addEventListener('DOMContentLoaded', () => {
         const cursoVal = selectCurso.value;
 
         if (!carreraKey || !cicloKey || !cursoVal) {
-            resetearCampos();
+            // No resetea todo, solo oculta la calculadora
+            calculadoraContenido.classList.add('d-none');
+            columnaDerechaNotas.classList.add('d-none');
+            columnaDerechaNotas.classList.remove('d-lg-block'); 
+            syllabusSection.classList.add('d-none');
             return;
         }
         
+        // Muestra las secciones principales
+        syllabusSection.classList.remove('d-none');
         calculadoraContenido.classList.remove('d-none');
         columnaDerechaNotas.classList.remove('d-none');
         columnaDerechaNotas.classList.add('d-lg-block'); 
 
         const cursoData = dataCarreras[carreraKey].ciclos[cicloKey].find(curso => curso.value === cursoVal);
         if (cursoData) {
+            // Actualiza el Sílabo
             imagenSilabo.src = cursoData.imagen;
             imagenSilabo.style.display = 'block';
             textoSilabo.style.display = 'none';
+            // Actualiza los campos de notas y pesos
             actualizarCamposDeNotas(cursoData.formula);
             mostrarPesos(cursoData.formula);
         }
+        
+        // --- LÓGICA DE HIGHLIGHT (AÑADIDA) ---
+        // Quita 'active' de todos los botones
+        document.querySelectorAll('.btn-curso').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        // Añade 'active' solo al botón seleccionado
+        const botonActivo = document.querySelector(`.btn-curso[data-value="${cursoVal}"]`);
+        if (botonActivo) {
+            botonActivo.classList.add('active');
+        }
+
         calcularNotas();
     }
     
+    // --- EVENT LISTENERS ---
+    // Listeners para los <select> Ocultos
     selectCarrera.addEventListener('change', poblarCiclos);
     selectCiclo.addEventListener('change', poblarCursos);
-    selectCurso.addEventListener('change', actualizarVistaCurso);
+    selectCurso.addEventListener('change', actualizarVistaCurso); // ¡Esta es la función clave que activa todo!
+
+    // --- NUEVO EVENT LISTENER PARA LOS BOTONES VISIBLES ---
+    cursosBotonesContainer.addEventListener('click', (e) => {
+        // Verifica si se hizo clic en un botón de curso
+        if (e.target.classList.contains('btn-curso')) {
+            const cursoValue = e.target.dataset.value;
+            
+            // 1. Actualiza el valor del <select> OCULTO
+            selectCurso.value = cursoValue;
+            
+            // 2. Dispara el evento 'change' en el <select> OCULTO
+            // Esto activará automáticamente tu función 'actualizarVistaCurso'
+            selectCurso.dispatchEvent(new Event('change'));
+        }
+    });
+
 
     // ========== 📊 PARTE 4: MOSTRAR PESOS ==========
-    // (Tu lógica de pesos completa)
+    // (Tu lógica de pesos completa - SIN CAMBIOS)
     function mostrarPesos(formulaKey) {
         let pesos = [];
         switch(formulaKey) {
@@ -194,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========== ⚙️ PARTE 5: CÁLCULOS Y CAMPOS ==========
-    // (Tu lógica de cálculos completa)
+    // (Tu lógica de cálculos completa - SIN CAMBIOS)
     
     function calcularPromedioConMN(notas = [], divisor) {
         if (notas.length === 0) return 0;
@@ -290,22 +356,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resetearCampos() {
+        // Oculta las secciones principales
         calculadoraContenido.classList.add('d-none');
         columnaDerechaNotas.classList.add('d-none');
         columnaDerechaNotas.classList.remove('d-lg-block'); 
+        syllabusSection.classList.add('d-none');
         
+        // Resetea el sílabo
         imagenSilabo.style.display = 'none';
         textoSilabo.style.display = 'block';
-        contenedorPesos.innerHTML = ''; 
+        textoSilabo.textContent = 'Selecciona un curso para ver su sílabo y fórmula';
         
+        // Limpia contenedores
+        contenedorPesos.innerHTML = ''; 
+        // Pone el texto "Cargando..." por defecto
+        cursosBotonesContainer.innerHTML = '<p class="text-body-secondary">Cargando cursos...</p>';
+        
+        // Oculta todos los campos de notas
         actualizarCamposDeNotas('default');
         
+        // Resetea los valores de los inputs
         [...inputsPractica, trabajoPracticoInput, examenParcialInput, examenFinalInput, ...inputsLab, ...inputsControl].forEach(i => i && (i.value = 0));
+        
+        // Resetea los <select> ocultos
+        selectCurso.value = '';
         
         calcularNotas();
     }
 
     function calcularNotas() {
+        // Esta función depende de los valores de los inputs, así que no necesita
+        // saber qué botón está activo, solo recalcula con lo que hay.
+        
         const carreraKey = selectCarrera.value;
         const cicloKey = selectCiclo.value;
         const cursoVal = selectCurso.value;
@@ -324,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let promedio = 0;
         let sumaSinFinal = 0;
-        let pesoFinal = 0; // Puede ser un divisor (3, 4, 5) o un peso decimal (0.4)
+        let pesoFinal = 0; 
 
         switch (formulaKey) {
             case 'formula_micro':
@@ -436,7 +518,7 @@ document.addEventListener('DOMContentLoaded', () => {
             notaNecesariaFinal = (NOTA_APROBATORIA * pesoFinal) - sumaSinFinal;
         }
 
-        if (formulaKey === 'default') {
+        if (formulaKey === 'default' || !cursoVal) { // Añadida comprobación de cursoVal
             notaMinimaFinalDiv.textContent = "N/A";
             notaMinimaFinalDiv.style.color = '#f7e07a';
         }
@@ -468,35 +550,41 @@ document.addEventListener('DOMContentLoaded', () => {
             btnVolver.href = 'index.html'; // Fallback
         }
 
-        // 1. Auto-selecciona Carrera
+        // 1. Auto-selecciona Carrera (en <select> oculto)
         if (carreraKey && selectCarrera.querySelector(`option[value="${carreraKey}"]`)) {
             selectCarrera.value = carreraKey;
             selectCarrera.dispatchEvent(new Event('change')); // Dispara "change" para poblar ciclos
-            selectCarrera.disabled = true; // ¡Bloquea el dropdown!
             
-            // 2. Auto-selecciona Ciclo
+            // 2. Auto-selecciona Ciclo (en <select> oculto)
             if (cicloKey && selectCiclo.querySelector(`option[value="${cicloKey}"]`)) {
                 selectCiclo.value = cicloKey;
-                selectCiclo.dispatchEvent(new Event('change')); // Dispara "change" para poblar cursos
-                selectCiclo.disabled = true; // ¡Bloquea el dropdown!
+                selectCiclo.dispatchEvent(new Event('change')); // Dispara "change" para poblar cursos (ocultos)
+                
+                // 3. ACTUALIZA EL TÍTULO Y GENERA LOS BOTONES
+                // const cicloData = dataCarreras[carreraKey].ciclos[cicloKey]; // Esta línea no es necesaria aquí
+                const cicloTexto = cicloKey.replace('ciclo', 'Ciclo ');
+                tituloCiclo.textContent = `${cicloTexto} - ${dataCarreras[carreraKey].nombre}`;
+                
+                // ¡Llama a la nueva función para crear los botones visibles!
+                generarBotonesDeCurso(carreraKey, cicloKey);
+
             } else {
-                // Si el ciclo no existe, desbloquea el de ciclo para que elija
-                selectCiclo.disabled = false;
+                tituloCiclo.textContent = 'Error: Ciclo no válido';
+                cursosBotonesContainer.innerHTML = '<p class="text-danger">Ciclo no encontrado. Por favor, vuelve a intentarlo.</p>';
             }
         } else {
-             // Si no hay params, desbloquea todo
-             selectCarrera.disabled = false;
-             selectCiclo.disabled = false;
+             tituloCiclo.textContent = 'Error: Carrera no válida';
+             cursosBotonesContainer.innerHTML = '<p class="text-danger">Carrera no encontrada. Por favor, vuelve al inicio.</p>';
         }
     }
     
-    // --- VIGILANTES DE INPUTS ---
+    // --- VIGILANTES DE INPUTS DE NOTAS ---
     [...inputsPractica, trabajoPracticoInput, examenParcialInput, examenFinalInput, ...inputsLab, ...inputsControl].forEach(input => {
         input && input.addEventListener('input', calcularNotas);
     });
 
-    // --- ARRANQUE (MODIFICADO) ---
-    poblarCarreras(); 
-    autoseleccionarDesdeURL(); // <-- Usa la NUEVA función
-    resetearCampos(); // Inicia todo oculto
+    // --- ARRANQUE (¡¡¡ORDEN CORREGIDO!!!) ---
+    poblarCarreras();         // 1. Puebla el <select> de carreras oculto
+    resetearCampos();         // 2. Inicia todo oculto PRIMERO
+    autoseleccionarDesdeURL(); // 3. Lee la URL y genera los BOTONES DESPUÉS
 });

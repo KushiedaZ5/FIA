@@ -48,6 +48,37 @@
             background-color: #e09b53;
             color: #333;
         }
+
+        /* --- NUEVOS ESTILOS PARA BOTONES DE CURSO --- */
+        .btn-curso {
+            background-color: #e09b53; /* Naranja del mockup */
+            border-color: #e09b53;
+            color: #333;
+            font-weight: bold;
+            flex-grow: 1; /* Para que ocupen espacio */
+            min-width: 120px; /* Ancho mínimo */
+            padding: 12px 20px;
+            font-size: 1.1em;
+            transition: all 0.2s ease;
+        }
+
+        .btn-curso:hover {
+            background-color: #f7b06a;
+            border-color: #f7b06a;
+            color: #333;
+            transform: translateY(-2px);
+        }
+        
+        /* El "color llamativo" cuando está activo */
+        .btn-curso.active {
+            background-color: #f7e07a; /* Amarillo del header */
+            border-color: #f7e07a;
+            color: #333;
+            box-shadow: 0 0 15px rgba(247, 224, 122, 0.5);
+            transform: scale(1.02);
+        }
+        /* --- FIN DE NUEVOS ESTILOS --- */
+
     </style>
 </head>
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -66,6 +97,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <p class="fs-5 col-md-10 mx-auto">Calcula tu promedio del curso, los cálculos serán hechos automáticamente, selecciona el curso, rellena las notas, y mira lo que necesites.</p>
         </header>
 
+        <div style="display: none;">
+            <select id="selectCarrera"></select>
+            <select id="selectCiclo"></select>
+            <select id="selectCurso"></select>
+        </div>
+
         <div class="row">
 
             <aside class="col-md-2 d-none d-md-block">
@@ -74,33 +111,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             <main class="col-md-8">
                 
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="h3 text-custom-yellow mb-0" id="titulo-ciclo">Cargando...</h2>
+                    <a href="carrera.html" id="btnVolverMapa" class="btn btn-sm btn-outline-warning">&lt; Ver otro ciclo</a>
+                </div>
+
                 <section class="card text-bg-dark border-secondary mb-4">
-                    <div class="card-header"><h2 class="h4 mb-0 text-custom-yellow">Ingrese sus datos aquí</h2></div>
+                    <div class="card-header"><h3 class="h5 mb-0">Seleccione el curso</h3></div>
                     <div class="card-body">
-                        
-                        <div class="mb-3">
-                            <label for="selectCarrera" class="form-label fw-bold">1. Carrera</label>
-                            <a href="carrera.html" id="btnVolverMapa" class="float-end btn btn-sm btn-outline-warning">&lt; Ver otro ciclo</a>
-                            
-                            <select class="form-select" id="selectCarrera">
-                                <option selected disabled value="">Cargando...</option>
-                            </select>
+                        <div id="cursos-botones-container" class="d-flex flex-wrap gap-3 justify-content-center">
+                            <p class="text-body-secondary">Cargando cursos...</p>
                         </div>
-                        
-                        <div class="mb-3">
-                            <label for="selectCiclo" class="form-label fw-bold">2. Ciclo</label>
-                            <select class="form-select" id="selectCiclo" disabled>
-                                <option selected disabled value="">Selecciona una carrera primero...</option>
-                            </select>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="selectCurso" class="form-label fw-bold">3. Curso</label>
-                            <select class="form-select" id="selectCurso" disabled>
-                                <option selected disabled value="">Selecciona un ciclo primero...</option>
-                            </select>
-                        </div>
-                        <p class="text-body-secondary small mt-4">*Para el siguiente curso se usarán estas fórmulas, asegúrate que es el sílabo correcto.</p>
+                    </div>
+                </section>
+
+                <section class="card text-bg-dark border-secondary mb-4 d-none" id="syllabus-section">
+                    <div class="card-body">
+                        <p class="text-body-secondary small">*Para el siguiente curso se usarán estas fórmulas, asegúrate que es el sílabo correcto.</p>
                         <p class="text-body-tertiary small">*si nota un error , contactarse al steam del dueño*</p>
                         
                         <div class="p-3 rounded-3 bg-custom-syllabus text-center">
@@ -109,6 +136,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </div>
                     </div>
                 </section>
+
 
                 <div id="calculadoraContenido" class="d-none">
 
