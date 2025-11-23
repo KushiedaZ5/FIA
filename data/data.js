@@ -4,7 +4,14 @@ const dataCarreras = {
     'ingSistemas': {
         nombre: 'Ingeniería de Computación y Sistemas',
         ciclos: {
-            'ciclo1': [], 'ciclo2': [], 'ciclo3': [],
+            'ciclo1': [], 'ciclo2': [],
+            'ciclo3': [
+                { value: 'alg1', text: 'Algoritmos y Estructura de Datos I', esquema: '128' },
+                { value: 'fis1', text: 'Física I', esquema: '042' },
+                { value: 'ti1', text: 'Tecnología de Información I', esquema: '046' },
+                { value: 'est1', text: 'Estadística y Probabilidades I', esquema: '041' },
+                { value: 'sis_info', text: 'Sistemas de Información', esquema: '038' }
+            ],
             'ciclo4': [
                 { value: 'est2', text: 'Estadística 2', esquema: '041' },
                 { value: 'ti2', text: 'Tecnología de Información 2', esquema: '046' },

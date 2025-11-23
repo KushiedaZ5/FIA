@@ -10,7 +10,7 @@ const esquemas = {
         descripcion: "Promedio Simple P1, P2, P3",
         imagen: "imagenes/038.jpg",
         inputs: ["P1", "P2", "P3", "EP", "EF"],
-        pesos: [{ n: "Evaluaciones (PE)", v: 33.3, c: "bg-primary" }, { n: "Parcial", v: 33.3, c: "bg-warning" }, { n: "Final", v: 33.3, c: "bg-danger" }],
+        pesos: [{ n: "Prom. Evaluaciones (PE)", v: 33.3, c: "bg-primary" }, { n: "Examen Parcial (EP)", v: 33.3, c: "bg-warning" }, { n: "Examen Final (EF)", v: 33.3, c: "bg-danger" }],
         calcular: (n) => {
             const pe = (n.P1 + n.P2 + n.P3) / 3;
             return (pe + n.EP + n.EF) / 3;
@@ -19,7 +19,7 @@ const esquemas = {
     "039": {
         descripcion: "Inglés (Controles C1-C4)",
         inputs: ["C1", "C2", "C3", "C4", "EP", "EF"],
-        pesos: [{ n: "Evaluaciones (PE)", v: 70, c: "bg-primary" }, { n: "Parcial", v: 15, c: "bg-warning" }, { n: "Final", v: 15, c: "bg-danger" }],
+        pesos: [{ n: "Prom. Evaluaciones (PE)", v: 70, c: "bg-primary" }, { n: "Examen Parcial (EP)", v: 15, c: "bg-warning" }, { n: "Examen Final (EF)", v: 15, c: "bg-danger" }],
         calcular: (n) => {
             const pe = (n.C1 + n.C2 + n.C3 + n.C4) / 4;
             return (0.7 * pe) + (0.15 * n.EP) + (0.15 * n.EF);
@@ -43,7 +43,7 @@ const esquemas = {
         descripcion: "Estadística (P4 Doble + W1)",
         imagen: "imagenes/041.jpg",
         inputs: ["P1", "P2", "P3", "P4", "W1", "EF"],
-        pesos: [{ n: "Prácticas (PPR)", v: 53.3, c: "bg-primary" }, { n: "Trabajo (W1)", v: 13.3, c: "bg-info" }, { n: "Final", v: 33.3, c: "bg-warning" }],
+        pesos: [{ n: "Prom. Prácticas (PPR)", v: 53.3, c: "bg-primary" }, { n: "Trabajo (W1)", v: 13.3, c: "bg-info" }, { n: "Examen Final (EF)", v: 33.3, c: "bg-warning" }],
         calcular: (n) => {
             const p = [n.P1, n.P2, n.P3, n.P4];
             const min = Math.min(...p);
@@ -57,7 +57,7 @@ const esquemas = {
         descripcion: "Física (P4 Doble + 7 Labs)",
         imagen: "imagenes/042.jpg",
         inputs: ["P1", "P2", "P3", "P4", "Lb1", "Lb2", "Lb3", "Lb4", "Lb5", "Lb6", "Lb7", "EF"],
-        pesos: [{ n: "Prácticas (PE)", v: 50, c: "bg-primary" }, { n: "Labs (PL)", v: 25, c: "bg-info" }, { n: "Final", v: 25, c: "bg-warning" }],
+        pesos: [{ n: "Prom. Prácticas (PE)", v: 50, c: "bg-primary" }, { n: "Prom. Laboratorio (PL)", v: 25, c: "bg-info" }, { n: "Examen Final (EF)", v: 25, c: "bg-warning" }],
         calcular: (n) => {
             const p = [n.P1, n.P2, n.P3, n.P4];
             const minP = Math.min(...p);
@@ -74,7 +74,7 @@ const esquemas = {
     "043": {
         descripcion: "Labs (6) + Examen Oral",
         inputs: ["P1", "P2", "W1", "Lb1", "Lb2", "Lb3", "Lb4", "Lb5", "Lb6", "C1", "EP", "EF"],
-        pesos: [{ n: "Evaluaciones", v: 50, c: "bg-primary" }, { n: "Parcial", v: 25, c: "bg-warning" }, { n: "Final", v: 25, c: "bg-danger" }],
+        pesos: [{ n: "Prom. Evaluaciones", v: 50, c: "bg-primary" }, { n: "Examen Parcial (EP)", v: 25, c: "bg-warning" }, { n: "Examen Final (EF)", v: 25, c: "bg-danger" }],
         calcular: (n) => {
             const ppr = (n.P1 + n.P2) / 2;
             const sumL = n.Lb1 + n.Lb2 + n.Lb3 + n.Lb4 + n.Lb5 + n.Lb6;
@@ -86,14 +86,14 @@ const esquemas = {
     "044": {
         descripcion: "Proyectos (Solo EP y EF)",
         inputs: ["EP", "EF"],
-        pesos: [{ n: "Parcial", v: 50, c: "bg-warning" }, { n: "Final", v: 50, c: "bg-danger" }],
+        pesos: [{ n: "Examen Parcial (EP)", v: 50, c: "bg-warning" }, { n: "Examen Final (EF)", v: 50, c: "bg-danger" }],
         calcular: (n) => (n.EP + n.EF) / 2
     },
     "045": {
         descripcion: "Dinámica / Tec. Concreto",
         imagen: "imagenes/045.jpg",
         inputs: ["P1", "P2", "P3", "P4", "W1", "EP", "EF"],
-        pesos: [{ n: "Prácticas", v: 25, c: "bg-primary" }, { n: "Trabajo (W1)", v: 25, c: "bg-info" }, { n: "Parcial", v: 25, c: "bg-warning" }, { n: "Final", v: 25, c: "bg-danger" }],
+        pesos: [{ n: "Prom. Prácticas", v: 25, c: "bg-primary" }, { n: "Trabajo (W1)", v: 25, c: "bg-info" }, { n: "Examen Parcial (EP)", v: 25, c: "bg-warning" }, { n: "Examen Final (EF)", v: 25, c: "bg-danger" }],
         calcular: (n) => {
             const p = [n.P1, n.P2, n.P3, n.P4];
             const min = Math.min(...p);
@@ -106,7 +106,7 @@ const esquemas = {
         descripcion: "TI 2 - 4 Labs",
         imagen: "imagenes/046.jpg",
         inputs: ["P1", "P2", "P3", "P4", "W1", "Lb1", "Lb2", "Lb3", "Lb4", "EP", "EF"],
-        pesos: [{ n: "Prácticas (P)", v: 16.7, c: "bg-primary" }, { n: "Trabajo (W1)", v: 16.7, c: "bg-info" }, { n: "Labs (PL)", v: 16.7, c: "bg-success" }, { n: "Parcial", v: 25, c: "bg-warning" }, { n: "Final", v: 25, c: "bg-danger" }],
+        pesos: [{ n: "Examen Final (EF)", v: 25, c: "bg-danger" }, { n: "Examen Parcial (EP)", v: 25, c: "bg-warning" }, { n: "Prom. Prácticas (P)", v: 16.7, c: "bg-primary" }, { n: "Trabajo (W1)", v: 16.7, c: "bg-info" }, { n: "Prom. Laboratorio (PL)", v: 16.7, c: "bg-success" }],
         calcular: (n) => {
             const pl = (n.Lb1 + n.Lb2 + n.Lb3 + n.Lb4) / 4;
             const p = [n.P1, n.P2, n.P3, n.P4];
@@ -120,7 +120,7 @@ const esquemas = {
         descripcion: "Algoritmos 2 - Labs + Trabajos",
         imagen: "imagenes/047.jpg",
         inputs: ["P1", "P2", "W1", "Lb1", "Lb2", "Lb3", "Lb4", "Lb5", "EP", "EF"],
-        pesos: [{ n: "Evaluaciones (PE)", v: 50, c: "bg-primary" }, { n: "Parcial", v: 25, c: "bg-info" }, { n: "Final", v: 25, c: "bg-warning" }],
+        pesos: [{ n: "Prom. Evaluaciones (PE)", v: 50, c: "bg-primary" }, { n: "Examen Parcial (EP)", v: 25, c: "bg-info" }, { n: "Examen Final (EF)", v: 25, c: "bg-warning" }],
         calcular: (n) => {
             const l = [n.Lb1, n.Lb2, n.Lb3, n.Lb4, n.Lb5];
             const minL = Math.min(...l);
@@ -220,18 +220,19 @@ const esquemas = {
         pesos: [{ n: "Final (EF)", v: 50, c: "bg-danger" }, { n: "Parcial (EP)", v: 33.3, c: "bg-warning" }, { n: "P1, P2, P3, P4", v: 16.7, c: "bg-primary" }],
         calcular: (n) => {
             const pe = (n.P1 + n.P2 + n.P3 + n.P4) / 4;
-            return (pe + (2 * n.EP) + (3 * n.EF)) / 6;
+            return ((3 * pe) + n.EP + n.EF) / 5;
         }
     },
     "128": {
-        descripcion: "Sin Parcial (PE + PL + EF)/3",
-        inputs: ["P1", "P2", "Lb1", "Lb2", "Lb3", "EF"],
-        pesos: [{ n: "Evaluaciones", v: 60, c: "bg-primary" }, { n: "Final", v: 40, c: "bg-danger" }],
+        descripcion: "Algoritmos I - Labs + Prácticas",
+        imagen: "imagenes/128.jpg",
+        inputs: ["P1", "P2", "Lb1", "Lb2", "Lb3", "EP", "EF"],
+        pesos: [{ n: "Prom. Evaluaciones (PE)", v: 33.3, c: "bg-primary" }, { n: "Examen Parcial (EP)", v: 33.3, c: "bg-warning" }, { n: "Examen Final (EF)", v: 33.3, c: "bg-danger" }],
         calcular: (n) => {
             const ppr = (n.P1 + n.P2) / 2;
             const pl = (n.Lb1 + n.Lb2 + n.Lb3) / 3;
             const pe = (0.6 * ppr) + (0.4 * pl);
-            return (pe + n.EF) / 2;
+            return (pe + n.EP + n.EF) / 3;
         }
     },
     "129": {
