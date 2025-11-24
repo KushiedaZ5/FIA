@@ -1,150 +1,187 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selecciona tu Ciclo - FIA USMP</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <title>Selecciona tu Ciclo - FIA USMP Calculadora</title>
 
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-M5W79TKG');</script>
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-M5W79TKG');</script>
+
     <style>
         :root {
-            --fia-red: #9D2235; /* Rojo Oficial */
-            --text-black: #212529;
-            --bg-gray: #F8F9FA;
+            --bg-dark: #0b0d12;
+            --epics-blue: #1a45bc;
+            --epics-blue-hover: #2563eb;
+            --text-white: #ffffff;
+            --text-grey: #a1a1aa;
+            --card-bg: #18181b;
+            --border-color: #27272a;
+            --cyan-blue: #3b82f6;
         }
 
         body {
-            background-color: #FFFFFF;
-            color: var(--text-black);
-            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            font-family: 'Inter', 'Roboto', sans-serif;
+            min-height: 100vh;
+            padding: 2rem 0;
         }
 
-        /* --- HEADER --- */
+        /* Header - Oculto */
         .custom-header {
-            background-color: #FFFFFF;
-            padding: 30px 20px;
-            text-align: center;
-            border-bottom: 1px solid #DEE2E6;
-            margin-bottom: 2rem;
-        }
-        
-        .title-fia {
-            color: black;
-            font-weight: 900;
-            margin-bottom: 0;
-        }
-        
-        .title-calc {
-            color: var(--fia-red);
-            font-weight: 700;
-            margin-top: 5px;
-        }
-        
-        .subtitle {
-            color: #6C757D;
-            margin-top: 10px;
-            font-size: 1.1rem;
+            display: none;
         }
 
-        /* --- BLOQUES DE CICLO (BLANCOS) --- */
+        /* Título Principal */
+        .career-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            margin-top: 2rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--cyan-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Cycle Blocks - Diseño CSFloat Compacto */
         .cycle-block {
-            background-color: #FFFFFF; /* Fondo Blanco */
-            border: 1px solid #DEE2E6;
-            border-left: 6px solid var(--fia-red); /* Borde rojo más grueso */
-            padding: 30px 25px; /* Más padding */
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-left: 3px solid var(--epics-blue);
+            padding: 1.5rem 1.2rem;
             border-radius: 8px;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             cursor: pointer;
             text-decoration: none;
             display: block;
-            min-height: 240px; /* Un poco más alto */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            min-height: 200px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cycle-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(26, 69, 188, 0.03) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.2s ease;
         }
 
         .cycle-block:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.12);
-            border-color: var(--fia-red);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(26, 69, 188, 0.25);
+            border-left-color: var(--epics-blue-hover);
+            border-color: rgba(26, 69, 188, 0.2);
         }
 
-        /* Título del Ciclo (ROJO y GRANDE) */
+        .cycle-block:hover::before {
+            opacity: 1;
+        }
+
         .cycle-block h4 {
-            color: var(--fia-red); 
-            font-weight: 900; /* Extra negrita */
-            text-transform: uppercase; /* SIEMPRE MAYÚSCULAS */
-            border-bottom: 2px solid #F1F3F5;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-            font-size: 1.6rem; /* AUMENTADO (Antes era 1.4rem) */
-            letter-spacing: 1px;
+            color: var(--epics-blue);
+            font-weight: 900;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.2rem;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
         }
 
-        /* Lista de Cursos (NEGRO y GRANDE) */
         .cycle-block ul {
-            padding-left: 25px;
+            padding-left: 1.2rem;
             text-align: left;
-            font-size: 1.1rem; /* AUMENTADO (Antes era 0.95em) */
-            line-height: 1.6; /* Más espacio entre líneas */
-            list-style-type: disc;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            list-style-type: none;
             margin-bottom: 0;
-            color: #333;
-            font-weight: 500;
-        }
-        
-        .cycle-block ul li {
-            margin-bottom: 8px;
+            color: var(--text-grey);
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
         }
 
-        /* Bloque Deshabilitado (Gris) */
+        .cycle-block ul li {
+            margin-bottom: 0.5rem;
+            position: relative;
+            padding-left: 1.2rem;
+        }
+
+        .cycle-block ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--epics-blue);
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        /* Bloque Deshabilitado */
         .cycle-block-disabled {
-            background-color: #F8F9FA; 
-            border-left-color: #ADB5BD;
-            opacity: 0.7;
+            background-color: rgba(24, 24, 27, 0.4);
+            border-left-color: var(--border-color);
+            opacity: 0.4;
             cursor: not-allowed;
         }
-        .cycle-block-disabled h4 { color: #6C757D; }
-        .cycle-block-disabled ul { color: #ADB5BD; }
+
+        .cycle-block-disabled h4 {
+            color: var(--text-grey);
+        }
+
+        .cycle-block-disabled ul {
+            color: #52525b;
+        }
+
         .cycle-block-disabled:hover {
             transform: none;
-            box-shadow: none;
-            border-color: #DEE2E6;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border-color: var(--border-color);
         }
 
-        /* --- ADS --- */
-        .sidebar-ad {
-            background-color: #F8F9FA;
-            border: 1px dashed #CED4DA;
-            color: #ADB5BD;
-            display: flex; justify-content: center; align-items: center;
-            font-weight: bold; border-radius: 4px;
-            min-height: 600px;
-            height: 100%;
+        .cycle-block-disabled::before {
+            display: none;
         }
+
+        /* Ads - Ocultos pero disponibles */
+        .sidebar-ad,
         .footer-ad {
-            background-color: #F8F9FA;
-            border: 1px dashed #CED4DA;
-            color: #ADB5BD;
-            padding: 20px; text-align: center;
-            font-weight: bold; border-radius: 4px; margin-top: 20px;
+            display: none;
+            /* Para reactivar: cambiar a display: flex */
         }
 
-        /* --- BOTÓN VOLVER --- */
+        /* Botón Volver */
         .btn-back-fia {
             background: transparent;
-            border: 2px solid var(--fia-red);
-            color: var(--fia-red);
-            font-weight: bold;
-            padding: 12px 35px;
-            font-size: 1.1rem;
+            border: 2px solid var(--epics-blue);
+            color: var(--epics-blue);
+            font-weight: 700;
+            padding: 0.7rem 2rem;
+            font-size: 0.95rem;
             border-radius: 50px;
             text-decoration: none;
             display: inline-block;
@@ -152,56 +189,129 @@
         }
 
         .btn-back-fia:hover {
-            background-color: var(--fia-red);
+            background-color: var(--epics-blue);
             color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(26, 69, 188, 0.4);
         }
 
+        /* Container ajustado */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 991px) {
+
+            html,
+            body {
+                overflow-x: hidden;
+                max-width: 100vw;
+            }
+
+            body {
+                padding: 1rem 0;
+            }
+
+            .main-container {
+                padding: 0 1rem;
+            }
+
+            .career-title {
+                font-size: 1.2rem;
+                margin-bottom: 2rem;
+                margin-top: 1rem;
+            }
+
+            .cycle-block {
+                padding: 1.2rem 1rem;
+                min-height: auto;
+            }
+
+            .cycle-block h4 {
+                font-size: 1.1rem;
+            }
+
+            .cycle-block ul {
+                font-size: 0.85rem;
+            }
+
+            .btn-back-fia {
+                font-size: 0.85rem;
+                padding: 0.6rem 1.5rem;
+            }
+        }
+
+        /* 2 Cards per row */
+        .cycle-col {
+            flex: 0 0 auto;
+            width: 50%;
+        }
+
+        @media (max-width: 768px) {
+            .cycle-col {
+                width: 100%;
+            }
+        }
     </style>
 </head>
-<body>
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5W79TKG"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-    <div class="container my-4">
-        
-        <header class="rounded-3 custom-header">
-            <h1 class="display-4 title-fia">FIA USMP</h1>
-            <h1 class="display-4 title-calc">Calculadora de Promedios</h1>
-            <p class="subtitle">Selecciona el Ciclo que deseas Calcular.</p>
-        </header>
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5W79TKG" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+
+    <!-- Header oculto pero disponible para futuro -->
+    <header class="rounded-3 custom-header">
+        <h1 class="title-fia">FIA USMP</h1>
+        <h1 class="title-calc">Calculadora de Promedios</h1>
+        <p class="subtitle">Selecciona el Ciclo que deseas Calcular.</p>
+    </header>
+
+    <div class="main-container">
+
+        <!-- Título Principal en Celeste -->
+        <h3 class="career-title" id="titulo-carrera">
+            ELIJA SU CICLO DE INGENIERÍA DE COMPUTACIÓN Y SISTEMAS A CONTINUACIÓN
+        </h3>
 
         <div class="row">
+            <!-- Sidebar ads ocultos -->
             <aside class="col-md-2 d-none d-md-block">
                 <div class="sidebar-ad">AD</div>
             </aside>
 
-            <main class="col-md-8">
-                
-                <h3 class="text-center mb-5 fw-bold" style="color: var(--text-black); font-size: 1.5rem;" id="titulo-carrera">
-                    Cargando carrera...
-                </h3>
-                
-                <div class="row g-4 justify-content-center" id="ciclos-container">
-                    </div>
+            <!-- Main content - 100% width sin sidebars -->
+            <main class="col-12">
+
+                <div class="row g-4 justify-content-start" id="ciclos-container">
+                    <!-- Los ciclos se cargan aquí dinámicamente -->
+                </div>
 
                 <div class="text-center mt-5">
-                    <a href="index.html" class="btn-back-fia"> 
+                    <a href="index.html" class="btn-back-fia">
                         &lt;&lt; Volver a elegir Carrera
                     </a>
                 </div>
             </main>
 
+            <!-- Sidebar ads ocultos -->
             <aside class="col-md-2 d-none d-md-block">
                 <div class="sidebar-ad">AD</div>
             </aside>
         </div>
 
+        <!-- Footer ad oculto -->
         <div class="footer-ad">AD</div>
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
     <script src="data/data.js"></script>
     <script src="script-carrera.js"></script>
 </body>
+
 </html>
