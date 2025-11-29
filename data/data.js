@@ -4,7 +4,24 @@ const dataCarreras = {
     'ingSistemas': {
         nombre: 'Ingeniería de Computación y Sistemas',
         ciclos: {
-            'ciclo1': [], 'ciclo2': [],
+            'ciclo1': [
+                { value: 'ciu_int', text: 'Ciudadanía Intercultural', esquema: '049' },
+                { value: 'lenguaje', text: 'Lenguaje', esquema: '049' },
+                { value: 'metodos_est', text: 'Métodos de Estudio', esquema: '049' },
+                { value: 'filosofia', text: 'Filosofía', esquema: '045' },
+                { value: 'geom_analitica', text: 'Geometría Analítica', esquema: '040' },
+                { value: 'mate_discreta', text: 'Matemática Discreta', esquema: '040' },
+                { value: 'intro_sis_info', text: 'Introducción a Sistemas de Información', esquema: '045' },
+                { value: 'ingles1', text: 'Inglés 1', esquema: '039' },
+            ], 
+            'ciclo2': [
+                { value: 'ingles2', text: 'Inglés II', esquema: '039' },
+                { value: 'calculo1', text: 'Cálculo I', esquema: '040' },
+                { value: 'algebra_lineal', text: 'Álgebra Lineal', esquema: '040' },
+                { value: 'fund_diseno_web', text: 'Fundamentos del Diseño Web', esquema: '045' },
+                { value: 'intro_economia', text: 'Introducción a la Economía', esquema: '038' },
+                { value: 'intro_programacion', text: 'Introducción a la Programación', esquema: '128' },
+            ],
             'ciclo3': [
                 { value: 'alg1', text: 'Algoritmos y Estructura de Datos I', esquema: '128' },
                 { value: 'fis1', text: 'Física I', esquema: '042' },
@@ -23,7 +40,12 @@ const dataCarreras = {
                 { value: 'calc3', text: 'Cálculo 3', esquema: '040' },
                 { value: 'estadistica2_otra', text: 'Estadística 2 (otra)', esquema: '040' }
             ],
-            'ciclo6': []
+            'ciclo6': [
+                { value: 'ing_costos', text: 'Ingeniería de Costos', esquema: '038' },
+                { value: 'ing_software1', text: 'Ingeniería de Software I', esquema: '128' },
+                { value: 'inv_operativa', text: 'Investigación Operativa', esquema: '038' },
+                { value: 'programacion1', text: 'Programación I', esquema: '046' },
+            ]
         }
     },
     'ingCivil': {

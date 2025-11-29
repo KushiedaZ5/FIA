@@ -18,6 +18,7 @@ const esquemas = {
     },
     "039": {
         descripcion: "Inglés (Controles C1-C4)",
+        imagen: "imagenes/039.jpg",
         inputs: ["C1", "C2", "C3", "C4", "EP", "EF"],
         pesos: [{ n: "Prom. Evaluaciones (PE)", v: 70, c: "bg-primary" }, { n: "Examen Parcial (EP)", v: 15, c: "bg-warning" }, { n: "Examen Final (EF)", v: 15, c: "bg-danger" }],
         calcular: (n) => {
