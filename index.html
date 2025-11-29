@@ -7,7 +7,7 @@
     
     <title>CalculadoraFIAUSMP - Calcula las notas y analiza los promedios usando las formulas de los cursos que necesites.</title>
 
-    <link rel="icon" type="image/png" href="imagenes/logo4.png">
+    <link rel="icon" type="image/png" href="imagenes/logo.png">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -25,6 +25,113 @@
                     'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
         })(window, document, 'script', 'dataLayer', 'GTM-M5W79TKG');</script>
     <style>
+/* --- ESTILOS DEL FOOTER PRO --- */
+/* --- ESTILOS DEL FOOTER V2 (Ajustado) --- */
+footer {
+    background-color: #050507;
+    border-top: 1px solid #1f2126;
+    padding: 60px 0 40px 0;
+    font-size: 0.9rem;
+    margin-top: auto;
+}
+
+/* Títulos: Azul Apagado (Blue Grey) */
+.footer-heading {
+    color: #546E7A; /* <--- AQUÍ ESTÁ EL AZUL APAGADO */
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+}
+
+/* Enlaces del menú (Calculadora, Exámenes...) */
+.footer-link {
+    color: #a1a1aa; 
+    text-decoration: none;
+    display: block; 
+    margin-bottom: 10px;
+    transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+    color: #1E88E5; 
+}
+
+/* Texto del Copyright y Email: TODO GRIS */
+.footer-brand p {
+    color: #888888; /* Gris parejo */
+    margin-bottom: 5px;
+}
+
+.footer-email {
+    color: #888888; /* Gris igual que el texto de arriba */
+    text-decoration: none;
+    font-weight: 400; /* Le bajé el peso para que sea sutil */
+    transition: color 0.2s ease;
+}
+
+.footer-email:hover {
+    text-decoration: underline;
+    color: #a1a1aa; /* Se aclara un poquito al pasar el mouse */
+}
+
+/* Logo Footer */
+.footer-logo-img {
+    height: 50px;
+    opacity: 0.9;
+}
+.footer-logo-text {
+    font-size: 1.5rem;
+    color: #1E88E5;
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1;
+}
+        /* --- ESTILOS ACTUALIZADOS DEL HEADER --- */
+
+/* Ajuste para el enlace del Logo */
+a.text-decoration-none:hover {
+    text-decoration: none !important; /* Asegura que no salga línea abajo al pasar mouse por el logo */
+    opacity: 0.9; /* Pequeño efecto visual al pasar el mouse */
+}
+
+/* Estilos de los Botones del Menú */
+.nav-link-custom {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem; /* Un pelín más pequeño para que quepan bien */
+    color: #1E88E5; 
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 10px 5px; /* Padding ajustado */
+    transition: all 0.2s ease;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap; /* Evita que el texto se parta en dos líneas */
+}
+
+.nav-link-custom:hover {
+    color: #1565C0;
+    border-bottom-color: #1E88E5;
+}
+
+/* RESPONSIVE: Ajuste para celular */
+@media (max-width: 992px) {
+    .simple-header .container-fluid {
+        flex-direction: column; /* Pone el menú DEBAJO del logo */
+        align-items: center !important; /* Todo centrado */
+        gap: 20px;
+        padding: 0 15px;
+    }
+    
+    .simple-header nav {
+        margin-left: 0 !important;
+        flex-wrap: wrap; /* Si no caben, bajan de línea */
+        justify-content: center;
+    }
+}
         :root {
             --bg-dark: #0b0d12;
             --epics-blue: #1a45bc;
@@ -282,22 +389,30 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5W79TKG" height="0" width="0"
             style="display:none;visibility:hidden"></iframe></noscript>
     <header class="simple-header mb-5 pt-3">
-        <div class="container-fluid px-5 d-flex align-items-center">
-            
+    <div class="container-fluid px-5 d-flex align-items-center flex-wrap">
+        
+        <a href="index.html" class="text-decoration-none me-4">
             <div class="logo-container">
-                <img src="imagenes/logo4.png" alt="Logo Calculadora" height="85">
+                <img src="imagenes/logo.png" alt="Logo Calculadora" height="85">
                 <div class="logo-text-group">
                     <h1 class="logo-title">Calculadora</h1>
                     <span class="logo-subtitle">FIA USMP</span>
                 </div>
             </div>
+        </a>
 
-            <nav class="ms-5">
-                <a href="examenes.html" class="nav-link-custom">EXÁMENES</a>
-            </nav>
+        <nav class="d-flex gap-4 align-items-center ms-lg-4">
+            
+            <a href="index.html" class="nav-link-custom">CALCULADORA</a>
+            
+            <a href="examenes.html" class="nav-link-custom">EXÁMENES</a>
+            
+            <a href="funcionamiento.html" class="nav-link-custom">¿CÓMO FUNCIONA?</a>
+            
+        </nav>
 
-        </div>
-    </header>
+    </div>
+</header>
 
 
     <div class="container">
@@ -361,8 +476,43 @@
         </main>
 
         <footer>
-            <p>© 2025 FIA USMP Calculadora - V0.25 Beta</p>
-        </footer>
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-lg-5 col-md-12 mb-5 mb-lg-0 d-flex flex-column align-items-center text-center">
+                
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <img src="imagenes/logo.png" alt="Logo Footer" class="footer-logo-img">
+                    <div class="d-flex flex-column align-items-start">
+                        <span class="footer-logo-text">Calculadora</span>
+                        <span style="font-size: 0.7rem; color: #1E88E5; letter-spacing: 0.3em; font-weight: 700;">FIA USMP</span>
+                    </div>
+                </div>
+                
+                <div class="footer-brand">
+                    <p class="mb-1">2025</p>
+                    <a href="mailto:alessandro_morales@usmp.pe" class="footer-email">alessandro_morales@usmp.pe</a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0 text-center text-lg-start">
+                <h5 class="footer-heading">Funciones</h5>
+                <ul class="list-unstyled">
+                    <li><a href="index.html" class="footer-link">Calculadora</a></li>
+                    <li><a href="examenes.html" class="footer-link">Exámenes</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-6 text-center text-lg-start">
+                <h5 class="footer-heading">Sobre Nosotros</h5>
+                <ul class="list-unstyled">
+                    <li><a href="funcionamiento.html" class="footer-link">¿Cómo Funciona?</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

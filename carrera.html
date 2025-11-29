@@ -5,13 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selecciona tu Ciclo - FIA USMP Calculadora</title>
+    
+    <link rel="icon" type="image/png" href="imagenes/logo.png">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto:wght@400;500;700;900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto:wght@300;400;500;700;900&display=swap"
         rel="stylesheet">
 
     <script>(function (w, d, s, l, i) {
@@ -22,7 +24,6 @@
                 j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
                     'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
         })(window, document, 'script', 'dataLayer', 'GTM-M5W79TKG');</script>
-
     <style>
         :root {
             --bg-dark: #0b0d12;
@@ -33,6 +34,7 @@
             --card-bg: #18181b;
             --border-color: #27272a;
             --cyan-blue: #3b82f6;
+            --official-blue: #1E88E5; /* Azul Oficial */
         }
 
         body {
@@ -40,13 +42,90 @@
             color: var(--text-white);
             font-family: 'Inter', 'Roboto', sans-serif;
             min-height: 100vh;
-            padding: 2rem 0;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Header - Oculto */
-        .custom-header {
-            display: none;
+        /* --- ESTILOS DE NAVEGACIÓN Y HEADER PRO --- */
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
+
+        .logo-text-group {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+
+        .logo-title {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 900;
+            font-size: 3rem;
+            color: var(--official-blue);
+            margin: 0;
+            letter-spacing: -1px;
+        }
+
+        .logo-subtitle {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--official-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.35em;
+            margin-left: 4px;
+        }
+        
+        /* Ajuste para el enlace del Logo */
+        a.text-decoration-none:hover {
+            text-decoration: none !important; 
+            opacity: 0.9; 
+        }
+
+        /* Botones del Menú */
+        .nav-link-custom {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--official-blue);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 10px 5px;
+            transition: all 0.2s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+
+        .nav-link-custom:hover {
+            color: #1565C0;
+            border-bottom-color: var(--official-blue);
+        }
+
+        /* Ajustes Header Móvil */
+        @media (max-width: 992px) {
+            .simple-header .container-fluid {
+                flex-direction: column;
+                align-items: center !important;
+                gap: 20px;
+                padding: 0 15px;
+            }
+            
+            .simple-header nav {
+                margin-left: 0 !important;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .logo-title { font-size: 2.2rem; }
+            .logo-subtitle { font-size: 0.8rem; letter-spacing: 0.2em; }
+            .logo-container img { height: 60px; }
+        }
+
+        /* --- ESTILOS ESPECIFICOS DE CARRERA.HTML --- */
 
         /* Título Principal */
         .career-title {
@@ -200,48 +279,19 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
+            flex: 1; /* Para que empuje el footer abajo */
         }
 
         /* Mobile Optimizations */
         @media (max-width: 991px) {
-
-            html,
-            body {
-                overflow-x: hidden;
-                max-width: 100vw;
-            }
-
-            body {
-                padding: 1rem 0;
-            }
-
-            .main-container {
-                padding: 0 1rem;
-            }
-
-            .career-title {
-                font-size: 1.2rem;
-                margin-bottom: 2rem;
-                margin-top: 1rem;
-            }
-
-            .cycle-block {
-                padding: 1.2rem 1rem;
-                min-height: auto;
-            }
-
-            .cycle-block h4 {
-                font-size: 1.1rem;
-            }
-
-            .cycle-block ul {
-                font-size: 0.85rem;
-            }
-
-            .btn-back-fia {
-                font-size: 0.85rem;
-                padding: 0.6rem 1.5rem;
-            }
+            html, body { overflow-x: hidden; max-width: 100vw; }
+            body { padding: 0; }
+            .main-container { padding: 0 1rem; }
+            .career-title { font-size: 1.2rem; margin-bottom: 2rem; margin-top: 1rem; }
+            .cycle-block { padding: 1.2rem 1rem; min-height: auto; }
+            .cycle-block h4 { font-size: 1.1rem; }
+            .cycle-block ul { font-size: 0.85rem; }
+            .btn-back-fia { font-size: 0.85rem; padding: 0.6rem 1.5rem; }
         }
 
         /* 2 Cards per row */
@@ -255,57 +305,165 @@
                 width: 100%;
             }
         }
+
+        /* --- ESTILOS DEL FOOTER PRO --- */
+        footer {
+            background-color: #050507;
+            border-top: 1px solid #1f2126;
+            padding: 60px 0 40px 0;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+
+        .footer-heading {
+            color: #546E7A;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: #a1a1aa;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-link:hover {
+            color: #1E88E5;
+        }
+
+        .footer-brand p {
+            color: #888888;
+            margin-bottom: 5px;
+        }
+
+        .footer-email {
+            color: #888888;
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.2s ease;
+        }
+
+        .footer-email:hover {
+            text-decoration: underline;
+            color: #a1a1aa;
+        }
+
+        .footer-logo-img {
+            height: 50px;
+            opacity: 0.9;
+        }
+        .footer-logo-text {
+            font-size: 1.5rem;
+            color: #1E88E5;
+            font-weight: 900;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
     </style>
 </head>
 
 <body>
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5W79TKG" height="0" width="0"
             style="display:none;visibility:hidden"></iframe></noscript>
-
-    <!-- Header oculto pero disponible para futuro -->
-    <header class="rounded-3 custom-header">
-        <h1 class="title-fia">FIA USMP</h1>
-        <h1 class="title-calc">Calculadora de Promedios</h1>
-        <p class="subtitle">Selecciona el Ciclo que deseas Calcular.</p>
+    <header class="simple-header mb-5 pt-3">
+        <div class="container-fluid px-5 d-flex align-items-center flex-wrap">
+            
+            <a href="index.html" class="text-decoration-none me-4">
+                <div class="logo-container">
+                    <img src="imagenes/logo.png" alt="Logo Calculadora" height="85">
+                    <div class="logo-text-group">
+                        <h1 class="logo-title">Calculadora</h1>
+                        <span class="logo-subtitle">FIA USMP</span>
+                    </div>
+                </div>
+            </a>
+    
+            <nav class="d-flex gap-4 align-items-center ms-lg-4">
+                <a href="index.html" class="nav-link-custom">CALCULADORA</a>
+                <a href="examenes.html" class="nav-link-custom">EXÁMENES</a>
+                <a href="funcionamiento.html" class="nav-link-custom">¿CÓMO FUNCIONA?</a>
+            </nav>
+    
+        </div>
     </header>
 
     <div class="main-container">
 
-        <!-- Título Principal en Celeste -->
         <h3 class="career-title" id="titulo-carrera">
-            ELIJA SU CICLO DE INGENIERÍA DE COMPUTACIÓN Y SISTEMAS A CONTINUACIÓN
+            CARGANDO CARRERA...
         </h3>
 
         <div class="row">
-            <!-- Sidebar ads ocultos -->
             <aside class="col-md-2 d-none d-md-block">
                 <div class="sidebar-ad">AD</div>
             </aside>
 
-            <!-- Main content - 100% width sin sidebars -->
             <main class="col-12">
 
                 <div class="row g-4 justify-content-start" id="ciclos-container">
-                    <!-- Los ciclos se cargan aquí dinámicamente -->
-                </div>
+                    </div>
 
-                <div class="text-center mt-5">
+                <div class="text-center mt-5 mb-5">
                     <a href="index.html" class="btn-back-fia">
                         &lt;&lt; Volver a elegir Carrera
                     </a>
                 </div>
             </main>
 
-            <!-- Sidebar ads ocultos -->
             <aside class="col-md-2 d-none d-md-block">
                 <div class="sidebar-ad">AD</div>
             </aside>
         </div>
 
-        <!-- Footer ad oculto -->
         <div class="footer-ad">AD</div>
 
     </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-5 col-md-12 mb-5 mb-lg-0 d-flex flex-column align-items-center text-center">
+                    
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <img src="imagenes/logo.png" alt="Logo Footer" class="footer-logo-img">
+                        <div class="d-flex flex-column align-items-start">
+                            <span class="footer-logo-text">Calculadora</span>
+                            <span style="font-size: 0.7rem; color: #1E88E5; letter-spacing: 0.3em; font-weight: 700;">FIA USMP</span>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-brand">
+                        <p class="mb-1">2025</p>
+                        <a href="mailto:alessandro_morales@usmp.pe" class="footer-email">alessandro_morales@usmp.pe</a>
+                    </div>
+                </div>
+    
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0 text-center text-lg-start">
+                    <h5 class="footer-heading">Funciones</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="footer-link">Calculadora</a></li>
+                        <li><a href="examenes.html" class="footer-link">Exámenes</a></li>
+                    </ul>
+                </div>
+    
+                <div class="col-lg-3 col-md-6 text-center text-lg-start">
+                    <h5 class="footer-heading">Sobre Nosotros</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="funcionamiento.html" class="footer-link">¿Cómo Funciona?</a></li>
+                    </ul>
+                </div>
+    
+            </div>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

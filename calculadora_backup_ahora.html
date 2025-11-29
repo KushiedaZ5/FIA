@@ -111,6 +111,7 @@
                 overflow-x: hidden;
             }
 
+            /* En móvil mantenemos oculto para evitar scroll horizontal */
             .simple-header .container-fluid {
                 flex-direction: column;
                 align-items: center !important;
@@ -380,192 +381,170 @@
                         <div id="cursos-botones-container" class="d-flex flex-wrap gap-3 justify-content-center">
                             <p class="text-body-secondary">Cargando cursos...</p>
                         </div>
+                        <span id="textoSilabo" class="text-secondary fw-bold">Selecciona un curso para ver su
+                            fórmula</span>
                     </div>
-                </section>
-
-                <section class="card-custom d-none" id="syllabus-section">
-                    <div class="card-body">
-                        <div class="d-flex align-items-start gap-3">
-                            <div class="flex-grow-1">
-                                <p class="small mb-1" style="color: var(--cyan-blue); font-weight: 500;">
-                                    <span style="color: var(--cyan-blue);">*</span>Para el siguiente curso se usarán
-                                    estas fórmulas, asegúrate que es el sílabo correcto.
-                                </p>
-                                <p class="small mb-0" style="color: var(--cyan-blue); font-weight: 400;">
-                                    *Si nota un error, contactarse al steam del dueño*
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="syllabus-box mt-3 text-center">
-                            <img id="imagenSilabo" src="" alt="Sílabo del curso" class="img-fluid rounded"
-                                style="display: none; max-height: 200px;">
-                            <span id="textoSilabo" class="text-secondary fw-bold">Selecciona un curso para ver su
-                                fórmula</span>
-                        </div>
-                    </div>
-                </section>
-
-                <div id="calculadoraContenido" class="d-none">
-                    <section class="card-custom">
-                        <div class="card-header-custom">2. INGRESA TUS NOTAS</div>
-                        <div class="card-body">
-
-                            <div class="col-lg-12 px-2">
-
-                                <div id="campoP1" class="row mb-2 align-items-center">
-                                    <div class="col-5 col-md-4"><label for="practica1" class="col-form-label">Práctica 1
-                                            (P1)</label></div>
-                                    <div class="col-7 col-md-8"><input type="number" class="form-control" id="practica1"
-                                            min="0" max="20" placeholder="0"></div>
-                                </div>
-                                <div id="campoP2" class="row mb-2 align-items-center">
-                                    <div class="col-5 col-md-4"><label for="practica2" class="col-form-label">Práctica 2
-                                            (P2)</label></div>
-                                    <div class="col-7 col-md-8"><input type="number" class="form-control" id="practica2"
-                                            min="0" max="20" placeholder="0"></div>
-                                </div>
-                                <div id="campoP3" class="row mb-2 align-items-center">
-                                    <div class="col-5 col-md-4"><label for="practica3" class="col-form-label">Práctica 3
-                                            (P3)</label></div>
-                                    <div class="col-7 col-md-8"><input type="number" class="form-control" id="practica3"
-                                            min="0" max="20" placeholder="0"></div>
-                                </div>
-                                <div id="campoP4" class="row mb-2 align-items-center">
-                                    <div class="col-5 col-md-4"><label for="practica4" class="col-form-label">Práctica 4
-                                            (P4)</label></div>
-                                    <div class="col-7 col-md-8"><input type="number" class="form-control" id="practica4"
-                                            min="0" max="20" placeholder="0"></div>
-                                </div>
-
-                                <div id="campoW1" class="row mb-2 align-items-center d-none">
-                                    <div class="col-5 col-md-4"><label for="trabajoPractico"
-                                            class="col-form-label text-info fw-bold">Trabajo (W1)</label></div>
-                                    <div class="col-7 col-md-8"><input type="number" class="form-control"
-                                            id="trabajoPractico" min="0" max="20" placeholder="0"></div>
-                                </div>
-
-                                <div id="campoEP" class="row mb-2 align-items-center d-none">
-                                    <div class="col-5 col-md-4"><label for="examenParcial"
-                                            class="col-form-label text-warning fw-bold">Examen Parcial (EP)</label>
-                                    </div>
-                                    <div class="col-7 col-md-8"><input type="number" class="form-control"
-                                            id="examenParcial" min="0" max="20" placeholder="0"></div>
-                                </div>
-
-                                <div id="camposLaboratorio" class="d-none mt-3">
-                                    <h6 class="text-primary border-bottom border-secondary pb-2 mb-3">Laboratorios</h6>
-                                    <div id="campoLb1" class="row mb-2">
-                                        <div class="col-5"><label class="col-form-label">Lab 1</label></div>
-                                        <div class="col-7"><input type="number" class="form-control" id="lab1"></div>
-                                    </div>
-                                    <div id="campoLb2" class="row mb-2">
-                                        <div class="col-5"><label class="col-form-label">Lab 2</label></div>
-                                        <div class="col-7"><input type="number" class="form-control" id="lab2"></div>
-                                    </div>
-                                    <div id="campoLb3" class="row mb-2">
-                                        <div class="col-5"><label class="col-form-label">Lab 3</label></div>
-                                        <div class="col-7"><input type="number" class="form-control" id="lab3"></div>
-                                    </div>
-                                    <div id="campoLb4" class="row mb-2">
-                                        <div class="col-5"><label class="col-form-label">Lab 4</label></div>
-                                        <div class="col-7"><input type="number" class="form-control" id="lab4"></div>
-                                    </div>
-                                    <div id="campoLb5" class="row mb-2">
-                                        <div class="col-5"><label class="col-form-label">Lab 5</label></div>
-                                        <div class="col-7"><input type="number" class="form-control" id="lab5"></div>
-                                    </div>
-                                    <div id="campoLb6" class="row mb-2">
-                                        <div class="col-5"><label class="col-form-label">Lab 6</label></div>
-                                        <div class="col-7"><input type="number" class="form-control" id="lab6"></div>
-                                    </div>
-                                    <div id="campoLb7" class="row mb-2">
-                                        <div class="col-5"><label class="col-form-label">Lab 7</label></div>
-                                        <div class="col-7"><input type="number" class="form-control" id="lab7"></div>
-                                    </div>
-                                </div>
-
-                                <div id="camposControles" class="d-none mt-3">
-                                    <h6 class="text-info border-bottom border-secondary pb-2 mb-3">Controles de Lectura
-                                    </h6>
-                                    <div class="row">
-                                        <div class="col-6 mb-2"><input type="number" class="form-control" id="control1"
-                                                placeholder="CL1"></div>
-                                        <div class="col-6 mb-2"><input type="number" class="form-control" id="control2"
-                                                placeholder="CL2"></div>
-                                        <div class="col-6 mb-2"><input type="number" class="form-control" id="control3"
-                                                placeholder="CL3"></div>
-                                        <div class="col-6 mb-2"><input type="number" class="form-control" id="control4"
-                                                placeholder="CL4"></div>
-                                        <div class="col-6 mb-2"><input type="number" class="form-control" id="control5"
-                                                placeholder="CL5"></div>
-                                        <div class="col-6 mb-2"><input type="number" class="form-control" id="control6"
-                                                placeholder="CL6"></div>
-                                        <div class="col-6 mb-2"><input type="number" class="form-control" id="control7"
-                                                placeholder="CL7"></div>
-                                        <div class="col-6 mb-2"><input type="number" class="form-control" id="control8"
-                                                placeholder="CL8"></div>
-                                    </div>
-                                </div>
-
-                                <div id="campoEF"
-                                    class="row mb-3 align-items-center border-top border-secondary pt-3 mt-3">
-                                    <div class="col-5 col-md-4"><label for="examenFinal"
-                                            class="col-form-label fw-bold text-danger">Examen Final (EF)</label></div>
-                                    <div class="col-7 col-md-8"><input type="number" class="form-control"
-                                            id="examenFinal" min="0" max="20" placeholder="0"></div>
-                                </div>
-
-                            </div>
-
-                            <div class="result-box mt-4">
-                                <h3 class="fs-6 text-uppercase text-secondary mb-1">Tu Promedio Actual:</h3>
-                                <div id="promedioFinal" class="display-3">0.00</div>
-                            </div>
-
-                        </div>
-                    </section>
-
-                    <section class="card-custom">
-                        <div class="card-body text-center">
-                            <p class="fs-6 text-grey">Nota mínima necesaria en el Examen Final para aprobar:</p>
-                            <div id="notaMinimaFinal" class="display-5 fw-bold text-white">0.00</div>
-                        </div>
-                    </section>
-
-                </div>
-            </main>
-
-            <aside class="col-lg-3">
-
-                <div class="sidebar-ad-placeholder mb-4 d-none d-lg-flex">AD</div>
-
-                <div id="columnaDerechaNotas" class="d-none d-lg-block">
-
-                    <div class="alert alert-dark border-secondary p-3 mb-4" role="alert"
-                        style="background-color: #1a1d21;">
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <span style="font-size: 1.2rem;">💡</span>
-                            <h4 class="alert-heading h6 text-info m-0 fw-bold">TIP PRO:</h4>
-                        </div>
-                        <p class="small mb-0 text-secondary" style="line-height: 1.4;">
-                            Si aún no tienes nota, pon <strong>10.5</strong> para simular que apruebas con lo mínimo.
-                        </p>
-                    </div>
-
-                    <h5 class="h6 text-uppercase text-secondary mb-3 fw-bold ps-2 border-start border-3 border-primary">
-                        Peso de Notas
-                    </h5>
-
-                    <div id="contenedorPesos" class="d-flex flex-column gap-3">
-                    </div>
-
-                </div>
-
-            </aside>
         </div>
+        </section>
 
-        <div class="footer-ad-placeholder">AD</div>
+        <div id="calculadoraContenido" class="d-none">
+            <section class="card-custom">
+                <div class="card-header-custom">2. INGRESA TUS NOTAS</div>
+                <div class="card-body">
+
+                    <div class="col-lg-12 px-2">
+
+                        <div id="campoP1" class="row mb-2 align-items-center">
+                            <div class="col-5 col-md-4"><label for="practica1" class="col-form-label">Práctica 1
+                                    (P1)</label></div>
+                            <div class="col-7 col-md-8"><input type="number" class="form-control" id="practica1" min="0"
+                                    max="20" placeholder="0"></div>
+                        </div>
+                        <div id="campoP2" class="row mb-2 align-items-center">
+                            <div class="col-5 col-md-4"><label for="practica2" class="col-form-label">Práctica 2
+                                    (P2)</label></div>
+                            <div class="col-7 col-md-8"><input type="number" class="form-control" id="practica2" min="0"
+                                    max="20" placeholder="0"></div>
+                        </div>
+                        <div id="campoP3" class="row mb-2 align-items-center">
+                            <div class="col-5 col-md-4"><label for="practica3" class="col-form-label">Práctica 3
+                                    (P3)</label></div>
+                            <div class="col-7 col-md-8"><input type="number" class="form-control" id="practica3" min="0"
+                                    max="20" placeholder="0"></div>
+                        </div>
+                        <div id="campoP4" class="row mb-2 align-items-center">
+                            <div class="col-5 col-md-4"><label for="practica4" class="col-form-label">Práctica 4
+                                    (P4)</label></div>
+                            <div class="col-7 col-md-8"><input type="number" class="form-control" id="practica4" min="0"
+                                    max="20" placeholder="0"></div>
+                        </div>
+
+                        <div id="campoW1" class="row mb-2 align-items-center d-none">
+                            <div class="col-5 col-md-4"><label for="trabajoPractico"
+                                    class="col-form-label text-info fw-bold">Trabajo (W1)</label></div>
+                            <div class="col-7 col-md-8"><input type="number" class="form-control" id="trabajoPractico"
+                                    min="0" max="20" placeholder="0"></div>
+                        </div>
+
+                        <div id="campoEP" class="row mb-2 align-items-center d-none">
+                            <div class="col-5 col-md-4"><label for="examenParcial"
+                                    class="col-form-label text-warning fw-bold">Examen Parcial (EP)</label>
+                            </div>
+                            <div class="col-7 col-md-8"><input type="number" class="form-control" id="examenParcial"
+                                    min="0" max="20" placeholder="0"></div>
+                        </div>
+
+                        <div id="camposLaboratorio" class="d-none mt-3">
+                            <h6 class="text-primary border-bottom border-secondary pb-2 mb-3">Laboratorios</h6>
+                            <div id="campoLb1" class="row mb-2">
+                                <div class="col-5"><label class="col-form-label">Lab 1</label></div>
+                                <div class="col-7"><input type="number" class="form-control" id="lab1"></div>
+                            </div>
+                            <div id="campoLb2" class="row mb-2">
+                                <div class="col-5"><label class="col-form-label">Lab 2</label></div>
+                                <div class="col-7"><input type="number" class="form-control" id="lab2"></div>
+                            </div>
+                            <div id="campoLb3" class="row mb-2">
+                                <div class="col-5"><label class="col-form-label">Lab 3</label></div>
+                                <div class="col-7"><input type="number" class="form-control" id="lab3"></div>
+                            </div>
+                            <div id="campoLb4" class="row mb-2">
+                                <div class="col-5"><label class="col-form-label">Lab 4</label></div>
+                                <div class="col-7"><input type="number" class="form-control" id="lab4"></div>
+                            </div>
+                            <div id="campoLb5" class="row mb-2">
+                                <div class="col-5"><label class="col-form-label">Lab 5</label></div>
+                                <div class="col-7"><input type="number" class="form-control" id="lab5"></div>
+                            </div>
+                            <div id="campoLb6" class="row mb-2">
+                                <div class="col-5"><label class="col-form-label">Lab 6</label></div>
+                                <div class="col-7"><input type="number" class="form-control" id="lab6"></div>
+                            </div>
+                            <div id="campoLb7" class="row mb-2">
+                                <div class="col-5"><label class="col-form-label">Lab 7</label></div>
+                                <div class="col-7"><input type="number" class="form-control" id="lab7"></div>
+                            </div>
+                        </div>
+
+                        <div id="camposControles" class="d-none mt-3">
+                            <h6 class="text-info border-bottom border-secondary pb-2 mb-3">Controles de Lectura
+                            </h6>
+                            <div class="row">
+                                <div class="col-6 mb-2"><input type="number" class="form-control" id="control1"
+                                        placeholder="CL1"></div>
+                                <div class="col-6 mb-2"><input type="number" class="form-control" id="control2"
+                                        placeholder="CL2"></div>
+                                <div class="col-6 mb-2"><input type="number" class="form-control" id="control3"
+                                        placeholder="CL3"></div>
+                                <div class="col-6 mb-2"><input type="number" class="form-control" id="control4"
+                                        placeholder="CL4"></div>
+                                <div class="col-6 mb-2"><input type="number" class="form-control" id="control5"
+                                        placeholder="CL5"></div>
+                                <div class="col-6 mb-2"><input type="number" class="form-control" id="control6"
+                                        placeholder="CL6"></div>
+                                <div class="col-6 mb-2"><input type="number" class="form-control" id="control7"
+                                        placeholder="CL7"></div>
+                                <div class="col-6 mb-2"><input type="number" class="form-control" id="control8"
+                                        placeholder="CL8"></div>
+                            </div>
+                        </div>
+
+                        <div id="campoEF" class="row mb-3 align-items-center border-top border-secondary pt-3 mt-3">
+                            <div class="col-5 col-md-4"><label for="examenFinal"
+                                    class="col-form-label fw-bold text-danger">Examen Final (EF)</label></div>
+                            <div class="col-7 col-md-8"><input type="number" class="form-control" id="examenFinal"
+                                    min="0" max="20" placeholder="0"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="result-box mt-4">
+                        <h3 class="fs-6 text-uppercase text-secondary mb-1">Tu Promedio Actual:</h3>
+                        <div id="promedioFinal" class="display-3">0.00</div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="card-custom">
+                <div class="card-body text-center">
+                    <p class="fs-6 text-grey">Nota mínima necesaria en el Examen Final para aprobar:</p>
+                    <div id="notaMinimaFinal" class="display-5 fw-bold text-white">0.00</div>
+                </div>
+            </section>
+
+        </div>
+        </main>
+
+        <aside class="col-lg-3">
+
+            <div class="sidebar-ad-placeholder mb-4 d-none d-lg-flex">AD</div>
+
+            <div id="columnaDerechaNotas" class="d-none d-lg-block">
+
+                <div class="alert alert-dark border-secondary p-3 mb-4" role="alert" style="background-color: #1a1d21;">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span style="font-size: 1.2rem;">💡</span>
+                        <h4 class="alert-heading h6 text-info m-0 fw-bold">TIP PRO:</h4>
+                    </div>
+                    <p class="small mb-0 text-secondary" style="line-height: 1.4;">
+                        Si aún no tienes nota, pon <strong>10.5</strong> para simular que apruebas con lo mínimo.
+                    </p>
+                </div>
+
+                <h5 class="h6 text-uppercase text-secondary mb-3 fw-bold ps-2 border-start border-3 border-primary">
+                    Peso de Notas
+                </h5>
+
+                <div id="contenedorPesos" class="d-flex flex-column gap-3">
+                </div>
+
+            </div>
+
+        </aside>
+    </div>
+
+    <div class="footer-ad-placeholder">AD</div>
     </div>
 
     <footer>
