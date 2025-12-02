@@ -27,17 +27,18 @@ const esquemas = {
         }
     },
     "040": {
-        descripcion: "Prácticas 4, elimina 1",
-        imagen: "imagenes/040.png",
-        inputs: ["P1", "P2", "P3", "P4", "EF"],
-        pesos: [{ n: "P1, P2, P3, P4, EF", v: 20, c: "bg-secondary" }],
-        calcular: (n) => {
-            const p = [n.P1, n.P2, n.P3, n.P4];
-            const min = Math.min(...p);
-            const pe = (p.reduce((a, b) => a + b, 0) - min) / 3;
-            return ((2 * pe) + n.EF) / 3;
-        }
-    },
+    descripcion: "Ecuaciones Diferenciales (P4 Doble)",
+    imagen: "imagenes/040.png",
+    inputs: ["P1", "P2", "P3", "P4", "EF"],
+    pesos: [{ n: "Prom. Prácticas (PE)", v: 66.7, c: "bg-primary" }, { n: "Examen Final (EF)", v: 33.3, c: "bg-danger" }],
+    calcular: (n) => {
+        const p = [n.P1, n.P2, n.P3, n.P4];
+        const min = Math.min(...p);
+        const sumaP = p.reduce((a, b) => a + b, 0) + n.P4; // P1+P2+P3+P4+P4
+        const pe = (sumaP - min) / 4;
+        return ((2 * pe) + n.EF) / 3;
+    }
+},
 
     // --- GRUPO 2: FÓRMULAS COMPLEJAS ---
     "041": {
@@ -74,6 +75,7 @@ const esquemas = {
     },
     "043": {
         descripcion: "Labs (6) + Examen Oral",
+        imagen: "imagenes/043.jpg",
         inputs: ["P1", "P2", "W1", "Lb1", "Lb2", "Lb3", "Lb4", "Lb5", "Lb6", "C1", "EP", "EF"],
         pesos: [{ n: "Prom. Evaluaciones", v: 50, c: "bg-primary" }, { n: "Examen Parcial (EP)", v: 25, c: "bg-warning" }, { n: "Examen Final (EF)", v: 25, c: "bg-danger" }],
         calcular: (n) => {
