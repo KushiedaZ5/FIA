@@ -87,13 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const cursos = dataCarreras[carreraKey]?.ciclos[cicloKey] || [];
 
         if (cursos.length === 0) {
-            cursosBotonesContainer.innerHTML = '<p class="text-body-secondary">Próximamente...</p>';
+            cursosBotonesContainer.innerHTML = '<p class="text-gray-400">Próximamente...</p>';
             return;
         }
 
         cursos.forEach(curso => {
             const btn = document.createElement('button');
-            btn.className = 'btn btn-curso';
+            btn.className = 'bg-transparent border border-zinc-700 text-gray-400 font-semibold px-5 py-2 rounded-lg transition-all duration-200 hover:border-official-blue hover:text-white hover:bg-official-blue/10 min-w-[120px] btn-curso';
             btn.textContent = curso.text;
             btn.dataset.value = curso.value;
             cursosBotonesContainer.appendChild(btn);
@@ -124,10 +124,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        syllabusSection.classList.remove('d-none');
-        calculadoraContenido.classList.remove('d-none');
-        columnaDerechaNotas.classList.remove('d-none');
-        columnaDerechaNotas.classList.add('d-lg-block');
+        syllabusSection.classList.remove('hidden');
+        calculadoraContenido.classList.remove('hidden');
+        columnaDerechaNotas.classList.remove('hidden');
+        columnaDerechaNotas.classList.add('lg:block');
 
         const cursoData = dataCarreras[carreraKey].ciclos[cicloKey].find(c => c.value === cursoVal);
 
@@ -163,14 +163,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resetearCampos() {
-        calculadoraContenido.classList.add('d-none');
-        columnaDerechaNotas.classList.add('d-none');
-        columnaDerechaNotas.classList.remove('d-lg-block');
-        syllabusSection.classList.add('d-none');
+        calculadoraContenido.classList.add('hidden');
+        columnaDerechaNotas.classList.add('hidden');
+        columnaDerechaNotas.classList.remove('lg:block');
+        syllabusSection.classList.add('hidden');
         imagenSilabo.style.display = 'none';
         textoSilabo.style.display = 'block';
         contenedorPesos.innerHTML = '';
-        cursosBotonesContainer.innerHTML = '<p class="text-body-secondary">Cargando cursos...</p>';
+        cursosBotonesContainer.innerHTML = '<p class="text-gray-400">Cargando cursos...</p>';
 
         limpiarInputs();
         selectCurso.value = '';
@@ -195,18 +195,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const pesos = [...(esquema.pesos || [])].sort((a, b) => b.v - a.v);
 
         pesos.forEach(item => {
-            let color = item.c || 'bg-primary';
-            if (item.n.includes('Final')) color = 'bg-danger';
-            if (item.n.includes('Parcial')) color = 'bg-warning';
+            let color = item.c || 'bg-blue-500';
+            if (item.n.includes('Final')) color = 'bg-red-500';
+            if (item.n.includes('Parcial')) color = 'bg-yellow-500';
 
             contenedorPesos.innerHTML += `
                 <div>
-                    <div class="d-flex justify-content-between mb-1 small">
-                        <span class="fw-bold text-light">${item.n}</span>
-                        <span class="text-white-50">${item.v.toFixed(1)}%</span>
+                    <div class="flex justify-between mb-1 text-sm">
+                        <span class="font-bold text-gray-200">${item.n}</span>
+                        <span class="text-white/50">${item.v.toFixed(1)}%</span>
                     </div>
-                    <div class="progress" style="height: 8px; background-color: #333;">
-                        <div class="progress-bar ${color}" style="width: ${item.v}%"></div>
+                    <div class="bg-zinc-800 rounded h-2">
+                        <div class="${color} h-full rounded transition-all duration-300" style="width: ${item.v}%"></div>
                     </div>
                 </div>
             `;
@@ -215,25 +215,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function actualizarCamposDeNotas(esquema) {
         [...containersMap.practica, containersMap.trabajo, containersMap.parcial, containersMap.final,
-        containersMap.labMain, containersMap.controlMain, ...containersMap.lab].forEach(el => el?.classList.add('d-none'));
+        containersMap.labMain, containersMap.controlMain, ...containersMap.lab].forEach(el => el?.classList.add('hidden'));
 
         const inputs = esquema.inputs || [];
 
         inputs.forEach(name => {
             if (name.startsWith('P')) {
                 const n = parseInt(name.substring(1));
-                if (n <= 4) containersMap.practica[n - 1]?.classList.remove('d-none');
+                if (n <= 4) containersMap.practica[n - 1]?.classList.remove('hidden');
             }
-            else if (name === 'W1') containersMap.trabajo?.classList.remove('d-none');
-            else if (name === 'EP') containersMap.parcial?.classList.remove('d-none');
-            else if (name === 'EF') containersMap.final?.classList.remove('d-none');
+            else if (name === 'W1') containersMap.trabajo?.classList.remove('hidden');
+            else if (name === 'EP') containersMap.parcial?.classList.remove('hidden');
+            else if (name === 'EF') containersMap.final?.classList.remove('hidden');
             else if (name.startsWith('Lb')) {
-                containersMap.labMain?.classList.remove('d-none');
+                containersMap.labMain?.classList.remove('hidden');
                 const n = parseInt(name.substring(2));
-                if (n <= 7) containersMap.lab[n - 1]?.classList.remove('d-none');
+                if (n <= 7) containersMap.lab[n - 1]?.classList.remove('hidden');
             }
             else if (name.startsWith('C')) {
-                containersMap.controlMain?.classList.remove('d-none');
+                containersMap.controlMain?.classList.remove('hidden');
             }
         });
     }
@@ -309,7 +309,6 @@ document.addEventListener('DOMContentLoaded', () => {
         promedioFinalDiv.style.color = colorFinal;
         promedioFinalDiv.style.textShadow = `0 0 35px ${colorFinal}`;
 
-        // Aplicar color al RECUADRO (Border + Background Tint)
         // Aplicar color al RECUADRO (Border + Background Tint - SUAVIZADO)
         if (resultBox) {
             // Usamos una opacidad menor para el borde y el brillo
