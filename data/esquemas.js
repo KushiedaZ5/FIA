@@ -27,18 +27,18 @@ const esquemas = {
         }
     },
     "040": {
-    descripcion: "Ecuaciones Diferenciales (P4 Doble)",
-    imagen: "imagenes/040.png",
-    inputs: ["P1", "P2", "P3", "P4", "EF"],
-    pesos: [{ n: "Prom. Prácticas (PE)", v: 66.7, c: "bg-primary" }, { n: "Examen Final (EF)", v: 33.3, c: "bg-danger" }],
-    calcular: (n) => {
-        const p = [n.P1, n.P2, n.P3, n.P4];
-        const min = Math.min(...p);
-        const sumaP = p.reduce((a, b) => a + b, 0) + n.P4; // P1+P2+P3+P4+P4
-        const pe = (sumaP - min) / 4;
-        return ((2 * pe) + n.EF) / 3;
-    }
-},
+        descripcion: "Ecuaciones Diferenciales (P4 Doble)",
+        imagen: "imagenes/040.png",
+        inputs: ["P1", "P2", "P3", "P4", "EF"],
+        pesos: [{ n: "Prom. Prácticas (PE)", v: 66.7, c: "bg-primary" }, { n: "Examen Final (EF)", v: 33.3, c: "bg-danger" }],
+        calcular: (n) => {
+            const p = [n.P1, n.P2, n.P3, n.P4];
+            const min = Math.min(...p);
+            const sumaP = p.reduce((a, b) => a + b, 0) + n.P4; // P1+P2+P3+P4+P4
+            const pe = (sumaP - min) / 4;
+            return ((2 * pe) + n.EF) / 3;
+        }
+    },
 
     // --- GRUPO 2: FÓRMULAS COMPLEJAS ---
     "041": {
@@ -59,7 +59,7 @@ const esquemas = {
         descripcion: "Física (P4 Doble + 7 Labs)",
         imagen: "imagenes/042.jpg",
         inputs: ["P1", "P2", "P3", "P4", "Lb1", "Lb2", "Lb3", "Lb4", "Lb5", "Lb6", "Lb7", "EF"],
-        pesos: [{ n: "Prom. Prácticas (PE)", v: 50, c: "bg-primary" }, { n: "Prom. Laboratorio (PL)", v: 25, c: "bg-info" }, { n: "Examen Final (EF)", v: 25, c: "bg-warning" }],
+        pesos: [{ n: "Prom. Prácticas (PE)", v: 50, c: "bg-primary" }, { n: "Prom. Laboratorio (PL)", v: 25, c: "bg-success" }, { n: "Examen Final (EF)", v: 25, c: "bg-warning" }],
         calcular: (n) => {
             const p = [n.P1, n.P2, n.P3, n.P4];
             const minP = Math.min(...p);
@@ -184,7 +184,7 @@ const esquemas = {
     "054": {
         descripcion: "Microeconomía 0.3, 0.3, 0.4",
         imagen: "imagenes/054.jpg",
-        inputs: ["P1", "P2", "P3", "P4", "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "EP", "EF"],
+        inputs: ["P1", "P2", "P4", "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "EP", "EF"],
         pesos: [{ n: "Examen Final (EF)", v: 40, c: "bg-danger" }, { n: "Examen Parcial (EP)", v: 30, c: "bg-warning" }, { n: "Práctica 1 (P1)", v: 7.5, c: "bg-primary" }, { n: "Práctica 2 (P2)", v: 7.5, c: "bg-primary" }, { n: "Controles (P3)", v: 7.5, c: "bg-primary" }, { n: "Investigación (P4)", v: 7.5, c: "bg-primary" }],
         calcular: (n) => {
             const sumaControles = n.C1 + n.C2 + n.C3 + n.C4 + n.C5 + n.C6 + n.C7 + n.C8;
