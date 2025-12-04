@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Ayuda - CalculadoraFIAUSMP</title>
+
+    <link rel="icon" type="image/png" href="imagenes/logo.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg-dark': '#0b0d12',
+                        'epics-blue': '#1a45bc',
+                        'epics-blue-hover': '#2563eb',
+                        'official-blue': '#1E88E5',
+                        'card-bg': '#18181b',
+                        'border-color': '#27272a',
+                    },
+                    fontFamily: {
+                        'roboto': ['Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+                w[l] = w[l] || []; w[l].push({
+                    'gtm.start':
+                        new Date().getTime(), event: 'gtm.js'
+                }); var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-M5W79TKG');</script>
+
+    <style>
+        /* Animación suave para el acordeón */
+        details summary {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details[open] summary .arrow {
+            transform: rotate(180deg);
+        }
+
+        .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body class="bg-zinc-950 text-white font-roboto min-h-screen flex flex-col">
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5W79TKG" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+
+    <!-- Header -->
+    <header class="mb-12 pt-3">
+    <div class="w-full px-5 flex flex-wrap items-center justify-center lg:justify-start gap-6 lg:gap-0">
+
+        <a href="index.html" class="text-decoration-none hover:opacity-90 transition-opacity mr-0 lg:mr-4">
+            <div class="flex items-center gap-4">
+                <img src="imagenes/logo.png" alt="Logo Calculadora" class="h-16 lg:h-[85px]">
+                <div class="flex flex-col leading-none">
+                    <h1 class="font-roboto font-black text-3xl lg:text-5xl text-official-blue -tracking-tight">
+                        Calculadora</h1>
+                    <span
+                        class="font-roboto font-bold text-xs lg:text-base text-official-blue uppercase tracking-[0.35em] ml-1">FIA
+                        USMP</span>
+                </div>
+            </div>
+        </a>
+
+        <nav class="flex gap-4 lg:gap-6 items-center flex-wrap justify-center lg:justify-start lg:flex-nowrap lg:ml-4">
+
+            <a href="index.html"
+                class="font-roboto font-bold text-sm lg:text-base text-official-blue uppercase tracking-wide px-3 py-2 transition-all duration-200 border-b-3 border-transparent hover:text-blue-700 hover:border-official-blue whitespace-nowrap">CALCULADORA</a>
+
+            <a href="examenes.html"
+                class="font-roboto font-bold text-sm lg:text-base text-official-blue uppercase tracking-wide px-3 py-2 transition-all duration-200 border-b-3 border-transparent hover:text-blue-700 hover:border-official-blue whitespace-nowrap">EXÁMENES</a>
+
+            <a href="faq.html"
+                class="font-roboto font-bold text-sm lg:text-base text-official-blue uppercase tracking-wide px-3 py-2 transition-all duration-200 border-b-3 border-transparent hover:text-blue-700 hover:border-official-blue whitespace-nowrap">¿CÓMO
+                FUNCIONA?</a>
+
+        </nav>
+
+    </div>
+</header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 flex-1 py-8">
+
+        <!-- Hero Section -->
+        <section class="text-center mb-16 max-w-4xl mx-auto">
+            <div class="mb-6">
+                <h1 class="text-4xl lg:text-6xl font-black text-white mb-4 leading-tight">
+                    Preguntas <span class="text-official-blue">Frecuentes (FAQ)</span>
+                </h1>
+                <p class="text-lg lg:text-xl text-gray-400 max-w-2xl mx-auto">
+                    Encuentra soluciones rápidas a los errores más comunes. Si tu problema persiste, contáctanos
+                    directamente.
+                </p>
+            </div>
+
+            <!-- Decorative divider -->
+            <div class="w-24 h-1 bg-gradient-to-r from-transparent via-official-blue to-transparent mx-auto"></div>
+        </section>
+
+        <!-- FAQ Accordion Section -->
+        <section class="max-w-4xl mx-auto mb-20">
+            <h2 class="text-2xl lg:text-3xl font-bold text-official-blue mb-8 text-center uppercase tracking-wide">
+                Errores Comunes y Soluciones
+            </h2>
+
+            <div class="space-y-4">
+
+                <!-- FAQ Item 1 -->
+                <details
+                    class="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden transition-all duration-300 hover:border-official-blue/50">
+                    <summary
+                        class="flex items-center justify-between p-6 cursor-pointer hover:bg-zinc-800/50 transition-colors">
+                        <h3 class="text-lg font-bold text-white pr-4">
+                            🔢 El promedio no se actualiza al ingresar mis notas
+                        </h3>
+                        <svg class="arrow w-6 h-6 text-official-blue flex-shrink-0" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </summary>
+                    <div class="px-6 pb-6 pt-2 text-gray-300 leading-relaxed border-t border-zinc-800">
+                        <p class="mb-3"><strong class="text-official-blue">Solución:</strong></p>
+                        <ul class="list-disc list-inside space-y-2 ml-2">
+                            <li>Asegúrate de estar ingresando números válidos entre 0 y 20.</li>
+                            <li>Verifica que hayas seleccionado el <strong>curso correcto</strong> antes de ingresar las
+                                notas.</li>
+                            <li>Intenta refrescar la página (F5) y vuelve a seleccionar tu carrera y ciclo.</li>
+                            <li>Si usas un navegador antiguo, actualízalo a la última versión o prueba con
+                                Chrome/Firefox.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- FAQ Item 2 -->
+                <details
+                    class="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden transition-all duration-300 hover:border-cyan-500/50">
+                    <summary
+                        class="flex items-center justify-between p-6 cursor-pointer hover:bg-zinc-800/50 transition-colors">
+                        <h3 class="text-lg font-bold text-white pr-4">
+                            ⌨️ No puedo ingresar decimales en los campos de notas
+                        </h3>
+                        <svg class="arrow w-6 h-6 text-official-blue flex-shrink-0" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </summary>
+                    <div class="px-6 pb-6 pt-2 text-gray-300 leading-relaxed border-t border-zinc-800">
+                        <p class="mb-3"><strong class="text-official-blue">Solución:</strong></p>
+                        <ul class="list-disc list-inside space-y-2 ml-2">
+                            <li>Usa el <strong>punto (.)</strong> en lugar de la coma (,) para separar decimales.
+                                Ejemplo: 15.5</li>
+                            <li>Si tu teclado numérico usa coma, cámbialo temporalmente o usa el teclado alfanumérico.
+                            </li>
+                            <li>Verifica la configuración regional de tu sistema operativo (debe estar en formato
+                                numérico internacional).</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- FAQ Item 3 -->
+                <details
+                    class="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden transition-all duration-300 hover:border-cyan-500/50">
+                    <summary
+                        class="flex items-center justify-between p-6 cursor-pointer hover:bg-zinc-800/50 transition-colors">
+                        <h3 class="text-lg font-bold text-white pr-4">
+                            🐌 La página carga muy lento o no responde
+                        </h3>
+                        <svg class="arrow w-6 h-6 text-official-blue flex-shrink-0" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </summary>
+                    <div class="px-6 pb-6 pt-2 text-gray-300 leading-relaxed border-t border-zinc-800">
+                        <p class="mb-3"><strong class="text-official-blue">Solución:</strong></p>
+                        <ul class="list-disc list-inside space-y-2 ml-2">
+                            <li>Verifica tu conexión a internet. La calculadora requiere conexión para cargar recursos.
+                            </li>
+                            <li>Limpia la caché de tu navegador: <code
+                                    class="bg-zinc-800 px-2 py-1 rounded text-official-blue">Ctrl + Shift + Supr</code>
+                            </li>
+                            <li>Desactiva temporalmente extensiones del navegador que puedan interferir (bloqueadores de
+                                anuncios).</li>
+                            <li>Si el problema persiste, intenta acceder desde otro dispositivo o red.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- FAQ Item 4 -->
+                <details
+                    class="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden transition-all duration-300 hover:border-cyan-500/50">
+                    <summary
+                        class="flex items-center justify-between p-6 cursor-pointer hover:bg-zinc-800/50 transition-colors">
+                        <h3 class="text-lg font-bold text-white pr-4">
+                            📚 Mi curso no aparece en la lista de selección
+                        </h3>
+                        <svg class="arrow w-6 h-6 text-official-blue flex-shrink-0" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </summary>
+                    <div class="px-6 pb-6 pt-2 text-gray-300 leading-relaxed border-t border-zinc-800">
+                        <p class="mb-3"><strong class="text-official-blue">Solución:</strong></p>
+                        <ul class="list-disc list-inside space-y-2 ml-2">
+                            <li>Algunos cursos están marcados como <strong>"Próximamente..."</strong> porque aún no han
+                                sido agregados.</li>
+                            <li>Verifica que hayas seleccionado la <strong>carrera correcta</strong> y el <strong>ciclo
+                                    correcto</strong>.</li>
+                            <li>Si tu curso no está disponible, contáctanos con los detalles del sílabo para agregarlo.
+                            </li>
+                            <li>Estamos actualizando constantemente la base de datos de cursos.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- FAQ Item 5 -->
+                <details
+                    class="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden transition-all duration-300 hover:border-cyan-500/50">
+                    <summary
+                        class="flex items-center justify-between p-6 cursor-pointer hover:bg-zinc-800/50 transition-colors">
+                        <h3 class="text-lg font-bold text-white pr-4">
+                            ❌ El cálculo de "Nota mínima en EF" muestra un valor incorrecto
+                        </h3>
+                        <svg class="arrow w-6 h-6 text-official-blue flex-shrink-0" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </summary>
+                    <div class="px-6 pb-6 pt-2 text-gray-300 leading-relaxed border-t border-zinc-800">
+                        <p class="mb-3"><strong class="text-official-blue">Solución:</strong></p>
+                        <ul class="list-disc list-inside space-y-2 ml-2">
+                            <li>Asegúrate de haber ingresado <strong>todas las notas requeridas</strong> excepto el
+                                Examen Final (EF).</li>
+                            <li>Si alguna nota es 0, el cálculo puede ser impreciso. Ingresa 10.5 como mínimo si no
+                                sabes tu nota.</li>
+                            <li>Verifica que el <strong>esquema de calificación</strong> mostrado coincida con el sílabo
+                                de tu profesor.</li>
+                            <li>Si ves "Imposible aprobar", significa que matemáticamente no puedes alcanzar 10.5
+                                incluso con 20 en el EF.</li>
+                        </ul>
+                    </div>
+                </details>
+
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="max-w-3xl mx-auto mb-16">
+            <div
+                class="bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-2xl p-8 lg:p-12 text-center shadow-2xl">
+
+                <div class="mb-8">
+                    <h2 class="text-3xl lg:text-4xl font-black text-white mb-4">
+                        ¿Tu problema <span class="text-official-blue">persiste</span>?
+                    </h2>
+                    <p class="text-gray-400 text-lg">
+                        No te preocupes, estamos aquí para ayudarte. Contáctanos por cualquiera de estos medios:
+                    </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+
+                    <!-- Email Button -->
+                    <a href="mailto:alessandro_morales@usmp.pe"
+                        class="group bg-official-blue hover:bg-blue-600 text-white font-bold px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-official-blue/50 hover:-translate-y-1 flex items-center gap-3 w-full sm:w-auto justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                        <span>Enviar Email</span>
+                    </a>
+
+                    <!-- Steam Button -->
+                    <a href="https://steamcommunity.com/id/ZFiveStore" target="_blank" rel="noopener noreferrer"
+                        class="group bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-official-blue text-white font-bold px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-zinc-700/50 hover:-translate-y-1 flex items-center gap-3 w-full sm:w-auto justify-center">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z" />
+                        </svg>
+                        <span>Contactar por Steam</span>
+                    </a>
+
+                </div>
+
+                <p class="mt-6 text-sm text-gray-500">
+                    Responderemos en un plazo de 24-48 horas.
+                </p>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-zinc-950 border-t border-zinc-800 py-16 px-5 mt-auto">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-5 flex flex-col items-center text-center mb-5 lg:mb-0">
+                    <div class="flex items-center gap-3 mb-3">
+                        <img src="imagenes/logo.png" alt="Logo Footer" class="h-12 opacity-90">
+                        <div class="flex flex-col items-start">
+                            <span
+                                class="text-2xl text-official-blue font-black -tracking-tight leading-none">Calculadora</span>
+                            <span class="text-[0.7rem] text-official-blue tracking-[0.3em] font-bold">FIA USMP</span>
+                        </div>
+                    </div>
+                    <div class="text-gray-500">
+                        <p class="mb-1">2025</p>
+                        <a href="mailto:alessandro_morales@usmp.pe"
+                            class="text-gray-500 font-normal hover:underline hover:text-gray-400 transition-colors duration-200">alessandro_morales@usmp.pe</a>
+                    </div>
+                </div>
+                <div class="lg:col-span-3 text-center lg:text-left mb-4 lg:mb-0">
+                    <h5 class="text-blue-gray-600 font-bold uppercase text-sm tracking-wider mb-6"
+                        style="color: #546E7A;">Funciones</h5>
+                    <ul class="list-none">
+                        <li><a href="index.html"
+                                class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">Calculadora</a>
+                        </li>
+                        <li><a href="examenes.html"
+                                class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">Exámenes</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="lg:col-span-3 text-center lg:text-left">
+                    <h5 class="text-blue-gray-600 font-bold uppercase text-sm tracking-wider mb-6"
+                        style="color: #546E7A;">Sobre Nosotros</h5>
+                    <ul class="list-none">
+                        <li><a href="faq.html"
+                                class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">¿Cómo
+                                Funciona?</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

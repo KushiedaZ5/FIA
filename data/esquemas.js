@@ -28,7 +28,7 @@ const esquemas = {
     },
     "040": {
         descripcion: "Ecuaciones Diferenciales (P4 Doble)",
-        imagen: "imagenes/040.png",
+        imagen: "imagenes/040.jpg",
         inputs: ["P1", "P2", "P3", "P4", "EF"],
         pesos: [{ n: "Prom. Prácticas (PE)", v: 66.7, c: "bg-primary" }, { n: "Examen Final (EF)", v: 33.3, c: "bg-danger" }],
         calcular: (n) => {

@@ -163,7 +163,11 @@ document.addEventListener('alpine:init', () => {
         },
 
         // Manejo de error de imagen (Fallback)
+       // Manejo de error de imagen (Fallback) - VERSIÓN CORREGIDA
         handleImageError() {
+            // 🛡️ ESCUDO: Si cursoObj es null, salimos inmediatamente para no causar error
+            if (!this.cursoObj) return;
+
             this.imagenErrorCount++;
             if (this.imagenErrorCount === 1) {
                 // Intento 1: Probar PNG
@@ -266,14 +270,17 @@ document.addEventListener('alpine:init', () => {
         },
         
         // Obtener pesos para la barra lateral (CON CORRECCIÓN DE COLORES)
+      // Obtener pesos para la barra lateral (CON CORRECCIÓN DE COLORES Y DEFAULT AZUL)
         get listaPesos() {
             if (!this.esquema || !this.esquema.pesos) return [];
             
             // Clonamos y ordenamos por valor (peso) descendente
             return [...this.esquema.pesos].sort((a, b) => b.v - a.v).map(item => {
                 
-                // 1. Color por defecto (Azul corporativo)
-                let colorClass = item.c || 'bg-blue-600'; 
+                // 1. Definimos el default como Azul Fuerte (bg-blue-600)
+                // IMPORTANTE: Ignoramos item.c si queremos forzar nuestra lógica, 
+                // o lo usamos solo si no detectamos el nombre.
+                let colorClass = 'bg-blue-600'; 
 
                 // 2. Detectar tipo de nota por nombre
                 const nombre = item.n.toLowerCase();
@@ -284,19 +291,24 @@ document.addEventListener('alpine:init', () => {
                 else if (nombre.includes('parcial')) {
                     colorClass = 'bg-yellow-400';   // Amarillo
                 }
-                // Naranja para Prácticas
                 else if (nombre.includes('práctica') || nombre.includes('pe')) {
-                    colorClass = 'bg-orange-500';   
+                    colorClass = 'bg-blue-600';   // Naranja
                 }
-                // CYAN para Laboratorios (NUEVO)
                 else if (nombre.includes('laboratorio') || nombre.includes('lb')) {
-                    colorClass = 'bg-cyan-500';   
+                    colorClass = 'bg-cyan-500';     // Cyan
                 }
-                // Verde para trabajos
                 else if (nombre.includes('trabajo') || nombre.includes('w')) {
-                    colorClass = 'bg-green-500';    
+                    colorClass = 'bg-green-500';    // Verde
                 }
-
+                else if (nombre.includes('investigación') || nombre.includes('inv')) {
+                    colorClass = 'bg-blue-600';     // Azul Fuerte
+                }
+                // AQUÍ AGREGAMOS LA REGLA PARA LOS RESTANTES (Controles, Investigación, etc.)
+                else if (nombre.includes('control') || nombre.includes('c')) {
+                    colorClass = 'bg-cyan-500';     // Azul Fuerte
+                }
+                
+                
                 return { ...item, colorClass };
             });
         }
