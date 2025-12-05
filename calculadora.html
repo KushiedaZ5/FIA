@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -211,17 +211,20 @@
                         <div class="p-4 flex flex-col items-center">
                             <div class="bg-white rounded-lg p-6 w-fit max-w-full mx-auto">
                                 <div class="mb-4 text-left">
-                                    <p class="text-sm mb-1 text-gray-700 font-medium">
+                                    <p class="text-sm mb-0 text-gray-800 font-medium">
                                         <span class="text-blue-500 font-bold">*</span> Para el siguiente curso se usarán
-                                        estas fórmulas, asegúrate que es el sílabo correcto.
+                                        estas fórmulas, asegúrate que es el sílabo correcto. 
+            </a>
                                     </p>
-                                    <p class="text-sm mb-0 text-gray-500">
-                                        <span class="text-red-500 font-bold">*</span> Si nota un error, contactarse al
-                                        steam del dueño.
+                                    <p class="text-sm mb-1 text-gray-600 font-medium">
+                                        <span class="text-red-500 font-bold">*</span> Si nota un error o quiere dejar una sugerencia,escribirla en 
+                                       <a href="faq.html#contacto" class="text-official-blue hover:text-blue-700 underline font-bold text-base transition-colors">
+   ¿Cómo funciona?
+</a>
                                     </p>
                                 </div>
                                 <div class="text-center">
-                                    <img :src="imagenSilaboSrc" @error="handleImageError()" alt="Sílabo del curso"
+                                    <img :src="imagenSilaboSrc" @error="handleImageError()" alt="SÃ­labo del curso"
                                         class="rounded max-h-[250px] mx-auto block">
                                 </div>
                             </div>
@@ -236,63 +239,81 @@
                             <div class="lg:px-2">
 
                                 <template x-for="i in 4">
-                                    <div x-show="showInput('P'+i)" class="grid grid-cols-12 gap-2 mb-2 items-center">
-                                        <div class="col-span-5 md:col-span-4">
-                                            <label :for="'practica'+i"
-                                                class="text-blue-600 text-sm text-blue-500 font-bold"
-                                                x-text="'Práctica '+i+' (P'+i+')'"></label>
-                                        </div>
-                                        <div class="col-span-7 md:col-span-8">
-                                            <input type="number" :id="'practica'+i" x-model="notas['P'+i]"
-                                                @input="calcularPromedio()"
-                                                class="w-full bg-zinc-900 border border-zinc-700 rounded-md px-3 py-2 text-white font-bold placeholder-white focus:bg-zinc-900 focus:border-official-blue focus:ring-4 focus:ring-official-blue/25 outline-none"
-                                                min="0" max="20" placeholder="0">
+                                    <div x-show="showInput('P'+i)" class="mb-3">
+                                        <div class="grid grid-cols-12 gap-2 items-center">
+                                            <div class="col-span-5 md:col-span-4">
+                                                <label :for="'practica'+i" class="text-blue-500 text-sm font-bold"
+                                                    x-text="'Práctica '+i+' (P'+i+')'"></label>
+                                            </div>
+                                            <div class="col-span-7 md:col-span-8">
+                                                <input type="number" step="0.01" :id="'practica'+i"
+                                                    x-model="notas['P'+i]" @input="validarYActualizar('P'+i)"
+                                                    :class="erroresValidacion['P'+i] ? 'border-red-500' : 'border-zinc-700'"
+                                                    class="w-full bg-zinc-900 border rounded-md px-3 py-2 text-white font-bold placeholder-white focus:bg-zinc-900 focus:border-official-blue focus:ring-4 focus:ring-official-blue/25 outline-none"
+                                                    min="0" max="20" placeholder="0">
+                                                <p x-show="erroresValidacion['P'+i]" x-text="erroresValidacion['P'+i]"
+                                                    class="text-xs text-red-600 mt-1"></p>
+                                            </div>
                                         </div>
                                     </div>
                                 </template>
 
-                                <div x-show="showInput('W1')" class="grid grid-cols-12 gap-2 mb-2 items-center">
-                                    <div class="col-span-5 md:col-span-4">
-                                        <label for="trabajoPractico"
-                                            class="text-green-500 text-sm text-green-500 font-bold">Trabajo (W1)</label>
-                                    </div>
-                                    <div class="col-span-7 md:col-span-8">
-                                        <input type="number" id="trabajoPractico" x-model="notas.W1"
-                                            @input="calcularPromedio()"
-                                            class="w-full bg-zinc-900 border border-zinc-700 rounded-md px-3 py-2 text-white font-bold placeholder-white focus:bg-zinc-900 focus:border-green-500 focus:ring-4 focus:ring-green-500/25 outline-none"
-                                            min="0" max="20" placeholder="0">
+                                <div x-show="showInput('W1')" class="mb-3">
+                                    <div class="grid grid-cols-12 gap-2 items-center">
+                                        <div class="col-span-5 md:col-span-4">
+                                            <label for="trabajoPractico"
+                                                class="text-green-500 text-sm font-bold">Trabajo (W1)</label>
+                                        </div>
+                                        <div class="col-span-7 md:col-span-8">
+                                            <input type="number" step="0.01" id="trabajoPractico" x-model="notas.W1"
+                                                @input="validarYActualizar('W1')"
+                                                :class="erroresValidacion.W1 ? 'border-red-500' : 'border-zinc-700'"
+                                                class="w-full bg-zinc-900 border rounded-md px-3 py-2 text-white font-bold placeholder-white focus:bg-zinc-900 focus:border-green-500 focus:ring-4 focus:ring-green-500/25 outline-none"
+                                                min="0" max="20" placeholder="0">
+                                            <p x-show="erroresValidacion.W1" x-text="erroresValidacion.W1"
+                                                class="text-xs text-red-600 mt-1"></p>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div x-show="showInput('EP')" class="grid grid-cols-12 gap-2 mb-2 items-center">
-                                    <div class="col-span-5 md:col-span-4">
-                                        <label for="examenParcial"
-                                            class="text-gray-400 text-sm text-yellow-400 font-bold">Examen Parcial
-                                            (EP)</label>
-                                    </div>
-                                    <div class="col-span-7 md:col-span-8">
-                                        <input type="number" id="examenParcial" x-model="notas.EP"
-                                            @input="calcularPromedio()"
-                                            class="w-full bg-zinc-900 border border-zinc-700 rounded-md px-3 py-2 text-white font-bold placeholder-white focus:bg-zinc-900 focus:border-official-blue focus:ring-4 focus:ring-official-blue/25 outline-none"
-                                            min="0" max="20" placeholder="0">
+                                <div x-show="showInput('EP')" class="mb-3">
+                                    <div class="grid grid-cols-12 gap-2 items-center">
+                                        <div class="col-span-5 md:col-span-4">
+                                            <label for="examenParcial" class="text-yellow-400 text-sm font-bold">Examen
+                                                Parcial
+                                                (EP)</label>
+                                        </div>
+                                        <div class="col-span-7 md:col-span-8">
+                                            <input type="number" step="0.01" id="examenParcial" x-model="notas.EP"
+                                                @input="validarYActualizar('EP')"
+                                                :class="erroresValidacion.EP ? 'border-red-500' : 'border-zinc-700'"
+                                                class="w-full bg-zinc-900 border rounded-md px-3 py-2 text-white font-bold placeholder-white focus:bg-zinc-900 focus:border-official-blue focus:ring-4 focus:ring-official-blue/25 outline-none"
+                                                min="0" max="20" placeholder="0">
+                                            <p x-show="erroresValidacion.EP" x-text="erroresValidacion.EP"
+                                                class="text-xs text-red-600 mt-1"></p>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div x-show="hasAnyLab()" class="mt-3">
                                     <h6 class="text-cyan-500 border-b border-zinc-700 pb-2 mb-3"></h6>
                                     <template x-for="i in 7">
-                                        <div x-show="showInput('Lb'+i)" class="flex mb-2 gap-2">
-                                            <div class="w-5/12">
-                                                <label :for="'lab'+i"
-                                                    class="text-cyan-500 text-sm text-cyan-500 font-bold"
-                                                    x-text="'Laboratorio '+i+' (Lb'+i+')'" ></label>
-                                                    
-                                            </div>
-                                            <div class="w-7/12">
-                                                <input type="number" :id="'lab'+i" x-model="notas['Lb'+i]"
-                                                    @input="calcularPromedio()"
-                                                    class="w-full bg-zinc-900 border border-zinc-700 rounded-md px-3 py-2 text-white font-bold placeholder-white focus:bg-zinc-900 focus:border-official-blue focus:ring-4 focus:ring-official-blue/25 outline-none"
-                                                    min="0" max="20" placeholder="0">
+                                        <div x-show="showInput('Lb'+i)" class="mb-3">
+                                            <div class="flex gap-2">
+                                                <div class="w-5/12">
+                                                    <label :for="'lab'+i" class="text-cyan-500 text-sm font-bold"
+                                                        x-text="'Laboratorio '+i+' (Lb'+i+')'"></label>
+                                                </div>
+                                                <div class="w-7/12">
+                                                    <input type="number" step="0.01" :id="'lab'+i"
+                                                        x-model="notas['Lb'+i]" @input="validarYActualizar('Lb'+i)"
+                                                        :class="erroresValidacion['Lb'+i] ? 'border-red-500' : 'border-zinc-700'"
+                                                        class="w-full bg-zinc-900 border rounded-md px-3 py-2 text-white font-bold placeholder-white focus:bg-zinc-900 focus:border-official-blue focus:ring-4 focus:ring-official-blue/25 outline-none"
+                                                        min="0" max="20" placeholder="0">
+                                                    <p x-show="erroresValidacion['Lb'+i]"
+                                                        x-text="erroresValidacion['Lb'+i]"
+                                                        class="text-xs text-red-600 mt-1"></p>
+                                                </div>
                                             </div>
                                         </div>
                                     </template>
@@ -301,16 +322,18 @@
                                 <div x-show="hasAnyControl()" class="mt-3">
                                     <h6 class="text-cyan-400 border-b border-zinc-700 pb-2 mb-3">Controles de Lectura
                                     </h6>
-                                    <div class="grid grid-cols-1 gap-2">
+                                    <div class="grid grid-cols-1 gap-3">
                                         <template x-for="i in 8">
                                             <div x-show="showInput('C'+i)">
-                                                <label :for="'control'+i"
-                                                    class="text-cyan-400 text-sm text-cyan-400 font-bold"
+                                                <label :for="'control'+i" class="text-cyan-400 text-sm font-bold"
                                                     x-text="'Control de Lectura '+i"></label>
-                                                <input type="number" :id="'control'+i" x-model="notas['C'+i]"
-                                                    @input="calcularPromedio()"
-                                                    class="w-full bg-zinc-900 border border-zinc-700 rounded-md px-3 py-2 text-white font-bold placeholder-white focus:bg-zinc-900 focus:border-official-blue focus:ring-4 focus:ring-official-blue/25 outline-none"
-                                                    min="0" max="20" placeholder="0">
+                                                <input type="number" step="0.01" :id="'control'+i"
+                                                    x-model="notas['C'+i]" @input="validarYActualizar('C'+i)"
+                                                    :class="erroresValidacion['C'+i] ? 'border-red-500' : 'border-zinc-700'"
+                                                    class="w-full bg-zinc-900 border rounded-md px-3 py-2 text-white font-bold placeholder-white focus:bg-zinc-900 focus:border-official-blue focus:ring-4 focus:ring-official-blue/25 outline-none"
+                                                    min="0" max="5" placeholder="0">
+                                                <p x-show="erroresValidacion['C'+i]" x-text="erroresValidacion['C'+i]"
+                                                    class="text-xs text-red-600 mt-1"></p>
                                             </div>
                                         </template>
                                     </div>
@@ -343,71 +366,71 @@
                         </div>
                     </section>
 
-                    <!-- BOX NOTA MÍNIMA (DELTA) - OCULTO HASTA PROMEDIO > 3 -->
-<section class="bg-card-bg border border-zinc-700 rounded-xl mb-6"
-         x-show="promedio > 3" 
-         x-transition.opacity.duration.500ms>
-    
-    <div class="p-4 text-center">
-        <p class="text-base text-gray-400">Nota mínima necesaria en el Examen Final para aprobar:</p>
+                    <!-- BOX NOTA MÃNIMA (DELTA) - OCULTO HASTA PROMEDIO > 3 -->
+                    <section class="bg-card-bg border border-zinc-700 rounded-xl mb-6" x-show="promedio > 3"
+                        x-transition.opacity.duration.500ms>
 
-        <div id="notaMinimaFinal" class="text-5xl font-bold">
-            <template x-if="notaMinimaNecesaria">
-                <span>
-                    <span x-show="notaMinimaNecesaria.estado === 'aprobado'"
-                        class="text-[#00E676]">¡Ya aprobaste!</span>
-                    <span x-show="notaMinimaNecesaria.estado === 'imposible'"
-                        class="text-[#FF1744]">Imposible aprobar :(</span>
-                    <span x-show="notaMinimaNecesaria.estado === 'posible'" class="text-[#f7e07a]"
-                        x-text="notaMinimaNecesaria.valor.toFixed(2)"></span>
-                </span>
-            </template>
-        </div>
+                        <div class="p-4 text-center">
+                            <p class="text-base text-gray-400">Cuanto necesitas en el final para aprobar:
+                            </p>
 
-    </div>
-</section>
-<!-- SECCIÓN PESOS (SOLO MÓVIL) -->
-<!-- x-show: Solo si hay curso. lg:hidden: Se oculta en PC, se ve en Móvil. -->
-<section class="bg-card-bg border border-zinc-700 rounded-xl mb-6 block lg:hidden"
-            x-show="cursoSeleccionado" 
-            x-transition>
-    
-    <div class="p-4">
-        <!-- Título -->
-        <h5 class="text-sm uppercase text-gray-400 mb-4 font-bold ps-2 border-l-4 border-blue-500 tracking-wider">
-            Peso de Notas 
-        </h5>
+                            <div id="notaMinimaFinal" class="text-5xl font-bold">
+                                <template x-if="notaMinimaNecesaria">
+                                    <span>
+                                        <span x-show="notaMinimaNecesaria.estado === 'aprobado'"
+                                            class="text-[#00E676]">¡Ya aprobaste!</span>
+                                        <span x-show="notaMinimaNecesaria.estado === 'imposible'"
+                                            class="text-[#FF1744]">Imposible aprobar :(</span>
+                                        <span x-show="notaMinimaNecesaria.estado === 'posible'"
+    :style="estilosNotaMinima"
+    x-text="notaMinimaNecesaria.valor.toFixed(2)"></span>
+                                </template>
+                            </div>
 
-        <!-- Barras de Progreso -->
-        <div class="flex flex-col gap-4">
-            <template x-for="peso in listaPesos" :key="peso.n">
-                <div>
-                    <div class="flex justify-between mb-1 text-sm">
-                        <!-- Nombre de la nota -->
-                        <span class="font-bold text-gray-200" x-text="peso.n"></span>
-                        <!-- Porcentaje -->
-                        <span class="text-white/50" x-text="peso.v.toFixed(1) + '%'"></span>
-                    </div>
-                    
-                    <!-- Barra Background -->
-                    <div class="bg-zinc-800 rounded-full h-2.5 overflow-hidden">
-                        <!-- Barra Relleno Dinámico -->
-                        <div :class="peso.colorClass" 
-                                class="h-full rounded-full transition-all duration-500 ease-out"
-                                :style="'width: ' + peso.v + '%'"></div>
-                    </div>
-                </div>
-            </template>
-        </div>
-    </div>
-</section>
+                        </div>
+                    </section>
+                    <!-- SECCIÃ“N PESOS (SOLO MÃ“VIL) -->
+                    <!-- x-show: Solo si hay curso. lg:hidden: Se oculta en PC, se ve en MÃ³vil. -->
+                    <section class="bg-card-bg border border-zinc-700 rounded-xl mb-6 block lg:hidden"
+                        x-show="cursoSeleccionado" x-transition>
+
+                        <div class="p-4">
+                            <!-- TÃ­tulo -->
+                            <h5
+                                class="text-sm uppercase text-gray-400 mb-4 font-bold ps-2 border-l-4 border-blue-500 tracking-wider">
+                                Peso de Notas
+                            </h5>
+
+                            <!-- Barras de Progreso -->
+                            <div class="flex flex-col gap-4">
+                                <template x-for="peso in listaPesos" :key="peso.n">
+                                    <div>
+                                        <div class="flex justify-between mb-1 text-sm">
+                                            <!-- Nombre de la nota -->
+                                            <span class="font-bold text-gray-200" x-text="peso.n"></span>
+                                            <!-- Porcentaje -->
+                                            <span class="text-white/50" x-text="peso.v.toFixed(1) + '%'"></span>
+                                        </div>
+
+                                        <!-- Barra Background -->
+                                        <div class="bg-zinc-800 rounded-full h-2.5 overflow-hidden">
+                                            <!-- Barra Relleno DinÃ¡mico -->
+                                            <div :class="peso.colorClass"
+                                                class="h-full rounded-full transition-all duration-500 ease-out"
+                                                :style="'width: ' + peso.v + '%'"></div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </section>
                 </div>
 
             </main>
 
 
             <!-- Right Sidebar -->
-<aside class="lg:col-span-3">
+            <aside class="lg:col-span-3">
 
     <!-- SIN STICKY: Se eliminó 'sticky top-4'. Ahora es un div normal. -->
     <div>
@@ -466,47 +489,54 @@
     </div>
 
     <footer class="bg-zinc-950 border-t border-zinc-800 py-16 px-5 mt-auto">
-        <div class="container mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div class="lg:col-span-5 flex flex-col items-center text-center mb-5 lg:mb-0">
-                    <div class="flex items-center gap-3 mb-3">
-                        <img src="imagenes/logo.png" alt="Logo Footer" class="h-12 opacity-90">
-                        <div class="flex flex-col items-start">
-                            <span
-                                class="text-2xl text-official-blue font-black -tracking-tight leading-none">Calculadora</span>
-                            <span class="text-[0.7rem] text-official-blue tracking-[0.3em] font-bold">FIA USMP</span>
+            <div class="container mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+                    <div class="lg:col-span-5 flex flex-col items-center text-center mb-5 lg:mb-0">
+
+                        <div class="flex items-center gap-3 mb-3">
+                            <img src="imagenes/logo.png" alt="Logo Footer" class="h-12 opacity-90">
+                            <div class="flex flex-col items-start">
+                                <span
+                                    class="text-2xl text-official-blue font-black -tracking-tight leading-none">Calculadora</span>
+                                <span class="text-[0.7rem] text-official-blue tracking-[0.3em] font-bold">FIA
+                                    USMP</span>
+                            </div>
+                        </div>
+
+                        <div class="text-gray-500">
+                            <p class="mb-1">2025</p>
+                            <a href="mailto:alessandro_morales@usmp.pe"
+                                class="text-gray-500 font-normal hover:underline hover:text-gray-400 transition-colors duration-200">alessandro_morales@usmp.pe</a>
                         </div>
                     </div>
-                    <div class="text-gray-500">
-                        <p class="mb-1">© 2025 No afiliado con USMP.</p>
-                        <a href="mailto:alessandro_morales@usmp.pe"
-                            class="text-gray-500 font-normal hover:underline hover:text-gray-400 transition-colors duration-200">alessandro_morales@usmp.pe</a>
+
+                    <div class="lg:col-span-3 text-center lg:text-left mb-4 lg:mb-0">
+                        <h5 class="text-blue-gray-600 font-bold uppercase text-sm tracking-wider mb-6"
+                            style="color: #546E7A;">Funciones</h5>
+                        <ul class="list-none">
+                            <li><a href="index.html"
+                                    class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">Calculadora</a>
+                            </li>
+                            <li><a href="examenes.html"
+                                    class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">Exámenes</a>
+                            </li>
+                        </ul>
                     </div>
-                </div>
-                <div class="lg:col-span-3 text-center lg:text-left mb-4 lg:mb-0">
-                    <h5 class="text-blue-gray-600 font-bold uppercase text-sm tracking-wider mb-6"
-                        style="color: #546E7A;">Funciones</h5>
-                    <ul class="list-none">
-                        <li><a href="index.html"
-                                class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">Calculadora</a>
-                        </li>
-                        <li><a href="examenes.html"
-                                class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">Exámenes</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="lg:col-span-3 text-center lg:text-left">
-                    <h5 class="text-blue-gray-600 font-bold uppercase text-sm tracking-wider mb-6"
-                        style="color: #546E7A;">Sobre Nosotros</h5>
-                    <ul class="list-none">
-                        <li><a href="faq.html"
-                                class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">¿Cómo
-                                Funciona?</a></li>
-                    </ul>
+
+                    <div class="lg:col-span-3 text-center lg:text-left">
+                        <h5 class="text-blue-gray-600 font-bold uppercase text-sm tracking-wider mb-6"
+                            style="color: #546E7A;">Sobre Nosotros</h5>
+                        <ul class="list-none">
+                            <li><a href="faq.html"
+                                    class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">¿Cómo
+                                    Funciona?</a></li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
-        </div>
-    </footer>
+        </footer>
 
     <script src="data/data.js"></script>
     <script src="data/esquemas.js"></script>

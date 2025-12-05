@@ -1,4 +1,4 @@
-document.addEventListener('alpine:init', () => {
+﻿document.addEventListener('alpine:init', () => {
     Alpine.data('appCalculadora', () => ({
         // ============================================
         // 1. ESTADO (STATE)
@@ -7,7 +7,7 @@ document.addEventListener('alpine:init', () => {
         cicloSeleccionado: '',
         cursoSeleccionado: '', // ID del curso
         cursoObj: null, // Objeto completo del curso actual
-        esquema: null,  // Objeto del esquema de calificación
+        esquema: null,  // Objeto del esquema de calificaciÃ³n
         
         // Listas para los Selects
         listaCarreras: [],
@@ -24,10 +24,20 @@ document.addEventListener('alpine:init', () => {
             C1: '', C2: '', C3: '', C4: '', C5: '', C6: '', C7: '', C8: ''
         },
 
+        // Errores de ValidaciÃ³n (Reactivo)
+        erroresValidacion: {
+            P1: '', P2: '', P3: '', P4: '',
+            W1: '',
+            EP: '',
+            EF: '',
+            Lb1: '', Lb2: '', Lb3: '', Lb4: '', Lb5: '', Lb6: '', Lb7: '',
+            C1: '', C2: '', C3: '', C4: '', C5: '', C6: '', C7: '', C8: ''
+        },
+
         // Resultado calculado
         promedio: 0,
         
-        // Manejo de Imágenes
+        // Manejo de ImÃ¡genes
         imagenSilaboSrc: '',
         imagenErrorCount: 0, // Para evitar bucles infinitos
 
@@ -35,7 +45,7 @@ document.addEventListener('alpine:init', () => {
         NOTA_APROBATORIA: 10.5,
 
         // ============================================
-        // 2. INICIALIZACIÓN Y RUTAS
+        // 2. INICIALIZACIÃ“N Y RUTAS
         // ============================================
         init() {
             // Verificar que existan las dependencias globales
@@ -50,7 +60,7 @@ document.addEventListener('alpine:init', () => {
                 nombre: val.nombre
             }));
 
-            // Auto-selección desde URL (Query Params)
+            // Auto-selecciÃ³n desde URL (Query Params)
             const params = new URLSearchParams(window.location.search);
             const c = params.get('carrera');
             const ci = params.get('ciclo');
@@ -67,7 +77,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         // ============================================
-        // 3. LOGICA DE NAVEGACIÓN
+        // 3. LOGICA DE NAVEGACIÃ“N
         // ============================================
         actualizarCiclos() {
             this.listaCiclos = [];
@@ -128,15 +138,79 @@ document.addEventListener('alpine:init', () => {
         },
 
         limpiarNotas() {
-            // Reiniciar todas las notas a string vacío
+            // Reiniciar todas las notas a string vacÃ­o
             Object.keys(this.notas).forEach(k => this.notas[k] = '');
+            // Limpiar errores de validaciÃ³n
+            Object.keys(this.erroresValidacion).forEach(k => this.erroresValidacion[k] = '');
             this.promedio = 0;
         },
 
         // ============================================
-        // 4. HELPERS VISUALES (VISIBILIDAD)
+        // 4. VALIDACIÃ“N DE INPUTS
         // ============================================
-        // Verifica si el input debe mostrarse según el esquema actual
+        
+        // FunciÃ³n auxiliar: Contar decimales
+        contarDecimales(valor) {
+            if (!valor || valor === '') return 0;
+            const str = String(valor);
+            if (str.includes('.')) {
+                return str.split('.')[1].length;
+            }
+            return 0;
+        },
+
+        // Validación principal
+        validarInput(key, valor) {
+            // Si está vacío, no hay error
+            if (valor === '' || valor === null || valor === undefined) {
+                return '';
+            }
+
+            const num = parseFloat(valor);
+            
+            // Verificar si es un número válido
+            if (isNaN(num) || !isFinite(num)) {
+                return 'Valor inválido';
+            }
+
+            // Verificar decimales (máximo 2)
+            if (this.contarDecimales(valor) > 2) {
+                return 'Máximo 2 decimales permitidos';
+            }
+
+            // Verificar negativos
+            if (num < 0) {
+                return 'No se permiten valores negativos';
+            }
+
+            // Determinar límite según tipo de input Y esquema actual
+            const esControl = key.startsWith('C');
+            let limite = 20; // Default para inputs estándar
+            
+            if (esControl) {
+                // Verificar si es el esquema de Inglés (039) que usa 0-20 para controles
+                const esIngles = this.cursoObj && this.cursoObj.esquema === '039';
+                limite = esIngles ? 20 : 5; // Inglés: 0-20, Otros: 0-5
+            }
+
+            // Verificar límite superior
+           if (num > limite) {
+    return `El valor máximo es ${limite}`;  // ✅ CORRECTO
+}
+            return ''; // Sin error
+        },
+
+        // MÃ©todo para validar y actualizar errores
+        validarYActualizar(key) {
+            const valor = this.notas[key];
+            this.erroresValidacion[key] = this.validarInput(key, valor);
+            this.calcularPromedio();
+        },
+
+        // ============================================
+        // 5. HELPERS VISUALES (VISIBILIDAD)
+        // ============================================
+        // Verifica si el input debe mostrarse segÃºn el esquema actual
         showInput(inputKey) {
             if (!this.esquema) return false;
             // Manejo especial para grupos (Lab y Control)
@@ -154,7 +228,7 @@ document.addEventListener('alpine:init', () => {
             return this.esquema && this.esquema.inputs.some(i => i.startsWith('C'));
         },
 
-        // Título dinámico del ciclo
+        // TÃ­tulo dinÃ¡mico del ciclo
         get tituloCicloTexto() {
             if (!this.cicloSeleccionado || !this.carreraSeleccionada) return 'CARGANDO...';
             const nombreCarrera = dataCarreras[this.carreraSeleccionada].nombre;
@@ -163,9 +237,9 @@ document.addEventListener('alpine:init', () => {
         },
 
         // Manejo de error de imagen (Fallback)
-       // Manejo de error de imagen (Fallback) - VERSIÓN CORREGIDA
+       // Manejo de error de imagen (Fallback) - VERSIÃ“N CORREGIDA
         handleImageError() {
-            // 🛡️ ESCUDO: Si cursoObj es null, salimos inmediatamente para no causar error
+            // ðŸ›¡ï¸ ESCUDO: Si cursoObj es null, salimos inmediatamente para no causar error
             if (!this.cursoObj) return;
 
             this.imagenErrorCount++;
@@ -179,34 +253,50 @@ document.addEventListener('alpine:init', () => {
         },
 
         // ============================================
-        // 5. CÁLCULOS
+        // 5. CÃLCULOS
         // ============================================
         calcularPromedio() {
             if (!this.esquema) return;
 
-            // Convertir strings a floats, default 0
+            // Convertir strings a floats, sanitizar valores inválidos
             const notasNumericas = {};
             Object.keys(this.notas).forEach(k => {
-                notasNumericas[k] = parseFloat(this.notas[k]) || 0;
+                const valor = this.notas[k];
+                const error = this.validarInput(k, valor);
+                // Si hay error de validación, usar 0 para el cálculo
+                if (error !== '') {
+                    notasNumericas[k] = 0;
+                } else {
+                    notasNumericas[k] = parseFloat(valor) || 0;
+                }
             });
 
             this.promedio = this.esquema.calcular(notasNumericas);
         },
 
-        // Cálculo Delta (Nota mínima en Final)
+        // CÃ¡lculo Delta (Nota mÃ­nima en Final)
         get notaMinimaNecesaria() {
-            if (!this.esquema) return null;
+    if (!this.esquema) return null;
 
-            const notasNumericas = {};
-            Object.keys(this.notas).forEach(k => {
-                notasNumericas[k] = parseFloat(this.notas[k]) || 0;
-            });
+    // Convertir strings a floats, sanitizar valores inválidos
+    const notasNumericas = {};
+    Object.keys(this.notas).forEach(k => {
+        const valor = this.notas[k];
+        const error = this.validarInput(k, valor);
+        
+        // Si hay error de validación, usar 0 para el cálculo
+        if (error !== '') {
+            notasNumericas[k] = 0;
+        } else {
+            notasNumericas[k] = parseFloat(valor) || 0;
+        }
+    });
 
             // Escenario 1: Sin Final
             const notasSinFinal = { ...notasNumericas, EF: 0 };
             const pSinFinal = this.esquema.calcular(notasSinFinal);
 
-            // Si ya aprobó sin dar final
+            // Si ya aprobÃ³ sin dar final
             if (pSinFinal >= this.NOTA_APROBATORIA) return { estado: 'aprobado', valor: 0 };
 
             // Escenario 2: Final perfecto (20)
@@ -227,7 +317,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         // ============================================
-        // 6. ESTILOS DINÁMICOS (HSL & BARRAS)
+        // 6. ESTILOS DINÃMICOS (HSL & BARRAS)
         // ============================================
         get estilosPromedio() {
             const p = this.promedio;
@@ -237,14 +327,14 @@ document.addEventListener('alpine:init', () => {
                 // 0 -> 10.49 (Rojo -> Amarillo)
                 const t = Math.max(0, p / 10.5);
                 hue = Math.round(60 * t);
-                saturation = 100; 
+                saturation = 90; 
                 lightness = 50;
             } else if (p >= 10.5 && p < 14) {
                 // 10.5 -> 13.99 (Verde -> Azul)
                 const t = (p - 10.5) / (14 - 10.5);
                 hue = Math.round(120 + (217 - 120) * t);
-                saturation = 95; 
-                lightness = 60;
+                saturation = 90; 
+                lightness = 50;
             } else {
                 // 14+ (Cyan fijo)
                 hue = 217; 
@@ -259,18 +349,43 @@ document.addEventListener('alpine:init', () => {
             return {
                 texto: {
                     color: color,
-                    textShadow: `0 0 35px ${color}`
+                    textShadow: `0 0 80px ${color}`
                 },
                 caja: {
                     borderColor: borderColor,
-                    background: `linear-gradient(145deg, ${bgTint}, transparent)`,
-                    boxShadow: `0 0 10px ${bgTint}`
+
                 }
             };
         },
+        get estilosNotaMinima() {
+    if (!this.notaMinimaNecesaria || this.notaMinimaNecesaria.estado !== 'posible') {
+        return { color: '', textShadow: '' };
+    }
+    const nota = this.notaMinimaNecesaria.valor;
+    let hue, saturation, lightness;
+    if (nota >= 14) {
+        // 20 → 14: Rojo neón (como promedio 0)
+        hue = 0;
+        saturation = 100;
+        lightness = 50;
+    } else {
+    // 14 → 0: Gradiente rojo → verde (invertido)
+    const t = 1 - (nota / 14); // Invertir: nota alta = 0, nota baja = 1
+    hue = Math.round(120 * t); // 0 (rojo) → 120 (verde)
+        saturation = 90;
+        lightness = 50;
+    }
+    const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    
+   return {
+    color: color,
+    textShadow: ``, // Brillo suave
+    fontWeight: '900' // Extra bold
+};
+},
         
-        // Obtener pesos para la barra lateral (CON CORRECCIÓN DE COLORES)
-      // Obtener pesos para la barra lateral (CON CORRECCIÓN DE COLORES Y DEFAULT AZUL)
+        // Obtener pesos para la barra lateral (CON CORRECCIÃ“N DE COLORES)
+      // Obtener pesos para la barra lateral (CON CORRECCIÃ“N DE COLORES Y DEFAULT AZUL)
         get listaPesos() {
             if (!this.esquema || !this.esquema.pesos) return [];
             
@@ -278,7 +393,7 @@ document.addEventListener('alpine:init', () => {
             return [...this.esquema.pesos].sort((a, b) => b.v - a.v).map(item => {
                 
                 // 1. Definimos el default como Azul Fuerte (bg-blue-600)
-                // IMPORTANTE: Ignoramos item.c si queremos forzar nuestra lógica, 
+                // IMPORTANTE: Ignoramos item.c si queremos forzar nuestra lÃ³gica, 
                 // o lo usamos solo si no detectamos el nombre.
                 let colorClass = 'bg-blue-600'; 
 
@@ -303,7 +418,7 @@ document.addEventListener('alpine:init', () => {
                 else if (nombre.includes('investigación') || nombre.includes('inv')) {
                     colorClass = 'bg-blue-600';     // Azul Fuerte
                 }
-                // AQUÍ AGREGAMOS LA REGLA PARA LOS RESTANTES (Controles, Investigación, etc.)
+                // AQUÃ AGREGAMOS LA REGLA PARA LOS RESTANTES (Controles, InvestigaciÃ³n, etc.)
                 else if (nombre.includes('control') || nombre.includes('c')) {
                     colorClass = 'bg-cyan-500';     // Azul Fuerte
                 }
