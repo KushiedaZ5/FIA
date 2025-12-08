@@ -5,6 +5,7 @@ const dataCarreras = {
         nombre: 'Ingeniería de Computación y Sistemas',
         ciclos: {
             'ciclo1': [
+                
                 { value: 'ciu_int', text: 'Ciudadanía Intercultural', esquema: '049' },
                 { value: 'lenguaje', text: 'Lenguaje', esquema: '049' },
                 { value: 'metodos_est', text: 'Métodos de Estudio', esquema: '049' },
@@ -12,15 +13,18 @@ const dataCarreras = {
                 { value: 'geom_analitica', text: 'Geometría Analítica', esquema: '040' },
                 { value: 'mate_discreta', text: 'Matemática Discreta', esquema: '040' },
                 { value: 'intro_sis_info', text: 'Introducción a Sistemas de Información', esquema: '045' },
+                { value: 'actividades1', text: 'Actividades 1', esquema: '038' , creditos: 1},
                 { value: 'ingles1', text: 'Inglés 1', esquema: '039' },
             ],
             'ciclo2': [
-                { value: 'ingles2', text: 'Inglés II', esquema: '039' },
-                { value: 'calculo1', text: 'Cálculo I', esquema: '040' },
-                { value: 'algebra_lineal', text: 'Álgebra Lineal', esquema: '040' },
-                { value: 'fund_diseno_web', text: 'Fundamentos del Diseño Web', esquema: '045' },
-                { value: 'intro_economia', text: 'Introducción a la Economía', esquema: '038' },
-                { value: 'intro_programacion', text: 'Introducción a la Programación', esquema: '128' },
+                
+                { value: 'ingles2', text: 'Inglés II', esquema: '039' , creditos: 1},
+                { value: 'calculo1', text: 'Cálculo I', esquema: '040' , creditos: 5},
+                { value: 'algebra_lineal', text: 'Álgebra Lineal', esquema: '040' , creditos: 5},
+                { value: 'fund_diseno_web', text: 'Fundamentos del Diseño Web', esquema: '045' , creditos: 3},
+                { value: 'intro_economia', text: 'Introducción a la Economía', esquema: '038', creditos: 3 },
+                { value: 'actividades2', text: 'Actividades 2', esquema: '038' , creditos: 1},
+                { value: 'intro_programacion', text: 'Introducción a la Programación', esquema: '128', creditos: 5 },
             ],
             'ciclo3': [
                 { value: 'alg1', text: 'Algoritmos y Estructura de Datos I', esquema: '128' },
@@ -30,11 +34,11 @@ const dataCarreras = {
                 { value: 'sis_info', text: 'Sistemas de Información', esquema: '038' }
             ],
             'ciclo4': [
-                { value: 'est2', text: 'Estadística 2', esquema: '041' },
-                { value: 'ti2', text: 'Tecnología de Información 2', esquema: '046' },
-                { value: 'fis2', text: 'Física 2', esquema: '042' },
-                { value: 'alg2', text: 'Algoritmos 2', esquema: '047' },
-                { value: 'micro', text: 'Microeconomía', esquema: '054' }
+                { value: 'est2', text: 'Estadística 2', esquema: '041', creditos: 4 },
+                { value: 'ti2', text: 'Tecnología de Información 2', esquema: '046', creditos: 4 },
+                { value: 'fis2', text: 'Física 2', esquema: '042', creditos: 5 },
+                { value: 'alg2', text: 'Algoritmos 2', esquema: '047', creditos: 5 },
+                { value: 'micro', text: 'Microeconomía', esquema: '054', creditos: 4 }
             ],
             'ciclo5': [
                 { value: 'contabilidad_general', text: 'Contabilidad General', esquema: '038' },
@@ -55,7 +59,7 @@ const dataCarreras = {
     'ingCivil': {
         nombre: 'Ingeniería Civil',
         ciclos: {
-             'ciclo1': [
+            'ciclo1': [
                 { value: 'ciu_int', text: 'Ciudadanía Intercultural', esquema: '049' },
                 { value: 'lenguaje', text: 'Lenguaje', esquema: '049' },
                 { value: 'metodos_est', text: 'Métodos de Estudio', esquema: '049' },
@@ -64,7 +68,7 @@ const dataCarreras = {
                 { value: 'mate_discreta', text: 'Matemática Discreta', esquema: '040' },
                 { value: 'intro_ing', text: 'Introducción a la Ingeniería(Proximamente...)', esquema: '045' },
                 { value: 'ingles1', text: 'Inglés 1', esquema: '039' }
-            ], 
+            ],
             'ciclo2': [
                 { value: 'ingles2', text: 'Inglés II', esquema: '039' },
                 { value: 'calculo1', text: 'Cálculo I', esquema: '040' },
@@ -209,7 +213,8 @@ const dataCarreras = {
     },
     'aeronautica': {
         nombre: 'Ciencias Aeronáuticas',
-        ciclos: { 'ciclo1': [
+        ciclos: {
+            'ciclo1': [
                 { value: 'fisica1', text: 'Física General I(Proximamente...)', esquema: '049' },
                 { value: 'matematica1', text: 'Matemática I(Proximamente...)', esquema: '049' },
                 { value: 'metodos_est', text: 'Métodos de Estudio(Proximamente...)', esquema: '049' },
@@ -238,12 +243,12 @@ const dataCarreras = {
                 { value: 'regulaciones_2', text: 'Regulaciones Aéreas II(Proximamente...)', esquema: '039' },
             ], 'ciclo4': [
                 { value: 'estadistica_probabilidades', text: 'Estadística y Probabilidades(Proximamente...)', esquema: '049' },
-                { value: 'motores_aeronaves', text: 'Motores de Aeronaves(Proximamente...)', esquema: '049' },
+                { value: 'motores_aeronaves', text: 'Motores de Aeronaves', esquema: '038' },
                 { value: 'fisiologia_vuelo', text: 'Fisiología de Vuelo(Proximamente...)', esquema: '049' },
-                { value: 'introduccion_economia', text: 'Introducción a la Economía(Proximamente...)', esquema: '045' },
-                { value: 'planeamiento_carrera', text: 'Planeamiento de Carrera(Proximamente...)', esquema: '040' },
-                { value: 'liderazgo_profesionalizacion', text: 'Liderazgo y Profesionalización(Proximamente...)', esquema: '040' },
-                { value: 'teoria_vuelo_instrumental', text: 'Teoría de Vuelo Instrumental(Proximamente...)', esquema: '039' },
+                { value: 'introduccion_economia', text: 'Introducción a la Economía', esquema: '038' },
+                { value: 'planeamiento_carrera', text: 'Planeamiento de Carrera', esquema: '045' },
+                { value: 'liderazgo_profesionalizacion', text: 'Liderazgo y Profesionalización', esquema: '038' },
+                { value: 'teoria_vuelo_instrumental', text: 'Teoría de Vuelo Instrumental', esquema: '038' },
             ], 'ciclo5': [
                 { value: 'administracion_logistica', text: 'Administración Logística(Proximamente...)', esquema: '049' },
                 { value: 'contabilidad_general', text: 'Contabilidad General(Proximamente...)', esquema: '045' },
@@ -256,6 +261,7 @@ const dataCarreras = {
                 { value: 'operaciones_despacho_aereo', text: 'Operaciones de Despacho Aéreo(Proximamente...)', esquema: '040' },
                 { value: 'costos_presupuestos', text: 'Costos y Presupuestos(Proximamente...)', esquema: '040' },
                 { value: 'sms_i', text: 'Sistema de Gestión de Seguridad Operacional I (SMS-I)(Proximamente...)', esquema: '039' },
-            ] }
+            ]
+        }
     }
 };

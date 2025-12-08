@@ -8,7 +8,7 @@
         cursoSeleccionado: '', // ID del curso
         cursoObj: null, // Objeto completo del curso actual
         esquema: null,  // Objeto del esquema de calificaciÃ³n
-
+        
         // Listas para los Selects
         listaCarreras: [],
         listaCiclos: [],
@@ -36,7 +36,7 @@
 
         // Resultado calculado
         promedio: 0,
-
+        
         // Manejo de ImÃ¡genes
         imagenSilaboSrc: '',
         imagenErrorCount: 0, // Para evitar bucles infinitos
@@ -60,11 +60,10 @@
                 nombre: val.nombre
             }));
 
-            // Auto-selección desde URL (Query Params)
+            // Auto-selecciÃ³n desde URL (Query Params)
             const params = new URLSearchParams(window.location.search);
             const c = params.get('carrera');
             const ci = params.get('ciclo');
-            const cu = params.get('curso'); // NEW: Read course param from URL
 
             if (c && dataCarreras[c]) {
                 this.carreraSeleccionada = c;
@@ -73,99 +72,7 @@
                 if (ci && this.listaCiclos.some(ciclo => ciclo.id === ci)) {
                     this.cicloSeleccionado = ci;
                     this.actualizarCursos();
-
-                    // NEW: Auto-select course if URL param exists
-                    if (cu && this.listaCursos.some(curso => curso.value === cu)) {
-                        this.seleccionarCursoFromURL(cu);
-                    }
                 }
-            }
-        },
-
-        // ============================================
-        // NEW: Select course from URL (loads saved notes)
-        // ============================================
-        seleccionarCursoFromURL(cursoValue) {
-            this.cursoSeleccionado = cursoValue;
-
-            // Buscar la data del curso
-            this.cursoObj = this.listaCursos.find(c => c.value === cursoValue);
-
-            if (this.cursoObj && esquemas[this.cursoObj.esquema]) {
-                this.esquema = esquemas[this.cursoObj.esquema];
-
-                // Reset notes initially (will be overwritten by loaded notes)
-                this.limpiarNotas();
-                this.imagenErrorCount = 0;
-                this.imagenSilaboSrc = `imagenes/${this.cursoObj.esquema}.jpg`;
-
-                // Load saved notes from Firestore
-                this.cargarNotasGuardadas(cursoValue);
-            } else {
-                console.error("Esquema no encontrado para", cursoValue);
-            }
-        },
-
-        // ============================================
-        // NEW: Load saved notes from Firestore
-        // ============================================
-        async cargarNotasGuardadas(cursoId) {
-            // Wait for auth to be ready
-            const waitForAuth = () => {
-                return new Promise((resolve) => {
-                    const checkAuth = () => {
-                        const authStore = Alpine.store('auth');
-                        if (authStore && !authStore.loading) {
-                            resolve(authStore);
-                        } else {
-                            setTimeout(checkAuth, 100);
-                        }
-                    };
-                    checkAuth();
-                });
-            };
-
-            const authStore = await waitForAuth();
-
-            if (!authStore.isLoggedIn) {
-                console.log('📭 Usuario no logueado, no se cargan notas guardadas');
-                this.calcularPromedio();
-                return;
-            }
-
-            try {
-                // Use global firebaseAuth from auth.alpine.js
-                const userId = authStore.userId;
-                const { db } = window.firebaseAuth;
-
-                // Import Firestore functions dynamically
-                const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
-
-                const noteRef = doc(db, 'users', userId, 'saved_notes', cursoId);
-                const noteSnap = await getDoc(noteRef);
-
-                if (noteSnap.exists()) {
-                    const savedData = noteSnap.data();
-
-                    // Populate notes from saved data
-                    if (savedData.notas) {
-                        Object.keys(savedData.notas).forEach(key => {
-                            if (this.notas.hasOwnProperty(key)) {
-                                this.notas[key] = savedData.notas[key];
-                            }
-                        });
-                    }
-
-                    // Recalculate average with loaded notes
-                    this.calcularPromedio();
-                    console.log('✅ Notas cargadas desde Firestore:', cursoId);
-                } else {
-                    console.log('📭 No hay notas guardadas para:', cursoId);
-                    this.calcularPromedio();
-                }
-            } catch (error) {
-                console.error('❌ Error cargando notas guardadas:', error);
-                this.calcularPromedio();
             }
         },
 
@@ -176,7 +83,7 @@
             this.listaCiclos = [];
             this.listaCursos = [];
             this.resetCurso();
-
+            
             if (this.carreraSeleccionada) {
                 const carrera = dataCarreras[this.carreraSeleccionada];
                 this.listaCiclos = Object.keys(carrera.ciclos)
@@ -186,10 +93,10 @@
                         nombre: key.replace('ciclo', 'Ciclo ')
                     }));
             }
-
+            
             // Actualizar link de "Volver"
             const btnVolver = document.getElementById('btnVolverMapa');
-            if (btnVolver) btnVolver.href = `carrera.html?carrera=${this.carreraSeleccionada}`;
+            if(btnVolver) btnVolver.href = `carrera.html?carrera=${this.carreraSeleccionada}`;
         },
 
         actualizarCursos() {
@@ -204,18 +111,18 @@
 
         seleccionarCurso(cursoValue) {
             this.cursoSeleccionado = cursoValue;
-
+            
             // Buscar la data del curso
             this.cursoObj = this.listaCursos.find(c => c.value === cursoValue);
-
+            
             if (this.cursoObj && esquemas[this.cursoObj.esquema]) {
                 this.esquema = esquemas[this.cursoObj.esquema];
-
+                
                 // Resetear notas e imagen
                 this.limpiarNotas();
                 this.imagenErrorCount = 0;
                 this.imagenSilaboSrc = `imagenes/${this.cursoObj.esquema}.jpg`;
-
+                
                 // Calcular inicial (0)
                 this.calcularPromedio();
             } else {
@@ -241,7 +148,7 @@
         // ============================================
         // 4. VALIDACIÃ“N DE INPUTS
         // ============================================
-
+        
         // FunciÃ³n auxiliar: Contar decimales
         contarDecimales(valor) {
             if (!valor || valor === '') return 0;
@@ -260,7 +167,7 @@
             }
 
             const num = parseFloat(valor);
-
+            
             // Verificar si es un número válido
             if (isNaN(num) || !isFinite(num)) {
                 return 'Valor inválido';
@@ -279,7 +186,7 @@
             // Determinar límite según tipo de input Y esquema actual
             const esControl = key.startsWith('C');
             let limite = 20; // Default para inputs estándar
-
+            
             if (esControl) {
                 // Verificar si es el esquema de Inglés (039) que usa 0-20 para controles
                 const esIngles = this.cursoObj && this.cursoObj.esquema === '039';
@@ -287,9 +194,9 @@
             }
 
             // Verificar límite superior
-            if (num > limite) {
-                return `El valor máximo es ${limite}`;  // ✅ CORRECTO
-            }
+           if (num > limite) {
+    return `El valor máximo es ${limite}`;  // ✅ CORRECTO
+}
             return ''; // Sin error
         },
 
@@ -308,7 +215,7 @@
             if (!this.esquema) return false;
             // Manejo especial para grupos (Lab y Control)
             if (inputKey.startsWith('Lb')) {
-                return this.esquema.inputs.includes(inputKey);
+                 return this.esquema.inputs.includes(inputKey);
             }
             return this.esquema.inputs.includes(inputKey);
         },
@@ -330,7 +237,7 @@
         },
 
         // Manejo de error de imagen (Fallback)
-        // Manejo de error de imagen (Fallback) - VERSIÃ“N CORREGIDA
+       // Manejo de error de imagen (Fallback) - VERSIÃ“N CORREGIDA
         handleImageError() {
             // ðŸ›¡ï¸ ESCUDO: Si cursoObj es null, salimos inmediatamente para no causar error
             if (!this.cursoObj) return;
@@ -369,21 +276,21 @@
 
         // CÃ¡lculo Delta (Nota mÃ­nima en Final)
         get notaMinimaNecesaria() {
-            if (!this.esquema) return null;
+    if (!this.esquema) return null;
 
-            // Convertir strings a floats, sanitizar valores inválidos
-            const notasNumericas = {};
-            Object.keys(this.notas).forEach(k => {
-                const valor = this.notas[k];
-                const error = this.validarInput(k, valor);
-
-                // Si hay error de validación, usar 0 para el cálculo
-                if (error !== '') {
-                    notasNumericas[k] = 0;
-                } else {
-                    notasNumericas[k] = parseFloat(valor) || 0;
-                }
-            });
+    // Convertir strings a floats, sanitizar valores inválidos
+    const notasNumericas = {};
+    Object.keys(this.notas).forEach(k => {
+        const valor = this.notas[k];
+        const error = this.validarInput(k, valor);
+        
+        // Si hay error de validación, usar 0 para el cálculo
+        if (error !== '') {
+            notasNumericas[k] = 0;
+        } else {
+            notasNumericas[k] = parseFloat(valor) || 0;
+        }
+    });
 
             // Escenario 1: Sin Final
             const notasSinFinal = { ...notasNumericas, EF: 0 };
@@ -395,7 +302,7 @@
             // Escenario 2: Final perfecto (20)
             const notasConFinalMax = { ...notasNumericas, EF: 20 };
             const pConFinalMax = this.esquema.calcular(notasConFinalMax);
-
+            
             // Peso del EF
             const pesoEF = (pConFinalMax - pSinFinal) / 20;
 
@@ -405,7 +312,7 @@
 
             if (necesario > 20) return { estado: 'imposible', valor: necesario };
             if (necesario <= 0) return { estado: 'aprobado', valor: 0 };
-
+            
             return { estado: 'posible', valor: necesario };
         },
 
@@ -420,18 +327,18 @@
                 // 0 -> 10.49 (Rojo -> Amarillo)
                 const t = Math.max(0, p / 10.5);
                 hue = Math.round(60 * t);
-                saturation = 90;
+                saturation = 90; 
                 lightness = 50;
             } else if (p >= 10.5 && p < 14) {
                 // 10.5 -> 13.99 (Verde -> Azul)
                 const t = (p - 10.5) / (14 - 10.5);
                 hue = Math.round(120 + (217 - 120) * t);
-                saturation = 90;
+                saturation = 90; 
                 lightness = 50;
             } else {
                 // 14+ (Cyan fijo)
-                hue = 217;
-                saturation = 91;
+                hue = 217; 
+                saturation = 91; 
                 lightness = 60;
             }
 
@@ -451,51 +358,51 @@
             };
         },
         get estilosNotaMinima() {
-            if (!this.notaMinimaNecesaria || this.notaMinimaNecesaria.estado !== 'posible') {
-                return { color: '', textShadow: '' };
-            }
-            const nota = this.notaMinimaNecesaria.valor;
-            let hue, saturation, lightness;
-            if (nota >= 14) {
-                // 20 → 14: Rojo neón (como promedio 0)
-                hue = 0;
-                saturation = 100;
-                lightness = 50;
-            } else {
-                // 14 → 0: Gradiente rojo → verde (invertido)
-                const t = 1 - (nota / 14); // Invertir: nota alta = 0, nota baja = 1
-                hue = Math.round(120 * t); // 0 (rojo) → 120 (verde)
-                saturation = 90;
-                lightness = 50;
-            }
-            const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-
-            return {
-                color: color,
-                textShadow: ``, // Brillo suave
-                fontWeight: '900' // Extra bold
-            };
-        },
-
+    if (!this.notaMinimaNecesaria || this.notaMinimaNecesaria.estado !== 'posible') {
+        return { color: '', textShadow: '' };
+    }
+    const nota = this.notaMinimaNecesaria.valor;
+    let hue, saturation, lightness;
+    if (nota >= 14) {
+        // 20 → 14: Rojo neón (como promedio 0)
+        hue = 0;
+        saturation = 100;
+        lightness = 50;
+    } else {
+    // 14 → 0: Gradiente rojo → verde (invertido)
+    const t = 1 - (nota / 14); // Invertir: nota alta = 0, nota baja = 1
+    hue = Math.round(120 * t); // 0 (rojo) → 120 (verde)
+        saturation = 90;
+        lightness = 50;
+    }
+    const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    
+   return {
+    color: color,
+    textShadow: ``, // Brillo suave
+    fontWeight: '900' // Extra bold
+};
+},
+        
         // Obtener pesos para la barra lateral (CON CORRECCIÃ“N DE COLORES)
-        // Obtener pesos para la barra lateral (CON CORRECCIÃ“N DE COLORES Y DEFAULT AZUL)
+      // Obtener pesos para la barra lateral (CON CORRECCIÃ“N DE COLORES Y DEFAULT AZUL)
         get listaPesos() {
             if (!this.esquema || !this.esquema.pesos) return [];
-
+            
             // Clonamos y ordenamos por valor (peso) descendente
             return [...this.esquema.pesos].sort((a, b) => b.v - a.v).map(item => {
-
+                
                 // 1. Definimos el default como Azul Fuerte (bg-blue-600)
                 // IMPORTANTE: Ignoramos item.c si queremos forzar nuestra lÃ³gica, 
                 // o lo usamos solo si no detectamos el nombre.
-                let colorClass = 'bg-blue-600';
+                let colorClass = 'bg-blue-600'; 
 
                 // 2. Detectar tipo de nota por nombre
                 const nombre = item.n.toLowerCase();
 
                 if (nombre.includes('final')) {
                     colorClass = 'bg-red-500';      // Rojo
-                }
+                } 
                 else if (nombre.includes('parcial')) {
                     colorClass = 'bg-yellow-400';   // Amarillo
                 }
@@ -515,8 +422,8 @@
                 else if (nombre.includes('control') || nombre.includes('c')) {
                     colorClass = 'bg-cyan-500';     // Azul Fuerte
                 }
-
-
+                
+                
                 return { ...item, colorClass };
             });
         }

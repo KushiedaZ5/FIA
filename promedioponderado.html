@@ -4,18 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selecciona tu Ciclo - FIA USMP Calculadora</title>
+    <title>Mi Promedio Ponderado - CalculadoraFIAUSMP</title>
 
     <link rel="icon" type="image/png" href="imagenes/logo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto:wght@300;400;500;700;900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto:wght@400;500;700;900&display=swap"
         rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
-
     <script>
         tailwind.config = {
             theme: {
@@ -27,6 +26,8 @@
                         'official-blue': '#1E88E5',
                         'card-bg': '#18181b',
                         'border-color': '#27272a',
+                        'success-green': '#00E676',
+                        'danger-red': '#FF1744',
                     },
                     fontFamily: {
                         'inter': ['Inter', 'sans-serif'],
@@ -49,6 +50,7 @@
         document.head.appendChild(alpineScript);
     </script>
 
+    <!-- Google Tag Manager -->
     <script>(function (w, d, s, l, i) {
             w[l] = w[l] || []; w[l].push({
                 'gtm.start':
@@ -59,36 +61,17 @@
         })(window, document, 'script', 'dataLayer', 'GTM-M5W79TKG');</script>
 
     <style>
-        /* Gradient overlay for cycle blocks */
-        .cycle-gradient::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(26, 69, 188, 0.03) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.2s ease;
+        [x-cloak] {
+            display: none !important;
         }
 
-        .group:hover .cycle-gradient::before {
-            opacity: 1;
+        /* Animación para las tarjetas */
+        .course-card {
+            transition: all 0.3s ease;
         }
 
-        /* Custom bullet for list items */
-        .custom-bullet li {
-            position: relative;
-            padding-left: 1.2rem;
-        }
-
-        .custom-bullet li::before {
-            content: '▸';
-            position: absolute;
-            left: 0;
-            color: #1a45bc;
-            font-weight: bold;
-            font-size: 0.85rem;
+        .course-card:hover {
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -97,8 +80,8 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5W79TKG" height="0" width="0"
             style="display:none;visibility:hidden"></iframe></noscript>
 
-    <!-- Header -->
-    <header class="mb-12 pt-3">
+    <!-- Header con Auth -->
+    <header class="mb-8 pt-3">
         <div class="w-full px-5 flex flex-wrap items-center justify-center lg:justify-between gap-6 lg:gap-0">
 
             <!-- Logo + Nav (izquierda) -->
@@ -125,9 +108,9 @@
                     <a href="faq.html"
                         class="font-roboto font-bold text-sm lg:text-base text-official-blue uppercase tracking-wide px-3 py-2 transition-all duration-200 border-b-3 border-transparent hover:text-blue-700 hover:border-official-blue whitespace-nowrap">¿CÓMO
                         FUNCIONA?</a>
-                    <!-- Link a Promedio Ponderado (siempre visible) -->
+                    <!-- Link activo - Promedio Ponderado -->
                     <a href="promedioponderado.html"
-                        class="font-roboto font-bold text-sm lg:text-base text-green-400 uppercase tracking-wide px-3 py-2 transition-all duration-200 border-b-3 border-transparent hover:text-green-300 hover:border-green-400 whitespace-nowrap">📊
+                        class="font-roboto font-bold text-sm lg:text-base text-green-400 uppercase tracking-wide px-3 py-2 transition-all duration-200 border-b-2 border-green-400 whitespace-nowrap">📊
                         MI PROMEDIO</a>
                 </nav>
             </div>
@@ -199,17 +182,8 @@
                             <p class="text-xs text-gray-400 truncate" x-text="$store.auth?.userEmail"></p>
                         </div>
 
-                        <!-- Menu Items -->
-                        <div class="py-2">
-                            <a href="promedioponderado.html"
-                                class="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:bg-zinc-800 hover:text-white transition-colors">
-                                <span>📊</span>
-                                <span>Mi Promedio Ponderado</span>
-                            </a>
-                        </div>
-
                         <!-- Logout -->
-                        <div class="border-t border-zinc-700 py-2">
+                        <div class="py-2">
                             <button @click="logout()"
                                 class="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-400 hover:bg-zinc-800 hover:text-red-300 transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -226,63 +200,189 @@
         </div>
     </header>
 
-    <!-- Main Content with Alpine.js -->
-    <div class="max-w-6xl mx-auto px-4 lg:px-8 flex-1" x-data="carreraApp">
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 flex-1" x-data="promedioGeneral">
 
-        <!-- Título dinámico -->
-        <h3 x-text="titulo"
-            class="text-center mb-12 mt-8 font-bold text-xl lg:text-2xl text-blue-500 uppercase tracking-wide">
-        </h3>
+        <!-- Hero Section -->
+        <section class="text-center mb-12">
+            <h1 class="text-3xl lg:text-5xl font-black text-white mb-4">
+                📊 Mi <span class="text-green-400">Promedio Ponderado</span>
+            </h1>
+            <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                Aquí puedes ver todos tus cursos guardados y tu promedio general calculado automáticamente.
+            </p>
+        </section>
 
-        <!-- Botón volver (arriba) -->
-        <div class="text-center mt-8 mb-8">
-            <a href="index.html"
-                class="bg-transparent border-2 border-epics-blue text-epics-blue font-bold px-8 py-3 text-sm rounded-full transition-all duration-300 inline-block hover:bg-epics-blue hover:text-white hover:-translate-y-0.5 hover:shadow-xl">
-                &lt;&lt; Volver a elegir Carrera
-            </a>
+        <!-- Loading State -->
+        <div x-show="isLoading" class="flex justify-center items-center py-20">
+            <div class="text-center">
+                <svg class="animate-spin h-12 w-12 text-official-blue mx-auto mb-4" xmlns="http://www.w3.org/2000/svg"
+                    fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
+                </svg>
+                <p class="text-gray-400">Cargando tus notas...</p>
+            </div>
         </div>
 
-        <!-- Grid de ciclos con Alpine.js templates -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 justify-start">
-
-            <template x-for="ciclo in ciclos" :key="ciclo.numero">
-                <div>
-                    <a :href="ciclo.href" :class="ciclo.classes" @click="!ciclo.tieneCursos && $event.preventDefault()">
-
-                        <h4 x-text="`CICLO ${ciclo.numero}`"
-                            class="text-epics-blue font-black uppercase border-b border-zinc-700 pb-3 mb-4 text-xl tracking-wide relative z-10">
-                        </h4>
-
-                        <ul
-                            class="pl-5 text-left text-sm leading-relaxed text-gray-400 space-y-2 relative z-10 custom-bullet">
-                            <template x-for="curso in ciclo.cursos" :key="curso.text">
-                                <li x-text="curso.text"></li>
-                            </template>
-                        </ul>
-
-                    </a>
+        <!-- Not Logged In State -->
+        <div x-show="!isLoading && !$store.auth?.isLoggedIn" class="max-w-lg mx-auto">
+            <div class="bg-zinc-900 border border-zinc-700 rounded-2xl p-8 text-center">
+                <div class="text-6xl mb-4">🔐</div>
+                <h2 class="text-2xl font-bold text-white mb-3">Inicia Sesión</h2>
+                <p class="text-gray-400 mb-6">
+                    Para ver tu promedio ponderado, primero debes iniciar sesión con tu cuenta de Google.
+                </p>
+                <div x-data="authSystem">
+                    <button @click="login()" :disabled="isLoggingIn"
+                        class="flex items-center justify-center gap-3 mx-auto bg-official-blue hover:bg-blue-600 text-white font-bold px-8 py-4 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-official-blue/30">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                            <path
+                                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                            <path
+                                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                            <path
+                                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                        </svg>
+                        <span>Iniciar Sesión con Google</span>
+                    </button>
                 </div>
-            </template>
-
+            </div>
         </div>
 
-        <!-- Botón volver (abajo) -->
-        <div class="text-center mt-8 mb-8">
-            <a href="index.html"
-                class="bg-transparent border-2 border-epics-blue text-epics-blue font-bold px-8 py-3 text-sm rounded-full transition-all duration-300 inline-block hover:bg-epics-blue hover:text-white hover:-translate-y-0.5 hover:shadow-xl">
-                &lt;&lt; Volver a elegir Carrera
-            </a>
+        <!-- Logged In - Content -->
+        <div x-show="!isLoading && $store.auth?.isLoggedIn" x-cloak>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+
+                <!-- Promedio General -->
+                <div
+                    class="bg-gradient-to-br from-green-900/50 to-green-800/30 border border-green-700/50 rounded-2xl p-6 text-center">
+                    <p class="text-green-400 text-sm uppercase tracking-wider font-bold mb-2">Promedio General</p>
+                    <p class="text-5xl font-black text-white" x-text="promedioSimple.toFixed(2)">0.00</p>
+                    <p class="text-xs text-green-400/70 mt-2">Promedio simple de todos tus cursos</p>
+                </div>
+
+                <!-- Total Cursos -->
+                <div
+                    class="bg-gradient-to-br from-blue-900/50 to-blue-800/30 border border-blue-700/50 rounded-2xl p-6 text-center">
+                    <p class="text-blue-400 text-sm uppercase tracking-wider font-bold mb-2">Cursos Guardados</p>
+                    <p class="text-5xl font-black text-white" x-text="allNotes.length">0</p>
+                    <p class="text-xs text-blue-400/70 mt-2">Total de cursos registrados</p>
+                </div>
+
+                <!-- Estado -->
+                <div
+                    class="bg-gradient-to-br from-purple-900/50 to-purple-800/30 border border-purple-700/50 rounded-2xl p-6 text-center">
+                    <p class="text-purple-400 text-sm uppercase tracking-wider font-bold mb-2">Estado</p>
+                    <p class="text-3xl font-black text-white"
+                        x-text="promedioSimple >= 10.5 ? '✅ Aprobando' : (allNotes.length > 0 ? '⚠️ En riesgo' : '📝 Sin datos')">
+                    </p>
+                    <p class="text-xs text-purple-400/70 mt-2">Basado en nota mínima 10.5</p>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div x-show="allNotes.length === 0" class="text-center py-16">
+                <div class="text-8xl mb-6">📚</div>
+                <h3 class="text-2xl font-bold text-white mb-3">No tienes cursos guardados</h3>
+                <p class="text-gray-400 mb-8 max-w-md mx-auto">
+                    Ve a la calculadora, ingresa tus notas en cualquier curso y haz clic en "Guardar Notas" para empezar
+                    a trackear tu promedio.
+                </p>
+                <a href="index.html"
+                    class="inline-flex items-center gap-2 bg-official-blue hover:bg-blue-600 text-white font-bold px-8 py-4 rounded-xl transition-all duration-200 hover:shadow-lg">
+                    <span>🧮</span>
+                    <span>Ir a la Calculadora</span>
+                </a>
+            </div>
+
+            <!-- Courses List -->
+            <div x-show="allNotes.length > 0" class="space-y-4">
+                <h2 class="text-xl font-bold text-gray-400 uppercase tracking-wider mb-6 flex items-center gap-3">
+                    <span>📋</span>
+                    <span>Mis Cursos Guardados</span>
+                </h2>
+
+                <template x-for="note in allNotes" :key="note.id">
+                    <div
+                        class="course-card bg-zinc-900 border border-zinc-700 rounded-xl overflow-hidden hover:border-zinc-600">
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between p-5 gap-4">
+
+                            <!-- Curso Info -->
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <h3 class="text-lg font-bold text-white truncate"
+                                        x-text="note.cursoNombre || note.cursoId"></h3>
+                                    <span class="bg-zinc-800 text-gray-400 text-xs px-2 py-1 rounded"
+                                        x-text="note.carreraNombre || note.carrera"></span>
+                                </div>
+                                <p class="text-sm text-gray-500">
+                                    <span x-text="note.ciclo?.replace('ciclo', 'Ciclo ')"></span>
+                                    <span class="mx-2">•</span>
+                                    <span>Actualizado: </span>
+                                    <span x-text="formatDate(note.updatedAt)"></span>
+                                </p>
+                            </div>
+
+                            <!-- Promedio -->
+                            <div class="flex items-center gap-6">
+                                <div class="text-center">
+                                    <p class="text-xs text-gray-500 uppercase">Promedio</p>
+                                    <p class="text-3xl font-black"
+                                        :class="note.promedio >= 10.5 ? 'text-green-400' : 'text-red-400'"
+                                        x-text="note.promedio?.toFixed(2) || '0.00'"></p>
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="flex gap-2">
+                                    <a :href="'calculadora.html?carrera=' + note.carrera + '&ciclo=' + note.ciclo + '&curso=' + note.cursoId"
+                                        class="p-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors"
+                                        title="Editar">
+                                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                    </a>
+                                    <button @click="if(confirm('¿Eliminar este curso?')) deleteCurso(note.id)"
+                                        class="p-2 bg-zinc-800 hover:bg-red-900/50 rounded-lg transition-colors"
+                                        title="Eliminar">
+                                        <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Back to Calculator -->
+            <div class="text-center mt-12 mb-8">
+                <a href="index.html"
+                    class="inline-flex items-center gap-2 border-2 border-official-blue text-official-blue hover:bg-official-blue hover:text-white font-bold px-8 py-3 rounded-xl transition-all duration-200">
+                    <span>←</span>
+                    <span>Volver a la Calculadora</span>
+                </a>
+            </div>
         </div>
 
-    </div>
+    </main>
 
     <!-- Footer -->
-    <footer class="bg-zinc-950 border-t border-zinc-800 py-16 px-5 mt-auto">
+    <footer class="bg-zinc-950 border-t border-zinc-800 py-12 px-5 mt-auto">
         <div class="container mx-auto">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-
                 <div class="lg:col-span-5 flex flex-col items-center text-center mb-5 lg:mb-0">
-
                     <div class="flex items-center gap-3 mb-3">
                         <img src="imagenes/logo.png" alt="Logo Footer" class="h-12 opacity-90">
                         <div class="flex flex-col items-start">
@@ -291,14 +391,12 @@
                             <span class="text-[0.7rem] text-official-blue tracking-[0.3em] font-bold">FIA USMP</span>
                         </div>
                     </div>
-
                     <div class="text-gray-500">
                         <p class="mb-1">2025</p>
                         <a href="mailto:alessandro_morales@usmp.pe"
                             class="text-gray-500 font-normal hover:underline hover:text-gray-400 transition-colors duration-200">alessandro_morales@usmp.pe</a>
                     </div>
                 </div>
-
                 <div class="lg:col-span-3 text-center lg:text-left mb-4 lg:mb-0">
                     <h5 class="text-blue-gray-600 font-bold uppercase text-sm tracking-wider mb-6"
                         style="color: #546E7A;">Funciones</h5>
@@ -309,9 +407,12 @@
                         <li><a href="examenes.html"
                                 class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">Exámenes</a>
                         </li>
+                        <li><a href="promedioponderado.html"
+                                class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">Mi
+                                Promedio</a>
+                        </li>
                     </ul>
                 </div>
-
                 <div class="lg:col-span-3 text-center lg:text-left">
                     <h5 class="text-blue-gray-600 font-bold uppercase text-sm tracking-wider mb-6"
                         style="color: #546E7A;">Sobre Nosotros</h5>
@@ -321,13 +422,10 @@
                                 Funciona?</a></li>
                     </ul>
                 </div>
-
             </div>
         </div>
     </footer>
 
-    <script src="data/data.js"></script>
-    <script src="carrera-alpine.js"></script>
 </body>
 
 </html>
