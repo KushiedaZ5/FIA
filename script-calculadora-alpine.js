@@ -18,6 +18,7 @@
         notas: {
             P1: '', P2: '', P3: '', P4: '',
             W1: '',
+            APPC: '', AFPC: '', // Avance Parcial/Final del Proyecto de Curso
             EP: '',
             EF: '',
             Lb1: '', Lb2: '', Lb3: '', Lb4: '', Lb5: '', Lb6: '', Lb7: '',
@@ -28,6 +29,7 @@
         erroresValidacion: {
             P1: '', P2: '', P3: '', P4: '',
             W1: '',
+            APPC: '', AFPC: '',
             EP: '',
             EF: '',
             Lb1: '', Lb2: '', Lb3: '', Lb4: '', Lb5: '', Lb6: '', Lb7: '',

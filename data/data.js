@@ -5,7 +5,7 @@ const dataCarreras = {
         nombre: 'Ingeniería de Computación y Sistemas',
         ciclos: {
             'ciclo1': [
-                
+
                 { value: 'ciu_int', text: 'Ciudadanía Intercultural', esquema: '049' },
                 { value: 'lenguaje', text: 'Lenguaje', esquema: '049' },
                 { value: 'metodos_est', text: 'Métodos de Estudio', esquema: '049' },
@@ -13,17 +13,17 @@ const dataCarreras = {
                 { value: 'geom_analitica', text: 'Geometría Analítica', esquema: '040' },
                 { value: 'mate_discreta', text: 'Matemática Discreta', esquema: '040' },
                 { value: 'intro_sis_info', text: 'Introducción a Sistemas de Información', esquema: '045' },
-                { value: 'actividades1', text: 'Actividades 1', esquema: '038' , creditos: 1},
+                { value: 'actividades1', text: 'Actividades 1', esquema: '038', creditos: 1 },
                 { value: 'ingles1', text: 'Inglés 1', esquema: '039' },
             ],
             'ciclo2': [
-                
-                { value: 'ingles2', text: 'Inglés II', esquema: '039' , creditos: 1},
-                { value: 'calculo1', text: 'Cálculo I', esquema: '040' , creditos: 5},
-                { value: 'algebra_lineal', text: 'Álgebra Lineal', esquema: '040' , creditos: 5},
-                { value: 'fund_diseno_web', text: 'Fundamentos del Diseño Web', esquema: '045' , creditos: 3},
+
+                { value: 'ingles2', text: 'Inglés II', esquema: '039', creditos: 1 },
+                { value: 'calculo1', text: 'Cálculo I', esquema: '040', creditos: 5 },
+                { value: 'algebra_lineal', text: 'Álgebra Lineal', esquema: '040', creditos: 5 },
+                { value: 'fund_diseno_web', text: 'Fundamentos del Diseño Web', esquema: '045', creditos: 3 },
                 { value: 'intro_economia', text: 'Introducción a la Economía', esquema: '038', creditos: 3 },
-                { value: 'actividades2', text: 'Actividades 2', esquema: '038' , creditos: 1},
+                { value: 'actividades2', text: 'Actividades 2', esquema: '038', creditos: 1 },
                 { value: 'intro_programacion', text: 'Introducción a la Programación', esquema: '128', creditos: 5 },
             ],
             'ciclo3': [
@@ -42,8 +42,8 @@ const dataCarreras = {
             ],
             'ciclo5': [
                 { value: 'contabilidad_general', text: 'Contabilidad General', esquema: '038' },
-                { value: 'gestion_procesos', text: 'Gestión de Procesos', esquema: '046' },
-                { value: 'ing_administrativa', text: 'Ingeniería Administrativa', esquema: '045' },
+                { value: 'gestion_procesos', text: 'Gestión de Procesos', esquema: '132' },
+                { value: 'ing_administrativa', text: 'Ingeniería Administrativa', esquema: '132' },
                 { value: 'sistemas_operativos', text: 'Sistemas Operativos y Plataformas', esquema: '129' },
                 { value: 'teoria_bd', text: 'Teoría y Diseño de Base de Datos', esquema: '043' }
             ],
@@ -132,32 +132,32 @@ const dataCarreras = {
                 { value: 'intro_programacion', text: 'Introducción a la Programación(Proximamente...)', esquema: '128' }
             ],
             'ciclo3': [
-                { value: 'calculo2', text: 'Calculo II', esquema: '040' },
-                { value: 'quimica_industrial', text: 'Química Industrial(Proximamente...)', esquema: '041' },
-                { value: 'fis1', text: 'Física I', esquema: '042' },
-                { value: 'micro', text: 'Microeconomía', esquema: '054' },
-                { value: 'dis_ind_com', text: 'Diseño Industrial por Computador(Proximamente...)', esquema: '046' },
-                { value: 'discapacidad_inclusion', text: 'Discapacidad e Inclusión(Proximamente...)', esquema: '045' }
+                { value: 'calculo2', text: 'Calculo II', esquema: '040', creditos: 4 },
+                { value: 'quimica_industrial', text: 'Química Industrial(Falta Añadir EO)', esquema: '130', creditos: 4 },
+                { value: 'fis1', text: 'Física I', esquema: '042', creditos: 4 },
+                { value: 'micro', text: 'Microeconomía', esquema: '054', creditos: 4 },
+                { value: 'dis_ind_com', text: 'Diseño Industrial por Computador', esquema: '038', creditos: 4 },
+                { value: 'discapacidad_inclusion', text: 'Discapacidad e Inclusión(Proximamente...)', esquema: '045', creditos: 4 }
             ], 'ciclo4': [
-                { value: 'alg1', text: 'Algoritmos y Estructura de Datos I(Proximamente...)', esquema: '128' },
-                { value: 'est1', text: 'Estadística y Probabilidades I', esquema: '041' },
-                { value: 'fis2', text: 'Física II', esquema: '042' },
-                { value: 'ec_diferenciales_civil', text: 'Ecuaciones Diferenciales', esquema: '040' },
-                { value: 'materiales_ingenieria', text: 'Materiales de Ingeniería(Proximamente...)', esquema: '046' },
+                { value: 'alg1', text: 'Algoritmos y Estructura de Datos I(Proximamente...)', esquema: '128', creditos: 4 },
+                { value: 'est1', text: 'Estadística y Probabilidades I', esquema: '041', creditos: 4 },
+                { value: 'fis2', text: 'Física II', esquema: '042', creditos: 4 },
+                { value: 'ec_diferenciales_civil', text: 'Ecuaciones Diferenciales', esquema: '040', creditos: 4 },
+                { value: 'materiales_ingenieria', text: 'Materiales de Ingeniería(Proximamente...)', esquema: '046', creditos: 4 },
             ], 'ciclo5': [
-                { value: 'est2', text: 'Estadística y Probabilidades II', esquema: '041' },
-                { value: 'contabilidad_general', text: 'Contabilidad General', esquema: '038' },
-                { value: 'ing_administrativa', text: 'Ingeniería Administrativa', esquema: '045' },
-                { value: 'ing_electrica', text: 'Ingeniería Eléctrica y Electrónica(Proximamente...)', esquema: '043' },
-                { value: 'mecanica_materiales', text: 'Mecánica de Materiales(Proximamente...)', esquema: '046' },
+                { value: 'est2', text: 'Estadística y Probabilidades II', esquema: '041', creditos: 4 },
+                { value: 'contabilidad_general', text: 'Contabilidad General', esquema: '038', creditos: 4 },
+                { value: 'ing_administrativa', text: 'Ingeniería Administrativa', esquema: '132', creditos: 4 },
+                { value: 'ing_electrica', text: 'Ingeniería Eléctrica y Electrónica', esquema: '047', creditos: 5 },
+                { value: 'mecanica_materiales', text: 'Mecánica de Materiales', esquema: '128', creditos: 5 },
             ],
             'ciclo6': [
-                { value: 'ing_costos', text: 'Ingeniería de Costos(Proximamente...)', esquema: '047' },
-                { value: 'ing_mtodos1', text: 'Ingeniería de Métodos I(Proximamente...)', esquema: '045' },
-                { value: 'gestion_procesos', text: 'Gestión de Procesos(Proximamente...)', esquema: '043' },
-                { value: 'investigacion_operativa1', text: 'Investigación Operativa I(Proximamente...)', esquema: '046' },
-                { value: 'proceso_manufactura', text: 'Proceso de Manufactura(Proximamente...)', esquema: '043' },
-                { value: 'taller_herramientas', text: 'Taller de Herramientas Informáticas(Proximamente...)', esquema: '046' },
+                { value: 'ing_costos', text: 'Ingeniería de Costos', esquema: '038', creditos: 4 },
+                { value: 'ing_mtodos1', text: 'Ingeniería de Métodos I', esquema: '038', creditos: 4 },
+                { value: 'gestion_procesos', text: 'Gestión de Procesos', esquema: '132', creditos: 4 },
+                { value: 'investigacion_operativa1', text: 'Investigación Operativa I', esquema: '038', creditos: 4 },
+                { value: 'proceso_manufactura', text: 'Proceso de Manufactura', esquema: '047', creditos: 4 },
+                { value: 'taller_herramientas', text: 'Taller de Herramientas Informáticas', esquema: '133', creditos: 2 },
             ]
         }
     },

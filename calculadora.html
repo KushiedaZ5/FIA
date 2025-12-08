@@ -383,6 +383,44 @@
                                     </div>
                                 </div>
 
+                                <!-- APPC: Avance Parcial del Proyecto de Curso -->
+                                <div x-show="showInput('APPC')" class="mb-3">
+                                    <div class="grid grid-cols-12 gap-2 items-center">
+                                        <div class="col-span-5 md:col-span-4">
+                                            <label for="appc" class="text-emerald-400 text-sm font-bold">Avance Parcial
+                                                Proyecto (APPC)</label>
+                                        </div>
+                                        <div class="col-span-7 md:col-span-8">
+                                            <input type="number" step="0.01" id="appc" x-model="notas.APPC"
+                                                @input="validarYActualizar('APPC')"
+                                                :class="erroresValidacion.APPC ? 'border-red-500' : 'border-zinc-700'"
+                                                class="w-full bg-zinc-900 border rounded-md px-3 py-2 text-white font-bold placeholder-white focus:bg-zinc-900 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/25 outline-none"
+                                                min="0" max="20" placeholder="0">
+                                            <p x-show="erroresValidacion.APPC" x-text="erroresValidacion.APPC"
+                                                class="text-xs text-red-600 mt-1"></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- AFPC: Avance Final del Proyecto de Curso -->
+                                <div x-show="showInput('AFPC')" class="mb-3">
+                                    <div class="grid grid-cols-12 gap-2 items-center">
+                                        <div class="col-span-5 md:col-span-4">
+                                            <label for="afpc" class="text-emerald-400 text-sm font-bold">Avance Final
+                                                Proyecto (AFPC)</label>
+                                        </div>
+                                        <div class="col-span-7 md:col-span-8">
+                                            <input type="number" step="0.01" id="afpc" x-model="notas.AFPC"
+                                                @input="validarYActualizar('AFPC')"
+                                                :class="erroresValidacion.AFPC ? 'border-red-500' : 'border-zinc-700'"
+                                                class="w-full bg-zinc-900 border rounded-md px-3 py-2 text-white font-bold placeholder-white focus:bg-zinc-900 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/25 outline-none"
+                                                min="0" max="20" placeholder="0">
+                                            <p x-show="erroresValidacion.AFPC" x-text="erroresValidacion.AFPC"
+                                                class="text-xs text-red-600 mt-1"></p>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div x-show="showInput('EP')" class="mb-3">
                                     <div class="grid grid-cols-12 gap-2 items-center">
                                         <div class="col-span-5 md:col-span-4">
