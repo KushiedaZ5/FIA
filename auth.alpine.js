@@ -213,10 +213,10 @@ document.addEventListener('alpine:init', () => {
                 this.lastSaved = new Date();
                 console.log('💾 Notas guardadas:', cursoId);
 
-                // Limpiar status después de 3 segundos
+                // Redirigir a "Mi Promedio" después de 1.5s para que vea el feedback de éxito
                 setTimeout(() => {
-                    this.saveStatus = null;
-                }, 3000);
+                    window.location.href = 'promedioponderado.html';
+                }, 1500);
 
                 return true;
             } catch (error) {
