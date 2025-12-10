@@ -27,11 +27,11 @@ const dataCarreras = {
                 { value: 'intro_programacion', text: 'Introducción a la Programación', esquema: '128', creditos: 5 },
             ],
             'ciclo3': [
-                { value: 'alg1', text: 'Algoritmos y Estructura de Datos I', esquema: '128', creditos: 4 },
-                { value: 'fis1', text: 'Física I', esquema: '042', creditos: 4 },
-                { value: 'ti1', text: 'Tecnología de Información I', esquema: '046', creditos: 4 },
+                { value: 'alg1', text: 'Algoritmos y Estructura de Datos I', esquema: '128', creditos: 5 },
+                { value: 'fis1', text: 'Física I', esquema: '042', creditos: 5 },
+                { value: 'ti1', text: 'Tecnología de Información I', esquema: '046', creditos: 5 },
                 { value: 'est1', text: 'Estadística y Probabilidades I', esquema: '041', creditos: 4 },
-                { value: 'sis_info', text: 'Sistemas de Información', esquema: '038', creditos: 4 }
+                { value: 'sis_info', text: 'Sistemas de Información', esquema: '038', creditos: 3 }
             ],
             'ciclo4': [
                 { value: 'est2', text: 'Estadística 2', esquema: '041', creditos: 4 },
