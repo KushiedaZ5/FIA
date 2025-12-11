@@ -195,6 +195,7 @@ const esquemas = {
     },
     "055": {
         descripcion: "Decimales (0.3, 0.2, 0.5) -  P5",
+        imagen: "imagenes/055.jpg",
         inputs: ["P1", "P2", "P3", "P4", "P5", "EP", "EF"],
         pesos: [{ n: "Examen Final (EF)", v: 50, c: "bg-danger" }, { n: "Prom. Evaluaciones (PE)", v: 30, c: "bg-primary" }, { n: "Examen Parcial (EP)", v: 20, c: "bg-warning" }],
         calcular: (n) => {
