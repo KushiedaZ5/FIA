@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador de Exámenes - CalculadoraFIAUSMP</title>
+
+    <link rel="icon" type="image/png" href="imagenes/logo.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Roboto:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg-dark': '#0b0d12',
+                        'epics-blue': '#1a45bc',
+                        'epics-blue-hover': '#2563eb',
+                        'official-blue': '#1E88E5',
+                        'card-bg': '#18181b',
+                        'border-color': '#27272a',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'roboto': ['Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Firebase Auth Module (loads and registers Alpine components) -->
+    <script type="module">
+        await import('./auth.alpine.js');
+        const alpineScript = document.createElement('script');
+        alpineScript.src = 'https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js';
+        alpineScript.defer = true;
+        document.head.appendChild(alpineScript);
+    </script>
+
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-M5W79TKG');</script>
+
+    <style>
+        /* PDF Viewer Container */
+        .pdf-container {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid #27272a;
+        }
+
+        /* Botones de tipo de examen */
+        .exam-type-btn {
+            transition: all 0.2s ease;
+        }
+
+        .exam-type-btn:hover:not(.active):not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 69, 188, 0.3);
+        }
+
+        .exam-type-btn.active {
+            background: linear-gradient(135deg, #1a45bc 0%, #2563eb 100%);
+            border-color: #3b82f6;
+            box-shadow: 0 0 20px rgba(26, 69, 188, 0.4);
+        }
+
+        .exam-type-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Ciclo buttons */
+        .cycle-btn {
+            transition: all 0.2s ease;
+        }
+
+        .cycle-btn:hover:not(.active) {
+            background: rgba(26, 69, 188, 0.2);
+        }
+
+        .cycle-btn.active {
+            background: #1a45bc;
+            color: white;
+        }
+
+        /* PDF iframe wrapper */
+        .pdf-wrapper {
+            min-height: 500px;
+            background: #0a0a0f;
+        }
+
+        @media (min-width: 1024px) {
+            .pdf-wrapper {
+                min-height: 700px;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-bg-dark text-white font-inter min-h-screen flex flex-col">
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5W79TKG" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+
+    <!-- MOBILE HEADER -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-zinc-900/95 backdrop-blur-sm border-b border-zinc-800 lg:hidden"
+        x-data="authSystem">
+        <div class="flex items-center justify-between px-4 py-4">
+            <a href="index.html" class="flex items-center">
+                <img src="imagenes/logo.png" alt="Logo" class="h-14 w-14 object-contain">
+            </a>
+            <div class="relative">
+                <div x-show="$store.auth?.loading">
+                    <svg class="animate-spin h-8 w-8 text-official-blue" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                </div>
+                <button x-show="!$store.auth?.loading && !$store.auth?.isLoggedIn" @click="login()"
+                    class="flex items-center gap-2 bg-official-blue hover:bg-blue-600 text-white font-bold px-4 py-2 rounded-full transition-all text-sm">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                        <path
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                    </svg>
+                    <span>Iniciar Sesión</span>
+                </button>
+                <div x-show="!$store.auth?.loading && $store.auth?.isLoggedIn" class="relative">
+                    <button @click="toggleDropdown()"
+                        class="w-12 h-12 rounded-full overflow-hidden border-2 border-official-blue">
+                        <img :src="$store.auth?.userPhoto" alt="Avatar" class="w-full h-full object-cover">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE BOTTOM NAVIGATION -->
+    <nav class="fixed bottom-0 left-0 right-0 z-50 bg-zinc-900/95 backdrop-blur-sm border-t border-zinc-800 lg:hidden">
+        <div class="flex items-center justify-around py-2">
+            <a href="index.html" class="flex flex-col items-center gap-1 px-3 py-2 text-gray-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                <span class="text-xs font-medium">Calculadora</span>
+            </a>
+            <a href="examenes.html" class="flex flex-col items-center gap-1 px-3 py-2 text-official-blue">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <span class="text-xs font-medium">Exámenes</span>
+            </a>
+            <a href="promedioponderado.html" class="flex flex-col items-center gap-1 px-3 py-2 text-gray-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <span class="text-xs font-medium">Promedio</span>
+            </a>
+            <a href="faq.html" class="flex flex-col items-center gap-1 px-3 py-2 text-gray-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-xs font-medium">FAQ</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- DESKTOP HEADER -->
+    <header class="mb-6 pt-3 hidden lg:block">
+        <div class="w-full px-5 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="index.html" class="hover:opacity-90 transition-opacity mr-4">
+                    <div class="flex items-center gap-4">
+                        <img src="imagenes/logo.png" alt="Logo" class="h-[85px]">
+                        <div class="flex flex-col leading-none">
+                            <h1 class="font-roboto font-black text-5xl text-official-blue -tracking-tight">Calculadora
+                            </h1>
+                            <span
+                                class="font-roboto font-bold text-base text-official-blue uppercase tracking-[0.35em] ml-1">FIA
+                                USMP</span>
+                        </div>
+                    </div>
+                </a>
+                <nav class="flex gap-6 items-center ml-4">
+                    <a href="index.html"
+                        class="font-roboto font-bold text-base text-official-blue uppercase tracking-wide px-3 py-2 hover:text-blue-700">CALCULADORA</a>
+                    <a href="examenes.html"
+                        class="font-roboto font-bold text-base text-white uppercase tracking-wide px-3 py-2 border-b-2 border-official-blue">EXÁMENES</a>
+                    <a href="faq.html"
+                        class="font-roboto font-bold text-base text-official-blue uppercase tracking-wide px-3 py-2 hover:text-blue-700">¿CÓMO
+                        FUNCIONA?</a>
+                    <a href="promedioponderado.html"
+                        class="font-roboto font-bold text-base text-green-400 uppercase tracking-wide px-3 py-2 hover:text-green-300">📊
+                        MI PROMEDIO</a>
+                </nav>
+            </div>
+            <div x-data="authSystem" class="relative">
+                <button x-show="!$store.auth?.loading && !$store.auth?.isLoggedIn" @click="login()"
+                    class="flex items-center gap-2 bg-official-blue hover:bg-blue-600 text-white font-bold px-4 py-2 rounded-lg">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                        <path
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                    </svg>
+                    <span>Iniciar Sesión</span>
+                </button>
+                <div x-show="!$store.auth?.loading && $store.auth?.isLoggedIn"
+                    class="flex items-center gap-3 bg-zinc-800 border border-zinc-700 px-3 py-2 rounded-lg">
+                    <img :src="$store.auth?.userPhoto" alt="Avatar"
+                        class="w-8 h-8 rounded-full border-2 border-official-blue">
+                    <span class="text-white font-medium" x-text="$store.auth?.userName"></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <div class="max-w-7xl mx-auto px-4 lg:px-8 flex-1 pt-24 pb-24 lg:pt-0 lg:pb-8 w-full" x-data="pdfViewerApp">
+
+        <!-- Course Header -->
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+            <div class="flex items-center gap-3 flex-wrap">
+                <span class="bg-official-blue/20 text-official-blue font-bold px-3 py-1 rounded-lg text-sm"
+                    x-text="'CICLO ' + cicloNum"></span>
+                <h2 class="text-xl lg:text-2xl font-bold text-cyan-400" x-text="cursoNombre"></h2>
+                <span class="text-gray-500 hidden lg:inline">-</span>
+                <span class="text-gray-400 text-sm lg:text-base uppercase" x-text="carreraNombre"></span>
+            </div>
+            <a :href="'cursos.html?carrera=' + carrera"
+                class="bg-transparent border-2 border-zinc-600 text-zinc-400 hover:border-official-blue hover:text-official-blue font-bold px-4 py-2 text-sm rounded-lg transition-all inline-flex items-center gap-2 w-fit">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Ver otro curso
+            </a>
+        </div>
+
+        <!-- Selector de Tipo de Examen -->
+        <div class="bg-card-bg border border-zinc-700 rounded-xl p-4 lg:p-6 mb-4">
+            <p class="text-sm text-cyan-400 font-bold uppercase tracking-wider mb-4">1. Selecciona el tipo de examen</p>
+            <div class="flex flex-wrap gap-2 lg:gap-3">
+                <template x-for="tipo in tiposDisponibles" :key="tipo">
+                    <button @click="selectTipo(tipo)" :class="{'active': tipoSeleccionado === tipo}"
+                        :disabled="!isTipoDisponible(tipo)"
+                        class="exam-type-btn bg-zinc-800 border border-zinc-600 text-white font-medium px-4 py-2 rounded-lg text-sm lg:text-base">
+                        <span x-text="getTipoNombre(tipo)"></span>
+                    </button>
+                </template>
+            </div>
+        </div>
+
+        <!-- Selector de Ciclo Académico -->
+        <div class="bg-card-bg border border-zinc-700 rounded-xl p-4 lg:p-6 mb-6" x-show="tipoSeleccionado">
+            <p class="text-sm text-cyan-400 font-bold uppercase tracking-wider mb-4">2. Selecciona el ciclo del examen
+            </p>
+            <div class="flex flex-wrap gap-2 lg:gap-3">
+                <template x-for="ciclo in ciclosDisponibles" :key="ciclo">
+                    <button @click="selectCiclo(ciclo)" :class="{'active': cicloSeleccionado === ciclo}"
+                        class="cycle-btn bg-zinc-800 border border-zinc-600 text-white font-medium px-4 py-2 rounded-lg text-sm">
+                        <span x-text="clave + '-' + tipoSeleccionado + ' ' + getCicloNombre(ciclo)"></span>
+                    </button>
+                </template>
+                <template x-if="ciclosDisponibles.length === 0">
+                    <span class="text-gray-500 italic">No hay exámenes de este tipo disponibles</span>
+                </template>
+            </div>
+        </div>
+
+        <!-- PDF Viewer -->
+        <div class="pdf-container rounded-xl overflow-hidden mb-6" x-show="pdfUrl">
+            <div class="bg-zinc-800 border-b border-zinc-700 px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center">
+                        <svg class="w-4 h-4 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 9h-2v2H9v2h2v2h2v-2h2v-2h-2v-2zm0-6V3.5L18.5 9H13z" />
+                        </svg>
+                    </div>
+                    <span class="text-white font-medium text-sm lg:text-base" x-text="pdfFileName"></span>
+                </div>
+                <a :href="pdfUrl" target="_blank" download
+                    class="bg-official-blue hover:bg-blue-600 text-white font-bold px-3 py-1.5 rounded-lg text-sm transition-all flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    <span class="hidden lg:inline">Descargar</span>
+                </a>
+            </div>
+            <div class="pdf-wrapper">
+                <iframe :src="pdfUrl" class="w-full h-[500px] lg:h-[700px]" frameborder="0"></iframe>
+            </div>
+        </div>
+
+        <!-- Mensaje cuando no hay PDF seleccionado -->
+        <div x-show="!pdfUrl && tipoSeleccionado"
+            class="bg-card-bg border border-zinc-700 rounded-xl p-8 text-center mb-6">
+            <svg class="w-16 h-16 text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <p class="text-gray-400 text-lg">Selecciona un ciclo para ver el examen</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3 justify-center" x-show="pdfUrl">
+            <!-- Compartir -->
+            <button @click="compartirLink()"
+                class="bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 text-white font-bold px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+                <span x-text="linkCopiado ? '¡Link copiado!' : 'Compartir Link'"></span>
+            </button>
+
+            <!-- Ir a Calculadora -->
+            <a :href="calculadoraUrl"
+                class="bg-green-600 hover:bg-green-500 text-white font-bold px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                <span>Ir a Calculadora de este Curso</span>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-zinc-950 border-t border-zinc-800 pt-12 pb-24 lg:pb-12 px-5 mt-auto">
+        <div class="container mx-auto">
+            <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-3">
+                    <img src="imagenes/logo.png" alt="Logo" class="h-10 opacity-90">
+                    <div class="flex flex-col items-start">
+                        <span class="text-xl text-official-blue font-black leading-none">Calculadora</span>
+                        <span class="text-[0.6rem] text-official-blue tracking-[0.3em] font-bold">FIA USMP</span>
+                    </div>
+                </div>
+                <div class="text-gray-500 text-sm text-center lg:text-right">
+                    <p>2025 - <a href="mailto:alessandro_morales@usmp.pe"
+                            class="hover:text-gray-400">alessandro_morales@usmp.pe</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="data/data.js"></script>
+    <script src="data/examenes-data.js"></script>
+    <script src="pdf-viewer-alpine.js"></script>
+</body>
+
+</html>
