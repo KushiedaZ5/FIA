@@ -1,6 +1,8 @@
 /**
  * Componente Alpine.js para el visualizador de PDFs
  * pdf-viewer-alpine.js
+ * 
+ * Usa Google Docs Viewer para compatibilidad con móviles
  */
 
 document.addEventListener('alpine:init', () => {
@@ -24,6 +26,12 @@ document.addEventListener('alpine:init', () => {
         // PDF
         pdfUrl: '',
         pdfFileName: '',
+        viewerUrl: '',
+
+        // Google Viewer
+        useGoogleViewer: true, // Por defecto usa Google Viewer para mejor compatibilidad móvil
+        baseUrl: '',
+        isLoadingPdf: false,
 
         // UI
         linkCopiado: false,
@@ -34,6 +42,14 @@ document.addEventListener('alpine:init', () => {
         ciclosAcademicosMap: {},
 
         init() {
+            // Detectar URL base del sitio (para Google Docs Viewer)
+            this.baseUrl = window.location.origin;
+
+            // En localhost, Google Viewer no funcionará, usar nativo
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                this.useGoogleViewer = false;
+            }
+
             // Cargar mapeos
             this.tiposExamenMap = typeof tiposExamen !== 'undefined' ? tiposExamen : {
                 'PC1': 'Práctica 1',
@@ -150,6 +166,7 @@ document.addEventListener('alpine:init', () => {
             this.cicloSeleccionado = '';
             this.pdfUrl = '';
             this.pdfFileName = '';
+            this.viewerUrl = '';
 
             // Cargar ciclos disponibles para este tipo
             if (typeof examenesDisponibles !== 'undefined' && this.clave) {
@@ -169,13 +186,50 @@ document.addEventListener('alpine:init', () => {
          */
         selectCiclo(ciclo) {
             this.cicloSeleccionado = ciclo;
+            this.isLoadingPdf = true;
 
             // Construir nombre del archivo PDF
             this.pdfFileName = `${this.clave}-${this.tipoSeleccionado}-${ciclo}.pdf`;
             this.pdfUrl = `pdfs/${this.pdfFileName}`;
 
+            // Construir URL del visor
+            this.updateViewerUrl();
+
             // Actualizar URL para compartir
             this.updateUrl();
+        },
+
+        /**
+         * Construye la URL del visor (Google Docs o nativo)
+         */
+        updateViewerUrl() {
+            if (this.useGoogleViewer && this.baseUrl && !this.isLocalhost()) {
+                // URL completa del PDF para Google Docs Viewer
+                const fullPdfUrl = `${this.baseUrl}/pdfs/${this.pdfFileName}`;
+                const encodedUrl = encodeURIComponent(fullPdfUrl);
+                this.viewerUrl = `https://docs.google.com/viewer?url=${encodedUrl}&embedded=true`;
+            } else {
+                // Visor nativo del navegador
+                this.viewerUrl = this.pdfUrl;
+            }
+        },
+
+        /**
+         * Detecta si estamos en localhost
+         */
+        isLocalhost() {
+            return window.location.hostname === 'localhost' ||
+                window.location.hostname === '127.0.0.1' ||
+                window.location.hostname.startsWith('192.168.');
+        },
+
+        /**
+         * Alterna entre Google Viewer y visor nativo
+         */
+        toggleViewerMode() {
+            this.useGoogleViewer = !this.useGoogleViewer;
+            this.isLoadingPdf = true;
+            this.updateViewerUrl();
         },
 
         /**
