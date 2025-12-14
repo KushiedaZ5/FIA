@@ -300,9 +300,9 @@
             </div>
         </div>
 
-        <!-- PDF Viewer con PDF.js -->
+        <!-- PDF Viewer -->
         <div class="pdf-container rounded-xl overflow-hidden mb-6" x-show="pdfUrl" id="pdf-viewer-container"
-            x-init="$watch('pdfUrl', value => { if(value) loadPdfWithPdfJs(value); })">
+            x-init="$watch('pdfUrl', value => { if(value && window.innerWidth < 1024) loadPdfWithPdfJs(value); })">
 
             <!-- Header con nombre y controles -->
             <div
@@ -317,31 +317,30 @@
                     <span class="text-white font-medium text-sm" x-text="pdfFileName"></span>
                 </div>
 
-                <!-- Controles de navegación -->
+                <!-- Controles de navegación (solo móvil) -->
                 <div class="flex items-center gap-2">
-                    <!-- Página anterior -->
-                    <button id="prev-page" onclick="pdfViewerPrevPage()"
-                        class="bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2 rounded-lg transition-all">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </button>
+                    <!-- Botones de navegación solo en móvil -->
+                    <div class="lg:hidden flex items-center gap-2">
+                        <button id="prev-page" onclick="pdfViewerPrevPage()"
+                            class="bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2 rounded-lg transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <span id="page-info" class="text-white text-sm font-medium min-w-[60px] text-center">1 /
+                            1</span>
+                        <button id="next-page" onclick="pdfViewerNextPage()"
+                            class="bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2 rounded-lg transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                        <div class="w-px h-6 bg-zinc-600 mx-1"></div>
+                    </div>
 
-                    <!-- Info de página -->
-                    <span id="page-info" class="text-white text-sm font-medium min-w-[60px] text-center">1 / 1</span>
-
-                    <!-- Página siguiente -->
-                    <button id="next-page" onclick="pdfViewerNextPage()"
-                        class="bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2 rounded-lg transition-all">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
-
-                    <!-- Separador -->
-                    <div class="w-px h-6 bg-zinc-600 mx-1"></div>
-
-                    <!-- Descargar -->
+                    <!-- Descargar (siempre visible) -->
                     <a :href="pdfUrl" target="_blank" download
                         class="bg-official-blue hover:bg-blue-600 text-white font-bold px-3 py-2 rounded-lg text-sm transition-all flex items-center gap-1">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -353,8 +352,13 @@
                 </div>
             </div>
 
-            <!-- Canvas container para PDF.js -->
-            <div class="pdf-wrapper bg-zinc-900 overflow-auto" style="max-height: 70vh;">
+            <!-- DESKTOP: Visor embebido nativo del navegador -->
+            <div class="hidden lg:block">
+                <embed :src="pdfUrl" type="application/pdf" class="w-full h-[700px]" />
+            </div>
+
+            <!-- MÓVIL: PDF.js con canvas -->
+            <div class="lg:hidden pdf-wrapper bg-zinc-900 overflow-auto" style="max-height: 70vh;">
                 <!-- Loading -->
                 <div id="pdf-loading" class="flex items-center justify-center py-20">
                     <div class="flex flex-col items-center gap-3">
@@ -377,7 +381,7 @@
             </div>
 
             <!-- Mobile hint -->
-            <div class="bg-zinc-800/50 px-4 py-2 text-center">
+            <div class="bg-zinc-800/50 px-4 py-2 text-center lg:hidden">
                 <p class="text-gray-500 text-xs">💡 Usa las flechas para navegar entre páginas</p>
             </div>
         </div>
@@ -502,18 +506,30 @@
                 const canvas = document.getElementById('pdf-canvas');
                 const ctx = canvas.getContext('2d');
 
+                // Obtener el ratio de píxeles del dispositivo para alta resolución
+                const pixelRatio = window.devicePixelRatio || 1;
+
                 // Calcular escala para ajustar al contenedor
                 const container = document.getElementById('canvas-container');
                 const containerWidth = container.offsetWidth - 32; // padding
                 const viewport = page.getViewport({ scale: 1 });
-                const scale = Math.min(containerWidth / viewport.width, 2);
+
+                // Escala base para que quepa en el contenedor
+                const baseScale = containerWidth / viewport.width;
+
+                // Escala final: multiplicamos por pixelRatio para alta resolución
+                const scale = baseScale * pixelRatio;
                 const scaledViewport = page.getViewport({ scale });
 
-                // Ajustar canvas
+                // Ajustar el tamaño interno del canvas (alta resolución)
                 canvas.height = scaledViewport.height;
                 canvas.width = scaledViewport.width;
 
-                // Renderizar
+                // Ajustar el tamaño CSS del canvas (tamaño visual)
+                canvas.style.width = (scaledViewport.width / pixelRatio) + 'px';
+                canvas.style.height = (scaledViewport.height / pixelRatio) + 'px';
+
+                // Renderizar con alta resolución
                 await page.render({
                     canvasContext: ctx,
                     viewport: scaledViewport
