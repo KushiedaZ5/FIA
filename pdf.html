@@ -37,6 +37,9 @@
         }
     </script>
 
+    <!-- PDF.js Library from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
     <!-- Firebase Auth Module (loads and registers Alpine components) -->
     <script type="module">
         await import('./auth.alpine.js');
@@ -297,48 +300,85 @@
             </div>
         </div>
 
-        <!-- PDF Viewer -->
-        <div class="pdf-container rounded-xl overflow-hidden mb-6" x-show="pdfUrl">
-            <div class="bg-zinc-800 border-b border-zinc-700 px-4 py-3 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center">
+        <!-- PDF Viewer con PDF.js -->
+        <div class="pdf-container rounded-xl overflow-hidden mb-6" x-show="pdfUrl" id="pdf-viewer-container"
+            x-init="$watch('pdfUrl', value => { if(value) loadPdfWithPdfJs(value); })">
+
+            <!-- Header con nombre y controles -->
+            <div
+                class="bg-zinc-800 border-b border-zinc-700 px-3 py-2 flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 bg-red-500/20 rounded-lg flex items-center justify-center">
                         <svg class="w-4 h-4 text-red-400" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 9h-2v2H9v2h2v2h2v-2h2v-2h-2v-2zm0-6V3.5L18.5 9H13z" />
                         </svg>
                     </div>
-                    <span class="text-white font-medium text-sm lg:text-base" x-text="pdfFileName"></span>
+                    <span class="text-white font-medium text-sm" x-text="pdfFileName"></span>
                 </div>
+
+                <!-- Controles de navegación -->
                 <div class="flex items-center gap-2">
-                    <!-- Toggle viewer mode -->
-                    <button @click="toggleViewerMode()"
-                        class="bg-zinc-700 hover:bg-zinc-600 text-white px-3 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1"
-                        :title="useGoogleViewer ? 'Cambiar a visor nativo' : 'Cambiar a Google Viewer'">
+                    <!-- Página anterior -->
+                    <button id="prev-page" onclick="pdfViewerPrevPage()"
+                        class="bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2 rounded-lg transition-all">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                         </svg>
-                        <span class="hidden sm:inline" x-text="useGoogleViewer ? 'Nativo' : 'Google'"></span>
                     </button>
-                    <!-- Download -->
+
+                    <!-- Info de página -->
+                    <span id="page-info" class="text-white text-sm font-medium min-w-[60px] text-center">1 / 1</span>
+
+                    <!-- Página siguiente -->
+                    <button id="next-page" onclick="pdfViewerNextPage()"
+                        class="bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2 rounded-lg transition-all">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+
+                    <!-- Separador -->
+                    <div class="w-px h-6 bg-zinc-600 mx-1"></div>
+
+                    <!-- Descargar -->
                     <a :href="pdfUrl" target="_blank" download
-                        class="bg-official-blue hover:bg-blue-600 text-white font-bold px-3 py-1.5 rounded-lg text-sm transition-all flex items-center gap-2">
+                        class="bg-official-blue hover:bg-blue-600 text-white font-bold px-3 py-2 rounded-lg text-sm transition-all flex items-center gap-1">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>
-                        <span class="hidden lg:inline">Descargar</span>
+                        <span class="hidden sm:inline">Descargar</span>
                     </a>
                 </div>
             </div>
-            <div class="pdf-wrapper">
-                <!-- PDF iframe with Google Docs Viewer for mobile compatibility -->
-                <iframe :src="viewerUrl" class="w-full h-[500px] lg:h-[700px]" frameborder="0" allow="autoplay"
-                    allowfullscreen></iframe>
+
+            <!-- Canvas container para PDF.js -->
+            <div class="pdf-wrapper bg-zinc-900 overflow-auto" style="max-height: 70vh;">
+                <!-- Loading -->
+                <div id="pdf-loading" class="flex items-center justify-center py-20">
+                    <div class="flex flex-col items-center gap-3">
+                        <svg class="animate-spin h-10 w-10 text-official-blue" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                        <span class="text-gray-400 text-sm">Cargando PDF...</span>
+                    </div>
+                </div>
+
+                <!-- Canvas donde se renderiza el PDF -->
+                <div id="canvas-container" class="hidden flex flex-col items-center py-4 gap-4">
+                    <canvas id="pdf-canvas" class="shadow-lg"></canvas>
+                </div>
             </div>
+
             <!-- Mobile hint -->
-            <div class="bg-zinc-800/50 px-4 py-2 text-center lg:hidden" x-show="useGoogleViewer">
-                <p class="text-gray-500 text-xs">💡 Usa los gestos de pellizcar para hacer zoom</p>
+            <div class="bg-zinc-800/50 px-4 py-2 text-center">
+                <p class="text-gray-500 text-xs">💡 Usa las flechas para navegar entre páginas</p>
             </div>
         </div>
 
@@ -399,6 +439,127 @@
     <script src="data/data.js"></script>
     <script src="data/examenes-data.js"></script>
     <script src="pdf-viewer-alpine.js"></script>
+
+    <!-- PDF.js Viewer Logic -->
+    <script>
+        // Configurar worker de PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        // Variables globales del visor
+        let pdfDoc = null;
+        let currentPage = 1;
+        let totalPages = 0;
+        let rendering = false;
+        let pendingPage = null;
+
+        // Función para cargar PDF desde Alpine
+        async function loadPdfWithPdfJs(url) {
+            try {
+                // Mostrar loading
+                document.getElementById('pdf-loading').classList.remove('hidden');
+                document.getElementById('canvas-container').classList.add('hidden');
+
+                // Cargar el PDF
+                const loadingTask = pdfjsLib.getDocument(url);
+                pdfDoc = await loadingTask.promise;
+                totalPages = pdfDoc.numPages;
+                currentPage = 1;
+
+                // Renderizar primera página
+                await renderPage(currentPage);
+
+                // Ocultar loading y mostrar canvas
+                document.getElementById('pdf-loading').classList.add('hidden');
+                document.getElementById('canvas-container').classList.remove('hidden');
+
+                updatePageInfo();
+            } catch (error) {
+                console.error('Error cargando PDF:', error);
+                document.getElementById('pdf-loading').innerHTML = `
+                    <div class="text-center text-red-400 py-10">
+                        <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p class="mb-2">Error al cargar el PDF</p>
+                        <p class="text-gray-500 text-sm">${error.message || 'Por favor intenta de nuevo'}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Renderizar una página
+        async function renderPage(pageNum) {
+            if (rendering) {
+                pendingPage = pageNum;
+                return;
+            }
+
+            rendering = true;
+
+            try {
+                const page = await pdfDoc.getPage(pageNum);
+
+                const canvas = document.getElementById('pdf-canvas');
+                const ctx = canvas.getContext('2d');
+
+                // Calcular escala para ajustar al contenedor
+                const container = document.getElementById('canvas-container');
+                const containerWidth = container.offsetWidth - 32; // padding
+                const viewport = page.getViewport({ scale: 1 });
+                const scale = Math.min(containerWidth / viewport.width, 2);
+                const scaledViewport = page.getViewport({ scale });
+
+                // Ajustar canvas
+                canvas.height = scaledViewport.height;
+                canvas.width = scaledViewport.width;
+
+                // Renderizar
+                await page.render({
+                    canvasContext: ctx,
+                    viewport: scaledViewport
+                }).promise;
+
+                currentPage = pageNum;
+                rendering = false;
+                updatePageInfo();
+
+                // Si hay página pendiente, renderizarla
+                if (pendingPage !== null) {
+                    const pending = pendingPage;
+                    pendingPage = null;
+                    renderPage(pending);
+                }
+            } catch (error) {
+                console.error('Error renderizando página:', error);
+                rendering = false;
+            }
+        }
+
+        // Funciones de navegación
+        function pdfViewerPrevPage() {
+            if (currentPage <= 1) return;
+            renderPage(currentPage - 1);
+        }
+
+        function pdfViewerNextPage() {
+            if (currentPage >= totalPages) return;
+            renderPage(currentPage + 1);
+        }
+
+        // Actualizar info de página
+        function updatePageInfo() {
+            const pageInfo = document.getElementById('page-info');
+            if (pageInfo) {
+                pageInfo.textContent = `${currentPage} / ${totalPages}`;
+            }
+
+            const prevBtn = document.getElementById('prev-page');
+            const nextBtn = document.getElementById('next-page');
+
+            if (prevBtn) prevBtn.disabled = currentPage <= 1;
+            if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
+        }
+    </script>
 </body>
 
 </html>

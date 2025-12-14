@@ -250,6 +250,15 @@ document.addEventListener('alpine:init', () => {
         },
 
         /**
+         * Obtiene la URL completa del PDF para PDF.js
+         */
+        getFullPdfUrl() {
+            // Construir URL absoluta del PDF
+            const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
+            return `${baseUrl}/pdfs/${this.pdfFileName}`;
+        },
+
+        /**
          * Obtiene el nombre legible de un tipo de examen
          */
         getTipoNombre(tipo) {
