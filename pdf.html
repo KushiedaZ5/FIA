@@ -469,19 +469,19 @@
                 totalPages = pdfDoc.numPages;
                 currentPage = 1;
 
-                // IMPORTANTE: Mostrar el canvas ANTES de renderizar para que offsetWidth sea correcto
-                document.getElementById('pdf-loading').classList.add('hidden');
-                document.getElementById('canvas-container').classList.remove('hidden');
-
-                // Esperar a que el DOM se actualice antes de renderizar
-                await new Promise(resolve => requestAnimationFrame(() => {
-                    requestAnimationFrame(resolve);
-                }));
-
                 // Renderizar primera página
                 await renderPage(currentPage);
 
+                // Ocultar loading y mostrar canvas
+                document.getElementById('pdf-loading').classList.add('hidden');
+                document.getElementById('canvas-container').classList.remove('hidden');
+
                 updatePageInfo();
+
+                // AUTO-REFRESH: Re-renderizar después de un momento para fixear el canvas en blanco
+                setTimeout(() => {
+                    renderPage(currentPage);
+                }, 100);
             } catch (error) {
                 console.error('Error cargando PDF:', error);
                 document.getElementById('pdf-loading').innerHTML = `
