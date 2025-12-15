@@ -76,12 +76,12 @@ const esquemas = {
     "043": {
         descripcion: "Labs (6) + Examen Oral",
         imagen: "imagenes/043.jpg",
-        inputs: ["P1", "P2", "W1", "Lb1", "Lb2", "Lb3", "Lb4", "Lb5", "Lb6", "C1", "EP", "EF"],
+        inputs: ["P1", "P2", "W1", "Lb1", "Lb2", "Lb3", "Lb4", "Lb5", "Lb6", "EO", "EP", "EF"],
         pesos: [{ n: "Prom. Evaluaciones", v: 50, c: "bg-primary" }, { n: "Examen Parcial (EP)", v: 25, c: "bg-warning" }, { n: "Examen Final (EF)", v: 25, c: "bg-danger" }],
         calcular: (n) => {
             const ppr = (n.P1 + n.P2) / 2;
             const sumL = n.Lb1 + n.Lb2 + n.Lb3 + n.Lb4 + n.Lb5 + n.Lb6;
-            const pl = ((sumL / 6) + n.C1) / 2;
+            const pl = ((sumL / 6) + n.EO) / 2;
             const pe = (ppr + n.W1 + pl) / 3;
             return ((2 * pe) + n.EP + n.EF) / 4;
         }
@@ -250,14 +250,14 @@ const esquemas = {
         }
     },
     "130": {
-        descripcion: "Variante 130 (Labs + EO)",
+        descripcion: "Química Industrial (Labs + EO)",
         imagen: "imagenes/130.jpg",
-        inputs: ["P1", "P2", "W1", "Lb1", "Lb2", "Lb3", "Lb4", "Lb5", "Lb6", "C1", "EP", "EF"],
+        inputs: ["P1", "P2", "W1", "Lb1", "Lb2", "Lb3", "Lb4", "Lb5", "Lb6", "EO", "EP", "EF"],
         pesos: [{ n: "Prom. Evaluaciones", v: 33.3, c: "bg-primary" }, { n: "Examen Parcial (EP)", v: 33.3, c: "bg-warning" }, { n: "Examen Final (EF)", v: 33.3, c: "bg-danger" }],
         calcular: (n) => {
             const ppr = (n.P1 + n.P2) / 2;
             const sumL = n.Lb1 + n.Lb2 + n.Lb3 + n.Lb4 + n.Lb5 + n.Lb6;
-            const pl = ((sumL / 6) + n.C1) / 2;
+            const pl = ((sumL / 6) + n.EO) / 2;
             const pe = (ppr + n.W1 + pl) / 3;
             return (pe + n.EP + n.EF) / 3;
         }

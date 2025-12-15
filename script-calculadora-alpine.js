@@ -16,22 +16,24 @@
 
         // Estado de Notas (Reactivo)
         notas: {
-            P1: '', P2: '', P3: '', P4: '',
+            P1: '', P2: '', P3: '', P4: '', P5: '',
             W1: '',
             APPC: '', AFPC: '', // Avance Parcial/Final del Proyecto de Curso
             EP: '',
             EF: '',
+            EO: '', // Examen de Laboratorio (Oral)
             Lb1: '', Lb2: '', Lb3: '', Lb4: '', Lb5: '', Lb6: '', Lb7: '',
             C1: '', C2: '', C3: '', C4: '', C5: '', C6: '', C7: '', C8: ''
         },
 
-        // Errores de ValidaciÃ³n (Reactivo)
+        // Errores de Validación (Reactivo)
         erroresValidacion: {
-            P1: '', P2: '', P3: '', P4: '',
+            P1: '', P2: '', P3: '', P4: '', P5: '',
             W1: '',
             APPC: '', AFPC: '',
             EP: '',
             EF: '',
+            EO: '',
             Lb1: '', Lb2: '', Lb3: '', Lb4: '', Lb5: '', Lb6: '', Lb7: '',
             C1: '', C2: '', C3: '', C4: '', C5: '', C6: '', C7: '', C8: ''
         },

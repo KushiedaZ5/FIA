@@ -34,7 +34,8 @@ const dataCarreras = {
             'ciclo4': [
                 { value: 'est2', text: 'Estadística 2', esquema: '041', creditos: 4, clave: 'EST2' },
                 { value: 'ti2', text: 'Tecnología de Información 2', esquema: '046', creditos: 4, clave: 'TI2' },
-                { value: 'fis2', text: 'Física 2', esquema: '042', creditos: 5, clave: 'F2' },
+                { value: 'fis2_castro', text: 'Física 2 - Prof. Castro', esquema: '042', creditos: 5, clave: 'F2C' },
+                { value: 'fis2_tejada', text: 'Física 2 - Prof. Tejada', esquema: '042', creditos: 5, clave: 'F2T' },
                 { value: 'alg2', text: 'Algoritmos 2', esquema: '047', creditos: 5, clave: 'AED2' },
                 { value: 'micro', text: 'Microeconomía', esquema: '054', creditos: 4, clave: 'MICRO' }
             ],
@@ -89,7 +90,8 @@ const dataCarreras = {
                 { value: 'estatica', text: 'Estática', esquema: '049', creditos: 4, clave: 'ESTA' },
                 { value: 'construccion1_civil', text: 'Construcción 1', esquema: '045', creditos: 3, clave: 'CON1' },
                 { value: 'ec_diferenciales_civil', text: 'Ecuaciones Diferenciales', esquema: '040', creditos: 4, clave: 'ED' },
-                { value: 'fis2', text: 'Física 2', esquema: '042', creditos: 5, clave: 'F2' },
+                { value: 'fis2_castro', text: 'Física 2 - Prof. Castro', esquema: '042', creditos: 5, clave: 'F2C' },
+                { value: 'fis2_tejada', text: 'Física 2 - Prof. Tejada', esquema: '042', creditos: 5, clave: 'F2T' },
             ],
             'ciclo5': [
                 { value: 'contabilidad_general', text: 'Contabilidad General', esquema: '038', creditos: 4, clave: 'CG' },
@@ -131,7 +133,7 @@ const dataCarreras = {
             ],
             'ciclo3': [
                 { value: 'calculo2', text: 'Calculo II', esquema: '040', creditos: 5, clave: 'C2' },
-                { value: 'quimica_industrial', text: 'Química Industrial(Falta Añadir EO)', esquema: '130', creditos: 5, clave: 'QI' },
+                { value: 'quimica_industrial', text: 'Química Industrial', esquema: '130', creditos: 5, clave: 'QI' },
                 { value: 'fis1', text: 'Física I', esquema: '042', creditos: 5, clave: 'F1' },
                 { value: 'micro', text: 'Microeconomía', esquema: '054', creditos: 4, clave: 'MICRO' },
                 { value: 'dis_ind_com', text: 'Diseño Industrial por Computador', esquema: '038', creditos: 3, clave: 'DIC' },
@@ -139,7 +141,8 @@ const dataCarreras = {
             ], 'ciclo4': [
                 { value: 'alg1', text: 'Algoritmos y Estructura de Datos I(Proximamente...)', esquema: '128', creditos: 5, clave: 'AED1' },
                 { value: 'est1', text: 'Estadística y Probabilidades I', esquema: '041', creditos: 4, clave: 'EST1' },
-                { value: 'fis2', text: 'Física II', esquema: '042', creditos: 5, clave: 'F2' },
+                { value: 'fis2_castro', text: 'Física 2 - Prof. Castro', esquema: '042', creditos: 5, clave: 'F2C' },
+                { value: 'fis2_tejada', text: 'Física 2 - Prof. Tejada', esquema: '042', creditos: 5, clave: 'F2T' },
                 { value: 'ec_diferenciales_civil', text: 'Ecuaciones Diferenciales', esquema: '040', creditos: 4, clave: 'ED' },
                 { value: 'materiales_ingenieria', text: 'Materiales de Ingeniería(Proximamente...)', esquema: '046', creditos: 4, clave: 'MI' },
             ], 'ciclo5': [
@@ -213,8 +216,8 @@ const dataCarreras = {
         nombre: 'Ciencias Aeronáuticas',
         ciclos: {
             'ciclo1': [
-                { value: 'fisica1', text: 'Física General I(Proximamente...)', esquema: '040', creditos: 4, clave: 'F1' },
-                { value: 'matematica1', text: 'Matemática I(Proximamente...)', esquema: '041', creditos: 4, clave: 'MAT1' },
+                { value: 'fisica1', text: 'Física General I(Proximamente...)', esquema: '040', creditos: 4, clave: 'F1A' },
+                { value: 'matematica1', text: 'Matemática I(Proximamente...)', esquema: '041', creditos: 4, clave: 'MAT1A' },
                 { value: 'metodos_est', text: 'Métodos de Estudio(Proximamente...)', esquema: '049', creditos: 2, clave: 'ME' },
                 { value: 'realidad_nacional', text: 'Realidad Nacional(Proximamente...)', esquema: '045', creditos: 3, clave: 'RN' },
                 { value: 'introduccion_aviacion', text: 'Introducción a la Aviación(Proximamente...)', esquema: '040', creditos: 2, clave: 'IAV' },
@@ -223,8 +226,8 @@ const dataCarreras = {
                 { value: 'lenguaje', text: 'Lenguaje(Proximamente...)', esquema: '039', creditos: 2, clave: 'LEN' },
                 { value: 'regulaciones_1', text: 'Regulaciones Aéreas I(Proximamente...)', esquema: '039', creditos: 2, clave: 'RA1' },
             ], 'ciclo2': [
-                { value: 'fisica2', text: 'Física General II', esquema: '040', creditos: 4, clave: 'F2' },
-                { value: 'matematica2', text: 'Matemática II', esquema: '041', creditos: 4, clave: 'MAT2' },
+                { value: 'fisica2', text: 'Física General II', esquema: '040', creditos: 4, clave: 'F2A' },
+                { value: 'matematica2', text: 'Matemática II', esquema: '041', creditos: 4, clave: 'MAT2A' },
                 { value: 'operaciones_piloto_privado', text: 'Operaciones de Piloto Privado', esquema: '055', creditos: 5, clave: 'OPP' },
                 { value: 'aerodinamica', text: 'Aerodinámica', esquema: '038', creditos: 4, clave: 'AERO' },
                 { value: 'factores_humanos_aviacion', text: 'Factores Humanos en Aviación', esquema: '045', creditos: 2, clave: 'FHA' },
@@ -286,6 +289,9 @@ const tiposExamen = {
 
 // Mapeo de ciclos académicos para mostrar nombres legibles
 const ciclosAcademicos = {
+    '202': '2020-2',
+    '231': '2023-1',
+    '232': '2023-2',
     '241': '2024-1',
     '242': '2024-2',
     '251': '2025-1',

@@ -12,10 +12,44 @@ const examenesDisponibles = {
     // Matemática Discreta
     'MD': {
         'PC1': ['241'],  // MD-PC1-241.pdf existe
+        'PC2': ['241'],
+        'PC3': ['242'],
+        'PC4': ['241'], // MD-PC2-241.pdf ✅ NUEVO
+        'EF': ['241'], // MD-PC2-241.pdf ✅ NUEVO
         // Agrega más tipos y ciclos conforme subas PDFs
         // 'PC2': ['241', '242'],
         // 'PC3': ['241'],
         // 'PC4': ['241'],
+        // 'EF': ['241']
+    },
+    'F1': {
+        'PC1': ['241'],
+        'LAB1': ['232'], // MD-PC1-241.pdf existe
+        'LAB6': ['202'], // MD-PC2-241.pdf ✅ NUEVO
+        // Agrega más tipos y ciclos conforme subas PDFs
+        // 'PC2': ['241', '242'],
+        // 'PC3': ['241'],
+        // 'PC4': ['241'],
+        // 'EF': ['241']
+    },
+
+    // Física 2 - Prof. Castro
+    // Carpeta: pdfs/F2C/
+    'F2C': {
+        'PC1': ['241'],
+        // Agrega tipos y ciclos conforme subas PDFs
+        // 'PC1': ['241'],
+        // 'PC2': ['241'],
+        // 'EF': ['241']
+    },
+
+    // Física 2 - Prof. Tejada
+    // Carpeta: pdfs/F2T/
+    'F2T': {
+        'PC1': ['241'],
+        // Agrega tipos y ciclos conforme subas PDFs
+        // 'PC1': ['241'],
+        // 'PC2': ['241'],
         // 'EF': ['241']
     },
 
@@ -48,13 +82,15 @@ function existeExamen(clave, tipo, ciclo) {
 
 /**
  * Obtiene la URL del PDF
- * @param {string} clave - Clave del curso
+ * Nueva estructura: pdfs/CLAVE/TIPO-CICLO.pdf
+ * Ejemplo: pdfs/MD/PC1-241.pdf
+ * @param {string} clave - Clave del curso (será la carpeta)
  * @param {string} tipo - Tipo de examen
  * @param {string} ciclo - Ciclo académico
  * @returns {string} URL del PDF
  */
 function getPdfUrl(clave, tipo, ciclo) {
-    return `pdfs/${clave}-${tipo}-${ciclo}.pdf`;
+    return `pdfs/${clave}/${tipo}-${ciclo}.pdf`;
 }
 
 /**

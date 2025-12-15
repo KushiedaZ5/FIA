@@ -541,6 +541,24 @@
                                             </div>
                                         </div>
                                     </template>
+
+                                    <!-- EO: Examen de Laboratorio (Oral) -->
+                                    <div x-show="showInput('EO')" class="mb-3 mt-4 pt-3 border-t border-zinc-700">
+                                        <div class="grid grid-cols-12 gap-2 items-center">
+                                            <div class="col-span-5 md:col-span-4">
+                                                <label for="examenOral" class="text-purple-400 text-sm font-bold">Examen de Laboratorio (EO)</label>
+                                            </div>
+                                            <div class="col-span-7 md:col-span-8">
+                                                <input type="number" step="0.01" id="examenOral"
+                                                    x-model="notas.EO" @input="validarYActualizar('EO')"
+                                                    :class="erroresValidacion.EO ? 'border-red-500' : 'border-zinc-700'"
+                                                    class="w-full bg-zinc-900 border rounded-md px-3 py-2 text-white font-bold placeholder-white focus:bg-zinc-900 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/25 outline-none"
+                                                    min="0" max="20" placeholder="0">
+                                                <p x-show="erroresValidacion.EO" x-text="erroresValidacion.EO"
+                                                    class="text-xs text-red-600 mt-1"></p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div x-show="hasAnyControl()" class="mt-3">

@@ -514,6 +514,9 @@
                 // Obtener el ratio de píxeles del dispositivo para alta resolución
                 const pixelRatio = window.devicePixelRatio || 1;
 
+                // Multiplicador HD extra para mayor nitidez (1.5x = 50% más resolución)
+                const hdMultiplier = 1.5;
+
                 // Calcular escala para ajustar al contenedor
                 const container = document.getElementById('canvas-container');
                 const containerWidth = container.offsetWidth - 32; // padding
@@ -522,8 +525,8 @@
                 // Escala base para que quepa en el contenedor
                 const baseScale = containerWidth / viewport.width;
 
-                // Escala final: multiplicamos por pixelRatio para alta resolución
-                const scale = baseScale * pixelRatio;
+                // Escala final: pixelRatio * hdMultiplier para ultra alta resolución
+                const scale = baseScale * pixelRatio * hdMultiplier;
                 const scaledViewport = page.getViewport({ scale });
 
                 // Ajustar el tamaño interno del canvas (alta resolución)
@@ -531,8 +534,9 @@
                 canvas.width = scaledViewport.width;
 
                 // Ajustar el tamaño CSS del canvas (tamaño visual)
-                canvas.style.width = (scaledViewport.width / pixelRatio) + 'px';
-                canvas.style.height = (scaledViewport.height / pixelRatio) + 'px';
+                const visualScale = pixelRatio * hdMultiplier;
+                canvas.style.width = (scaledViewport.width / visualScale) + 'px';
+                canvas.style.height = (scaledViewport.height / visualScale) + 'px';
 
                 // Renderizar con alta resolución
                 await page.render({

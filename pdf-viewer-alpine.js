@@ -100,6 +100,14 @@ document.addEventListener('alpine:init', () => {
                 this.selectTipo(tipoUrl);
                 if (cicloExamenUrl && this.ciclosDisponibles.includes(cicloExamenUrl)) {
                     this.selectCiclo(cicloExamenUrl);
+
+                    // Si estamos en móvil y ya hay pdfUrl, cargar el PDF manualmente
+                    // (el $watch no detecta valores establecidos durante init)
+                    if (window.innerWidth < 1024 && this.pdfUrl) {
+                        setTimeout(() => {
+                            loadPdfWithPdfJs(this.pdfUrl);
+                        }, 100);
+                    }
                 }
             }
         },
@@ -188,9 +196,9 @@ document.addEventListener('alpine:init', () => {
             this.cicloSeleccionado = ciclo;
             this.isLoadingPdf = true;
 
-            // Construir nombre del archivo PDF
-            this.pdfFileName = `${this.clave}-${this.tipoSeleccionado}-${ciclo}.pdf`;
-            this.pdfUrl = `pdfs/${this.pdfFileName}`;
+            // Construir nombre del archivo PDF (nueva estructura: CLAVE/TIPO-CICLO.pdf)
+            this.pdfFileName = `${this.tipoSeleccionado}-${ciclo}.pdf`;
+            this.pdfUrl = `pdfs/${this.clave}/${this.pdfFileName}`;
 
             // Construir URL del visor
             this.updateViewerUrl();
@@ -204,8 +212,8 @@ document.addEventListener('alpine:init', () => {
          */
         updateViewerUrl() {
             if (this.useGoogleViewer && this.baseUrl && !this.isLocalhost()) {
-                // URL completa del PDF para Google Docs Viewer
-                const fullPdfUrl = `${this.baseUrl}/pdfs/${this.pdfFileName}`;
+                // URL completa del PDF para Google Docs Viewer (nueva estructura)
+                const fullPdfUrl = `${this.baseUrl}/pdfs/${this.clave}/${this.pdfFileName}`;
                 const encodedUrl = encodeURIComponent(fullPdfUrl);
                 this.viewerUrl = `https://docs.google.com/viewer?url=${encodedUrl}&embedded=true`;
             } else {
@@ -253,9 +261,9 @@ document.addEventListener('alpine:init', () => {
          * Obtiene la URL completa del PDF para PDF.js
          */
         getFullPdfUrl() {
-            // Construir URL absoluta del PDF
+            // Construir URL absoluta del PDF (nueva estructura)
             const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
-            return `${baseUrl}/pdfs/${this.pdfFileName}`;
+            return `${baseUrl}/pdfs/${this.clave}/${this.pdfFileName}`;
         },
 
         /**
