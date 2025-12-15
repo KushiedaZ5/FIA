@@ -184,7 +184,11 @@
                 </svg>
                 <span class="text-xs font-medium">Promedio</span>
             </a>
-            <a href="faq.html" class="flex flex-col items-center gap-1 px-3 py-2 text-gray-400">
+            <!-- FAQ con badge de Sílabos -->
+            <a href="faq.html#repositorio"
+                class="relative flex flex-col items-center gap-1 px-3 py-2 text-gray-400 hover:text-white transition-colors">
+                <!-- Badge Sílabos -->
+                
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -422,20 +426,56 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-zinc-950 border-t border-zinc-800 pt-12 pb-24 lg:pb-12 px-5 mt-auto">
+    <footer class="bg-zinc-950 border-t border-zinc-800 pt-16 pb-24 lg:pb-16 px-5 mt-auto">
         <div class="container mx-auto">
-            <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
-                <div class="flex items-center gap-3">
-                    <img src="imagenes/logo.png" alt="Logo" class="h-10 opacity-90">
-                    <div class="flex flex-col items-start">
-                        <span class="text-xl text-official-blue font-black leading-none">Calculadora</span>
-                        <span class="text-[0.6rem] text-official-blue tracking-[0.3em] font-bold">FIA USMP</span>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+                <div class="lg:col-span-5 flex flex-col items-center text-center mb-5 lg:mb-0">
+
+                    <div class="flex items-center gap-3 mb-3">
+                        <img src="imagenes/logo.png" alt="Logo Footer" class="h-12 opacity-90">
+                        <div class="flex flex-col items-start">
+                            <span
+                                class="text-2xl text-official-blue font-black -tracking-tight leading-none">Calculadora</span>
+                            <span class="text-[0.7rem] text-official-blue tracking-[0.3em] font-bold">FIA
+                                USMP</span>
+                        </div>
+                    </div>
+
+                    <div class="text-gray-500">
+                        <p class="mb-1">2025</p>
+                        <a href="mailto:alessandro_morales@usmp.pe"
+                            class="text-gray-500 font-normal hover:underline hover:text-gray-400 transition-colors duration-200">alessandro_morales@usmp.pe</a>
                     </div>
                 </div>
-                <div class="text-gray-500 text-sm text-center lg:text-right">
-                    <p>2025 - <a href="mailto:alessandro_morales@usmp.pe"
-                            class="hover:text-gray-400">alessandro_morales@usmp.pe</a></p>
+
+                <div class="lg:col-span-3 text-center lg:text-left mb-4 lg:mb-0">
+                    <h5 class="text-blue-gray-600 font-bold uppercase text-sm tracking-wider mb-6"
+                        style="color: #546E7A;">Funciones</h5>
+                    <ul class="list-none">
+                        <li><a href="index.html"
+                                class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">Calculadora</a>
+                        </li>
+                        <li><a href="examenes.html"
+                                class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">Exámenes</a>
+                        </li>
+                        <li><a href="promedioponderado.html"
+                                class="text-gray-400 block mb-2 hover:text-green-400 transition-colors duration-200">Mi
+                                Promedio</a>
+                        </li>
+                    </ul>
                 </div>
+
+                <div class="lg:col-span-3 text-center lg:text-left">
+                    <h5 class="text-blue-gray-600 font-bold uppercase text-sm tracking-wider mb-6"
+                        style="color: #546E7A;">Sobre Nosotros</h5>
+                    <ul class="list-none">
+                        <li><a href="faq.html"
+                                class="text-gray-400 block mb-2 hover:text-official-blue transition-colors duration-200">¿Cómo
+                                Funciona?</a></li>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </footer>
