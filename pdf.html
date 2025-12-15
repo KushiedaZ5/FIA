@@ -469,12 +469,17 @@
                 totalPages = pdfDoc.numPages;
                 currentPage = 1;
 
-                // Renderizar primera página
-                await renderPage(currentPage);
-
-                // Ocultar loading y mostrar canvas
+                // IMPORTANTE: Mostrar el canvas ANTES de renderizar para que offsetWidth sea correcto
                 document.getElementById('pdf-loading').classList.add('hidden');
                 document.getElementById('canvas-container').classList.remove('hidden');
+
+                // Esperar a que el DOM se actualice antes de renderizar
+                await new Promise(resolve => requestAnimationFrame(() => {
+                    requestAnimationFrame(resolve);
+                }));
+
+                // Renderizar primera página
+                await renderPage(currentPage);
 
                 updatePageInfo();
             } catch (error) {
